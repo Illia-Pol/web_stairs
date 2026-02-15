@@ -1,19 +1,27 @@
 const CONTACTS = {
-  phoneDisplay: "+375 (00) 000-00-00",
-  phoneLink: "+375000000000",
-  telegram: "https://t.me/username",
-  whatsapp: "https://wa.me/000000000000"
+  phoneDisplay: "+375 (29) 651 20 22",
+  phoneLink: "+375296512022",
+  telegram: "https://t.me/Sokolmaxxx",
+  whatsapp: "https://wa.me/375296512022",
+  viber: "viber://chat?number=%2B375296512022",
+  instagram: "https://www.instagram.com/bettolestnica.by/"
 };
 
 function setContactLinks() {
   const phoneLink = document.getElementById("phone-link");
   const telegramLink = document.getElementById("telegram-link");
   const whatsappLink = document.getElementById("whatsapp-link");
+  const viberLink = document.getElementById("viber-link");
+  const instagramLink = document.getElementById("instagram-link");
 
-  phoneLink.textContent = CONTACTS.phoneDisplay;
-  phoneLink.href = `tel:${CONTACTS.phoneLink}`;
-  telegramLink.href = CONTACTS.telegram;
-  whatsappLink.href = CONTACTS.whatsapp;
+  if (phoneLink) {
+    phoneLink.textContent = CONTACTS.phoneDisplay;
+    phoneLink.href = `tel:${CONTACTS.phoneLink}`;
+  }
+  if (telegramLink) telegramLink.href = CONTACTS.telegram;
+  if (whatsappLink) whatsappLink.href = CONTACTS.whatsapp;
+  if (viberLink) viberLink.href = CONTACTS.viber;
+  if (instagramLink) instagramLink.href = CONTACTS.instagram;
 }
 
 function initReveal() {
@@ -33,35 +41,6 @@ function initReveal() {
   );
 
   targets.forEach((target) => observer.observe(target));
-}
-
-function initCalc() {
-  const form = document.getElementById("calc-form");
-  const result = document.getElementById("calc-result");
-  if (!form || !result) return;
-
-  const baseByType = {
-    standard: 950,
-    floating: 1300,
-    cantilever: 1650,
-    complex: 2100
-  };
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const type = document.getElementById("stair-type").value;
-    const steps = Number(document.getElementById("steps").value);
-    const complexity = Number(document.getElementById("complexity").value);
-
-    const base = baseByType[type] || baseByType.standard;
-    const estimate = Math.round(base * steps * complexity);
-
-    const low = Math.round(estimate * 0.9);
-    const high = Math.round(estimate * 1.15);
-
-    result.textContent = `Ориентировочный диапазон: ${low.toLocaleString("ru-RU")} - ${high.toLocaleString("ru-RU")} ₽ / BYN (после замера и ТЗ расчет уточняется).`;
-  });
 }
 
 function initLeadForm() {
@@ -96,6 +75,5 @@ function initYear() {
 
 setContactLinks();
 initReveal();
-initCalc();
 initLeadForm();
 initYear();
