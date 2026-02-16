@@ -4,7 +4,7 @@ const CONTACTS = {
   telegram: "https://t.me/Sokolmaxxx",
   whatsapp: "https://wa.me/375296512022",
   viber: "viber://chat?number=%2B375296512022",
-  instagram: "https://www.instagram.com/bettolestnica.by/"
+  instagram: "https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv"
 };
 
 function setContactLinks() {
@@ -47,8 +47,78 @@ function initLeadForm() {
   const form = document.getElementById("lead-form");
   if (!form) return;
 
+  const requiredFields = [
+    { id: "name", message: "Введите имя" },
+    {
+      id: "phone",
+      message: "Введите телефон",
+      invalidMessage: "Введите корректный номер",
+      validate: (value) => {
+        const digits = value.replace(/\\D/g, "");
+        return digits.length >= 9 && digits.length <= 15;
+      }
+    },
+    { id: "region", message: "Введите город / регион" }
+  ];
+
+  const getFieldLabel = (field) => field.closest(".field");
+
+  const showError = (field, message) => {
+    const label = getFieldLabel(field);
+    if (!label) return;
+    const error = label.querySelector(".field-error");
+    if (error) error.textContent = message;
+    label.classList.add("has-error");
+  };
+
+  const clearError = (field) => {
+    const label = getFieldLabel(field);
+    if (!label) return;
+    const error = label.querySelector(".field-error");
+    if (error) error.textContent = "";
+    label.classList.remove("has-error");
+  };
+
+  const validateField = (field, message, validator, invalidMessage) => {
+    if (!field.value.trim()) {
+      showError(field, message);
+      return false;
+    }
+    if (validator && !validator(field.value)) {
+      showError(field, invalidMessage || message);
+      return false;
+    }
+    clearError(field);
+    return true;
+  };
+
+  requiredFields.forEach(({ id, message, validate, invalidMessage }) => {
+    const field = document.getElementById(id);
+    if (!field) return;
+    field.addEventListener("input", () => validateField(field, message, validate, invalidMessage));
+    field.addEventListener("blur", () => validateField(field, message, validate, invalidMessage));
+  });
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    let isValid = true;
+    let firstInvalid = null;
+
+    requiredFields.forEach(({ id, message, validate, invalidMessage }) => {
+      const field = document.getElementById(id);
+      if (!field) return;
+      const fieldValid = validateField(field, message, validate, invalidMessage);
+      if (!fieldValid && !firstInvalid) {
+        firstInvalid = field;
+      }
+      isValid = isValid && fieldValid;
+    });
+
+    if (!isValid) {
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
 
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
@@ -68,6 +138,43 @@ function initLeadForm() {
   });
 }
 
+function initFaq() {
+  const items = document.querySelectorAll(".faq-item");
+  if (!items.length) return;
+
+  items.forEach((item) => {
+    const answer = item.querySelector(".faq-answer");
+    if (!answer) return;
+
+    if (item.open) {
+      answer.style.height = `${answer.scrollHeight}px`;
+    } else {
+      answer.style.height = "0px";
+    }
+
+    item.addEventListener("toggle", () => {
+      if (item.open) {
+        answer.style.height = "0px";
+        requestAnimationFrame(() => {
+          answer.style.height = `${answer.scrollHeight}px`;
+        });
+      } else {
+        answer.style.height = `${answer.scrollHeight}px`;
+        requestAnimationFrame(() => {
+          answer.style.height = "0px";
+        });
+      }
+    });
+
+    answer.addEventListener("transitionend", (event) => {
+      if (event.propertyName !== "height") return;
+      if (item.open) {
+        answer.style.height = "auto";
+      }
+    });
+  });
+}
+
 function initYear() {
   const yearNode = document.getElementById("year");
   if (yearNode) yearNode.textContent = new Date().getFullYear();
@@ -76,4 +183,5 @@ function initYear() {
 setContactLinks();
 initReveal();
 initLeadForm();
+initFaq();
 initYear();
