@@ -147,8 +147,9 @@
           </article>
         </div>
         <div class="portfolio-footer reveal-up">
-          <p>Больше реализованных работ и видео — в <a class="inline-link" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>.</p>
+          <p>Больше реализованных работ, информации о нашей деятельности и блог — в <a class="inline-link" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>.</p>
         </div>
+        <p class="portfolio-auth-note reveal-up">Все фото на сайте и в Instagram — реальные объекты, выполненные нашим мастером. Часть работ может встречаться на других ресурсах и под другими логотипами как подрядные проекты. Если хотите проверить конкретный объект, отправьте ссылку или фото — подтвердим, наш это проект или нет.</p>
       </div>
     </section>
 
@@ -272,9 +273,23 @@
             </div>
           </article>
         </div>
-        <p class="types-note reveal-up">Наведите или нажмите на левую или правую часть изображения, чтобы переключить фото.</p>
+        <p class="types-note reveal-up">Откройте карточку, чтобы посмотреть реальные фото проектов.</p>
+        <p class="types-note types-note-sub reveal-up">Приведенные типы лестниц — это стандартизированные примеры. Каждый конкретный проект реализуется индивидуально под геометрию и задачи объекта.</p>
       </div>
     </section>
+
+    <div class="catalog-modal" id="catalog-modal" aria-hidden="true">
+      <div class="catalog-modal__backdrop" data-close="true"></div>
+      <div class="catalog-modal__dialog" role="dialog" aria-modal="true" aria-label="Фото лестницы">
+        <button class="catalog-modal__close" type="button" data-close="true" aria-label="Закрыть">×</button>
+        <div class="catalog-modal__media">
+          <button class="catalog-modal__nav" type="button" id="catalog-prev" aria-label="Предыдущее фото">‹</button>
+          <img id="catalog-modal-image" src="" alt="Фото проекта лестницы">
+          <button class="catalog-modal__nav" type="button" id="catalog-next" aria-label="Следующее фото">›</button>
+        </div>
+        <p class="catalog-modal__caption" id="catalog-caption"></p>
+      </div>
+    </div>
 
     <section class="section section-accent" id="benefits">
       <div class="container">
@@ -418,6 +433,12 @@
               <p>Мы считаем нагрузку под ваш дом: если основание слабое, усиливаем опоры или меняем схему опирания лестницы, чтобы конструкция была безопасной.</p>
             </div>
           </details>
+          <details class="faq-item reveal-up delay-1">
+            <summary>Почему ваши объекты встречаются на других сайтах?</summary>
+            <div class="faq-answer">
+              <p>Часть проектов выполнялась нами в формате подрядных работ, поэтому фото могут публиковаться на других ресурсах и под другим логотипом. По запросу подтверждаем авторство конкретного объекта.</p>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -445,7 +466,16 @@
           </label>
           <label class="field">
             <span class="field-label">Телефон</span>
-            <input type="tel" id="phone" required>
+            <div class="phone-input-row">
+              <select id="phone-code" aria-label="Код страны">
+                <option value="+375" selected>BY +375</option>
+                <option value="+7">RU +7</option>
+                <option value="+48">PL +48</option>
+                <option value="+370">LT +370</option>
+                <option value="+371">LV +371</option>
+              </select>
+              <input type="tel" id="phone" required inputmode="tel" autocomplete="tel-national" placeholder="29 123-45-67" pattern="[\d\s()\-]{6,20}" title="Укажите номер без кода страны">
+            </div>
             <span class="field-error" aria-live="polite"></span>
           </label>
           <label class="field">

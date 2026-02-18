@@ -46,6 +46,34 @@ function initReveal() {
 function initLeadForm() {
   const form = document.getElementById("lead-form");
   if (!form) return;
+  const phoneCodeField = document.getElementById("phone-code");
+  const phoneField = document.getElementById("phone");
+
+  const phoneFormats = {
+    "+375": "29 123-45-67",
+    "+7": "999 123-45-67",
+    "+48": "123 456 789",
+    "+370": "612 34567",
+    "+371": "22 123 456"
+  };
+
+  const phoneDigitsByCode = {
+    "+375": 9,
+    "+7": 10,
+    "+48": 9,
+    "+370": 8,
+    "+371": 8
+  };
+
+  const updatePhoneFormat = () => {
+    if (!phoneField || !phoneCodeField) return;
+    const code = phoneCodeField.value;
+    const sample = phoneFormats[code] || "123 456 789";
+    phoneField.placeholder = sample;
+  };
+
+  updatePhoneFormat();
+  if (phoneCodeField) phoneCodeField.addEventListener("change", updatePhoneFormat);
 
   const requiredFields = [
     { id: "name", message: "Введите имя" },
@@ -54,8 +82,10 @@ function initLeadForm() {
       message: "Введите телефон",
       invalidMessage: "Введите корректный номер",
       validate: (value) => {
-        const digits = value.replace(/\\D/g, "");
-        return digits.length >= 9 && digits.length <= 15;
+        const localDigits = value.replace(/\D/g, "");
+        const code = phoneCodeField ? phoneCodeField.value : "+375";
+        const expectedLocalLength = phoneDigitsByCode[code] || 9;
+        return localDigits.length === expectedLocalLength;
       }
     },
     { id: "region", message: "Введите город / регион" }
@@ -121,7 +151,9 @@ function initLeadForm() {
     }
 
     const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+    const localPhone = document.getElementById("phone").value.trim();
+    const phoneCode = phoneCodeField ? phoneCodeField.value : "";
+    const phone = localPhone.startsWith("+") ? localPhone : `${phoneCode} ${localPhone}`.trim();
     const region = document.getElementById("region").value.trim();
     const message = document.getElementById("message").value.trim();
 
@@ -180,52 +212,85 @@ function initYear() {
   if (yearNode) yearNode.textContent = new Date().getFullYear();
 }
 
-function initCatalogDots() {
+function initCatalogGallery() {
   const cards = document.querySelectorAll(".type-card[data-gallery]");
   if (!cards.length) return;
 
-  cards.forEach((card) => {
-    const img = card.querySelector("img");
-    if (!img) return;
+  const modal = document.getElementById("catalog-modal");
+  const modalImg = document.getElementById("catalog-modal-image");
+  const caption = document.getElementById("catalog-caption");
+  const prevBtn = document.getElementById("catalog-prev");
+  const nextBtn = document.getElementById("catalog-next");
+  if (!modal || !modalImg || !caption || !prevBtn || !nextBtn) return;
 
-    const icon = card.dataset.icon;
+  let activeSlides = [];
+  let activeTitle = "";
+  let currentIndex = 0;
+
+  const renderModal = () => {
+    const src = activeSlides[currentIndex];
+    if (!src) return;
+    modalImg.src = src;
+    caption.textContent = `${activeTitle} · Фото ${currentIndex + 1} из ${activeSlides.length}`;
+  };
+
+  const openModal = (slides, title) => {
+    activeSlides = slides;
+    activeTitle = title;
+    currentIndex = 0;
+    renderModal();
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  const step = (delta) => {
+    if (!activeSlides.length) return;
+    currentIndex = (currentIndex + delta + activeSlides.length) % activeSlides.length;
+    renderModal();
+  };
+
+  prevBtn.addEventListener("click", () => step(-1));
+  nextBtn.addEventListener("click", () => step(1));
+  modal.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target instanceof HTMLElement && target.dataset.close === "true") {
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (!modal.classList.contains("is-open")) return;
+    if (event.key === "Escape") closeModal();
+    if (event.key === "ArrowLeft") step(-1);
+    if (event.key === "ArrowRight") step(1);
+  });
+
+  cards.forEach((card) => {
+    const title = card.querySelector("h3")?.textContent?.trim() || "Лестница";
     const raw = card.dataset.gallery || "";
     const gallery = raw.split("|").map((item) => item.trim()).filter(Boolean);
-    const slides = [icon, ...gallery].filter(Boolean);
-    const dots = card.querySelectorAll(".dot");
-    const zones = card.querySelectorAll(".type-zone");
+    if (!gallery.length) return;
 
-    const setSlide = (index) => {
-      if (Number.isNaN(index) || !slides[index]) return;
-      img.src = slides[index];
-      img.classList.toggle("is-photo", index !== 0);
-      dots.forEach((d) => d.classList.remove("is-active"));
-      const activeDot = card.querySelector(`.dot[data-index="${index}"]`);
-      if (activeDot) activeDot.classList.add("is-active");
-    };
-
-    dots.forEach((dot) => {
-      dot.addEventListener("click", (event) => {
+    const dots = card.querySelector(".type-dots");
+    if (dots && !dots.querySelector(".type-open-btn")) {
+      const openBtn = document.createElement("button");
+      openBtn.type = "button";
+      openBtn.className = "type-open-btn";
+      openBtn.textContent = "Открыть фото";
+      dots.appendChild(openBtn);
+      openBtn.addEventListener("click", (event) => {
         event.stopPropagation();
-        setSlide(Number(dot.dataset.index));
+        openModal(gallery, title);
       });
-    });
+    }
 
-    const resetToIcon = () => setSlide(0);
-
-    zones.forEach((zone) => {
-      const index = Number(zone.dataset.index);
-      const handle = () => setSlide(index);
-      zone.addEventListener("mouseenter", handle);
-      zone.addEventListener("focus", handle);
-      zone.addEventListener("click", (event) => {
-        event.stopPropagation();
-        handle();
-      });
-    });
-
-    card.addEventListener("mouseleave", resetToIcon);
-    card.addEventListener("blur", resetToIcon, true);
+    card.addEventListener("click", () => openModal(gallery, title));
   });
 }
 
@@ -233,5 +298,5 @@ setContactLinks();
 initReveal();
 initLeadForm();
 initFaq();
-initCatalogDots();
+initCatalogGallery();
 initYear();
