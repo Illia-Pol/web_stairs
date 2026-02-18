@@ -294,9 +294,40 @@ function initCatalogGallery() {
   });
 }
 
+function initCatalogPrefetch() {
+  const section = document.getElementById("types");
+  if (!section) return;
+  const cards = section.querySelectorAll(".type-card[data-gallery]");
+  if (!cards.length) return;
+
+  const preload = () => {
+    cards.forEach((card) => {
+      const raw = card.dataset.gallery || "";
+      const gallery = raw.split("|").map((item) => item.trim()).filter(Boolean);
+      gallery.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    });
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const isVisible = entries.some((entry) => entry.isIntersecting);
+      if (!isVisible) return;
+      preload();
+      observer.disconnect();
+    },
+    { rootMargin: "200px 0px", threshold: 0.1 }
+  );
+
+  observer.observe(section);
+}
+
 setContactLinks();
 initReveal();
 initLeadForm();
 initFaq();
 initCatalogGallery();
+initCatalogPrefetch();
 initYear();

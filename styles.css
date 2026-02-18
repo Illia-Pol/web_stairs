@@ -137,6 +137,9 @@ a {
 .btn-small {
   font-size: 0.82rem;
   padding: 0.62rem 1rem;
+  text-align: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .btn-ghost {
@@ -469,7 +472,10 @@ a {
 }
 
 .catalog-modal.is-open {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .catalog-modal__backdrop {
@@ -480,8 +486,7 @@ a {
 
 .catalog-modal__dialog {
   position: relative;
-  width: min(920px, calc(100% - 2rem));
-  margin: 7vh auto 0;
+  width: min(920px, 100%);
   border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: #111417;
@@ -503,22 +508,23 @@ a {
 
 .catalog-modal__media {
   display: grid;
-  grid-template-columns: 40px 1fr 40px;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
   align-items: center;
   gap: 0.75rem;
+  min-height: clamp(280px, 58vh, 620px);
 }
 
 .catalog-modal__media img {
   width: 100%;
-  max-height: 74vh;
+  height: 100%;
   object-fit: contain;
   border-radius: 12px;
   background: #0a0d10;
 }
 
 .catalog-modal__nav {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: 1px solid var(--stroke);
   background: rgba(255, 255, 255, 0.02);
@@ -1037,5 +1043,29 @@ textarea {
   .phone-input-row select {
     border-right: 0;
     border-bottom: 1px solid var(--stroke);
+  }
+
+  .nav-actions .btn-small {
+    min-width: 150px;
+    padding-inline: 0.9rem;
+  }
+
+  .catalog-modal.is-open {
+    padding: 0.7rem;
+  }
+
+  .catalog-modal__dialog {
+    padding: 0.8rem;
+  }
+
+  .catalog-modal__media {
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    min-height: clamp(240px, 52vh, 500px);
+    gap: 0.45rem;
+  }
+
+  .catalog-modal__nav {
+    width: 36px;
+    height: 36px;
   }
 }
