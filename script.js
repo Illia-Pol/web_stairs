@@ -1,27 +1,64 @@
-const CONTACTS = {
-  phoneDisplay: "+375 (29) 651 20 22",
-  phoneLink: "+375296512022",
-  telegram: "https://t.me/Sokolmaxxx",
-  whatsapp: "https://wa.me/375296512022",
-  viber: "viber://chat?number=%2B375296512022",
-  instagram: "https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv"
-};
+const CONTACTS = Object.assign(
+  {
+    PHONE_E164: "+375296512022",
+    PHONE_DISPLAY: "+375 (29) 651 20 22",
+    TELEGRAM_LINK: "https://t.me/Sokolmaxxx",
+    WHATSAPP_LINK: "https://wa.me/375296512022",
+    VIBER_LINK: "viber://chat?number=%2B375296512022",
+    INSTAGRAM_LINK: "https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv"
+  },
+  window.BETOSTEP_CONTACTS || {}
+);
 
 function setContactLinks() {
   const phoneLink = document.getElementById("phone-link");
+  const consultPhoneLink = document.getElementById("phone-consult-link");
   const telegramLink = document.getElementById("telegram-link");
   const whatsappLink = document.getElementById("whatsapp-link");
   const viberLink = document.getElementById("viber-link");
   const instagramLink = document.getElementById("instagram-link");
 
   if (phoneLink) {
-    phoneLink.textContent = CONTACTS.phoneDisplay;
-    phoneLink.href = `tel:${CONTACTS.phoneLink}`;
+    phoneLink.textContent = CONTACTS.PHONE_DISPLAY;
+    phoneLink.href = `tel:${CONTACTS.PHONE_E164}`;
   }
-  if (telegramLink) telegramLink.href = CONTACTS.telegram;
-  if (whatsappLink) whatsappLink.href = CONTACTS.whatsapp;
-  if (viberLink) viberLink.href = CONTACTS.viber;
-  if (instagramLink) instagramLink.href = CONTACTS.instagram;
+  if (consultPhoneLink) {
+    consultPhoneLink.textContent = CONTACTS.PHONE_DISPLAY;
+    consultPhoneLink.href = `tel:${CONTACTS.PHONE_E164}`;
+  }
+  if (telegramLink) telegramLink.href = CONTACTS.TELEGRAM_LINK;
+  if (whatsappLink) whatsappLink.href = CONTACTS.WHATSAPP_LINK;
+  if (viberLink) viberLink.href = CONTACTS.VIBER_LINK;
+  if (instagramLink) instagramLink.href = CONTACTS.INSTAGRAM_LINK;
+}
+
+function initNavDropdowns() {
+  const dropdowns = Array.from(document.querySelectorAll(".nav-dropdown"));
+  if (!dropdowns.length) return;
+
+  const closeAll = () => {
+    dropdowns.forEach((dropdown) => dropdown.classList.remove("is-open"));
+  };
+
+  dropdowns.forEach((dropdown) => {
+    const button = dropdown.querySelector(".nav-toggle");
+    if (!button) return;
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const isOpen = dropdown.classList.contains("is-open");
+      closeAll();
+      if (!isOpen) dropdown.classList.add("is-open");
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    if (!event.target.closest(".nav-dropdown")) closeAll();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeAll();
+  });
 }
 
 function initReveal() {
@@ -165,7 +202,7 @@ function initLeadForm() {
       `Комментарий: ${message || "-"}`
     ].join("\n");
 
-    const url = `${CONTACTS.telegram}?text=${encodeURIComponent(text)}`;
+    const url = `${CONTACTS.TELEGRAM_LINK}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   });
 }
@@ -330,4 +367,5 @@ initLeadForm();
 initFaq();
 initCatalogGallery();
 initCatalogPrefetch();
+initNavDropdowns();
 initYear();
