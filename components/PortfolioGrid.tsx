@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+
+import { assetPath } from "@/lib/paths";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -56,7 +58,7 @@ export function PortfolioGrid({ items, heading = "Портфолио" }: Portfol
           <article key={item.slug} className="overflow-hidden rounded-xl2 border border-slate-200 bg-white shadow-soft">
             <Link href={`/portfolio/${item.slug}`}>
               <div className="relative aspect-[16/10]">
-                <Image src={item.coverImage} alt={item.title} fill className="object-cover" />
+                <Image src={assetPath(item.coverImage)} alt={item.title} fill className="object-cover" />
               </div>
             </Link>
             <div className="space-y-3 p-4">

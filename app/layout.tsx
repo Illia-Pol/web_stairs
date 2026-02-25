@@ -1,24 +1,13 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Oswald } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { JsonLd } from "@/components/JsonLd";
 import { Layout } from "@/components/layout/Layout";
 import { getSiteConfig } from "@/lib/content/loaders";
+import { withBasePath } from "@/lib/paths";
 import { localBusinessJsonLd } from "@/lib/seo";
 
 import "./globals.css";
-
-const heading = Oswald({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-heading"
-});
-
-const body = IBM_Plex_Sans({
-  subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-body"
-});
 
 export const metadata: Metadata = {
   title: "{{BRAND_NAME}} | Бетонные монолитные лестницы",
@@ -29,7 +18,7 @@ export const metadata: Metadata = {
     title: "{{BRAND_NAME}} | Бетонные монолитные лестницы",
     description:
       "Отправьте план/фото и получите ориентир стоимости по проекту. Монолитные, парящие и консольные лестницы.",
-    images: ["/assets/slider/slider-1.jpeg"],
+    images: [withBasePath("/assets/slider/slider-1.jpeg")],
     type: "website"
   }
 };
@@ -52,7 +41,7 @@ export default function RootLayout({
 
   return (
     <html lang="ru">
-      <body className={`${heading.variable} ${body.variable} font-body text-coal`}>
+      <body className="font-body text-coal">
         <JsonLd data={localBusinessSchema} />
         <Layout site={site}>{children}</Layout>
       </body>

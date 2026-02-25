@@ -1,4 +1,6 @@
 import Image from "next/image";
+
+import { assetPath } from "@/lib/paths";
 import Link from "next/link";
 
 import { FAQAccordion } from "@/components/FAQAccordion";
@@ -51,7 +53,7 @@ export default function HomePage() {
 
       <section className="relative overflow-hidden bg-coal text-white">
         <div className="absolute inset-0 opacity-30">
-          <Image src="/assets/slider/slider-2.jpeg" alt="Бетонная лестница" fill priority className="object-cover" />
+          <Image src={assetPath("/assets/slider/slider-2.jpeg")} alt="Бетонная лестница" fill priority className="object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-coal/75 via-coal/85 to-coal" />
 
@@ -290,7 +292,7 @@ export default function HomePage() {
               </div>
 
               <div className="rounded-xl bg-white p-4 text-coal">
-                <LeadForm source="home-lead" compact />
+                <LeadForm source="home-lead" compact leadEndpoint={site.leadEndpoint} telegramFallback={site.telegramFallback} telegramFallbackMode={site.telegramFallbackMode} />
               </div>
             </div>
           </Card>

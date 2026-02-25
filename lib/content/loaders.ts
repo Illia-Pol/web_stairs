@@ -50,6 +50,12 @@ const DEFAULT_SITE: SiteConfig = {
     whatsapp: "#",
     viber: "#"
   },
+  leadEndpoint: "{{LEAD_ENDPOINT_URL}}",
+  telegramFallback: {
+    username: "{{TELEGRAM_USERNAME_OR_BOT_LINK}}",
+    url: "https://t.me/{{TELEGRAM_USERNAME_OR_BOT_LINK}}"
+  },
+  telegramFallbackMode: "auto_redirect",
   coverageRegions: "{{COVERAGE_REGIONS}}",
   warrantyTerm: "{{WARRANTY_TERM}}",
   pricing: {
@@ -101,7 +107,7 @@ export function getSiteConfig(): SiteConfig {
   return result.success ? result.data : DEFAULT_SITE;
 }
 
-function loadJsonCollection<T>(dirName: string, schema: z.ZodType<T>): T[] {
+function loadJsonCollection<T>(dirName: string, schema: z.ZodTypeAny): T[] {
   const folderPath = path.join(CONTENT_DIR, dirName);
   const filePaths = listFiles(folderPath, ".json");
 
@@ -110,7 +116,7 @@ function loadJsonCollection<T>(dirName: string, schema: z.ZodType<T>): T[] {
       const raw = safeReadFile(filePath);
       const parsed = safeParseJson(raw, null);
       const result = schema.safeParse(parsed);
-      return result.success ? result.data : null;
+      return result.success ? (result.data as T) : null;
     })
     .filter((item): item is T => item !== null);
 }
@@ -163,7 +169,7 @@ export function getFaqItems(): FaqItem[] {
 
 function loadMarkdownCollection<T>(
   dirName: string,
-  frontmatterSchema: z.ZodType<Omit<T, "content">>
+  frontmatterSchema: z.ZodTypeAny
 ): T[] {
   const folderPath = path.join(CONTENT_DIR, dirName);
   const filePaths = listFiles(folderPath, ".md");
@@ -178,7 +184,7 @@ function loadMarkdownCollection<T>(
 
       if (!result.success) return null;
 
-      return { ...result.data, content } as T;
+      return { ...(result.data as Omit<T, "content">), content } as T;
     })
     .filter((item): item is T => item !== null);
 }

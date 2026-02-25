@@ -38,7 +38,13 @@ export function CTABox({
               Viber
             </ButtonLink>
           </div>
-          <ModalLeadForm triggerLabel="Оставить заявку" source={source} />
+          <ModalLeadForm
+            triggerLabel="Оставить заявку"
+            source={source}
+            leadEndpoint={site.leadEndpoint}
+            telegramFallback={site.telegramFallback}
+            telegramFallbackMode={site.telegramFallbackMode}
+          />
         </div>
       </div>
     </Card>

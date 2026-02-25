@@ -1,4 +1,6 @@
 import Image from "next/image";
+
+import { assetPath } from "@/lib/paths";
 import Link from "next/link";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -48,7 +50,7 @@ export default function KnowledgePage() {
             {articles.map((article) => (
               <Card key={article.slug} className="overflow-hidden p-0">
                 <div className="relative aspect-[16/10]">
-                  <Image src={article.coverImage} alt={article.title} fill className="object-cover" />
+                  <Image src={assetPath(article.coverImage)} alt={article.title} fill className="object-cover" />
                 </div>
                 <div className="p-4">
                   <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{article.publishedAt}</p>

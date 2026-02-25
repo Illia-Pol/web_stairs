@@ -25,6 +25,12 @@ export const SiteConfigSchema = z.object({
     whatsapp: z.string().default("#"),
     viber: z.string().default("#")
   }),
+  leadEndpoint: z.string().default("{{LEAD_ENDPOINT_URL}}"),
+  telegramFallback: z.object({
+    username: z.string().default("{{TELEGRAM_USERNAME_OR_BOT_LINK}}"),
+    url: z.string().default("https://t.me/{{TELEGRAM_USERNAME_OR_BOT_LINK}}")
+  }),
+  telegramFallbackMode: z.enum(["auto_redirect", "button_only"]).default("auto_redirect"),
   coverageRegions: z.string().default("{{COVERAGE_REGIONS}}"),
   warrantyTerm: z.string().default("{{WARRANTY_TERM}}"),
   pricing: z.object({

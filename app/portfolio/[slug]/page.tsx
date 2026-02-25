@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+
+import { assetPath } from "@/lib/paths";
 import { notFound } from "next/navigation";
 
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -99,7 +101,7 @@ export default function PortfolioDetailPage({ params }: PageProps) {
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {item.gallery.map((image) => (
               <div key={image} className="relative aspect-[16/10] overflow-hidden rounded-xl2 border border-slate-200 bg-white">
-                <Image src={image} alt={item.title} fill className="object-cover" />
+                <Image src={assetPath(image)} alt={item.title} fill className="object-cover" />
               </div>
             ))}
           </div>

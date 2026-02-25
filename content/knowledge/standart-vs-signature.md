@@ -1,6 +1,6 @@
 ---
 slug: standart-vs-signature
-title: Standard vs Signature: как выбрать формат проекта
+title: "Standard vs Signature: как выбрать формат проекта"
 excerpt: Сравниваем подходы по бюджету, рискам, срокам и требованиям к объекту.
 publishedAt: "2026-02-18"
 coverImage: /assets/slider/slider-5.jpeg

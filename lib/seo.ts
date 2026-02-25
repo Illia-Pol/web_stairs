@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import type { FaqItem } from "@/lib/content/schemas";
+import { withBasePath } from "@/lib/paths";
 
 const FALLBACK_BASE_URL = "https://example.com";
 
@@ -17,7 +18,7 @@ function normalizeBaseUrl(baseUrl: string): string {
 }
 
 export function absoluteUrl(baseUrl: string, pathname: string): string {
-  return new URL(pathname, normalizeBaseUrl(baseUrl)).toString();
+  return new URL(withBasePath(pathname), normalizeBaseUrl(baseUrl)).toString();
 }
 
 export function createPageMetadata({

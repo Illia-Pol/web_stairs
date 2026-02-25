@@ -8,9 +8,21 @@ import { Button } from "@/components/ui/Button";
 type ModalLeadFormProps = {
   triggerLabel?: string;
   source: string;
+  leadEndpoint: string;
+  telegramFallback: {
+    username: string;
+    url: string;
+  };
+  telegramFallbackMode: "auto_redirect" | "button_only";
 };
 
-export function ModalLeadForm({ triggerLabel = "Оставить заявку", source }: ModalLeadFormProps) {
+export function ModalLeadForm({
+  triggerLabel = "Оставить заявку",
+  source,
+  leadEndpoint,
+  telegramFallback,
+  telegramFallbackMode
+}: ModalLeadFormProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -33,7 +45,13 @@ export function ModalLeadForm({ triggerLabel = "Оставить заявку", 
               </button>
             </div>
 
-            <LeadForm source={source} compact />
+            <LeadForm
+              source={source}
+              compact
+              leadEndpoint={leadEndpoint}
+              telegramFallback={telegramFallback}
+              telegramFallbackMode={telegramFallbackMode}
+            />
           </div>
         </div>
       ) : null}

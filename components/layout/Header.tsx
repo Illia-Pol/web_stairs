@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ButtonLink } from "@/components/ui/Button";
+import { assetPath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 
 const primaryNav = [
@@ -19,7 +21,13 @@ export function Header({ site }: { site: SiteConfig }) {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-coal/95 text-white backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex min-w-0 items-center gap-3">
-          <div className="h-10 w-10 rounded-lg border border-white/20 bg-[url('/assets/logo.png')] bg-contain bg-center bg-no-repeat" />
+          <Image
+            src={assetPath("/assets/logo.png")}
+            alt={site.brand.name}
+            width={40}
+            height={40}
+            className="rounded-lg border border-white/20 object-contain"
+          />
           <div className="min-w-0">
             <p className="truncate font-heading text-lg uppercase">{site.brand.name}</p>
             <p className="truncate text-[11px] uppercase tracking-[0.12em] text-slate-400">{site.brand.tagline}</p>

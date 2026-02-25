@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadForm } from "@/components/LeadForm";
@@ -72,7 +74,7 @@ export default function ContactsPage() {
               <h2 className="font-heading text-3xl uppercase text-coal">Оставить заявку</h2>
               <p className="mt-2 text-sm text-slate-600">[TODO: добавить SLA по времени ответа]</p>
               <div className="mt-4">
-                <LeadForm source="contacts-page" />
+                <LeadForm source="contacts-page" leadEndpoint={site.leadEndpoint} telegramFallback={site.telegramFallback} telegramFallbackMode={site.telegramFallbackMode} />
               </div>
             </Card>
           </div>
@@ -81,9 +83,9 @@ export default function ContactsPage() {
             <h2 className="font-heading text-3xl uppercase text-coal">Города присутствия</h2>
             <div className="mt-3 flex flex-wrap gap-2 text-sm">
               {cities.map((city) => (
-                <a key={city.slug} href={`/geo/${city.slug}`} className="rounded-full border border-slate-300 px-3 py-1 hover:bg-white">
+                <Link key={city.slug} href={`/geo/${city.slug}`} className="rounded-full border border-slate-300 px-3 py-1 hover:bg-white">
                   {city.city}
-                </a>
+                </Link>
               ))}
             </div>
           </Card>
