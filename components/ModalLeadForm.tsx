@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { LeadForm } from "@/components/LeadForm";
 import { Button } from "@/components/ui/Button";
+import { t } from "@/lib/i18n";
 
 type ModalLeadFormProps = {
   triggerLabel?: string;
@@ -17,7 +18,7 @@ type ModalLeadFormProps = {
 };
 
 export function ModalLeadForm({
-  triggerLabel = "Оставить заявку",
+  triggerLabel = t("Оставить заявку"),
   source,
   leadEndpoint,
   telegramFallback,
@@ -35,13 +36,13 @@ export function ModalLeadForm({
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-coal/75 px-4">
           <div className="w-full max-w-xl rounded-2xl bg-white p-6 shadow-card">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h3 className="font-heading text-2xl uppercase text-coal">Оставить заявку</h3>
+              <h3 className="font-heading text-2xl uppercase text-coal">{t("Оставить заявку")}</h3>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 className="rounded-full border border-slate-300 px-3 py-1 text-sm text-slate-600 hover:bg-slate-100"
               >
-                Закрыть
+                {t("Закрыть")}
               </button>
             </div>
 

@@ -4,20 +4,23 @@ import type { ReactNode } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import { Layout } from "@/components/layout/Layout";
 import { getSiteConfig } from "@/lib/content/loaders";
+import { getLocale, t } from "@/lib/i18n";
 import { withBasePath } from "@/lib/paths";
 import { localBusinessJsonLd } from "@/lib/seo";
 
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "{{BRAND_NAME}} | Бетонные монолитные лестницы",
-  description:
-    "Проектирование и изготовление бетонных лестниц в Беларуси: Standard и Signature решения под частные и коммерческие объекты.",
+  title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
+  description: t(
+    "Проектирование и изготовление бетонных лестниц в Беларуси: Standard и Signature решения под частные и коммерческие объекты."
+  ),
   metadataBase: new URL("https://example.com"),
   openGraph: {
-    title: "{{BRAND_NAME}} | Бетонные монолитные лестницы",
-    description:
-      "Отправьте план/фото и получите ориентир стоимости по проекту. Монолитные, парящие и консольные лестницы.",
+    title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
+    description: t(
+      "Отправьте план/фото и получите ориентир стоимости по проекту. Монолитные, парящие и консольные лестницы."
+    ),
     images: [withBasePath("/assets/slider/slider-1.jpeg")],
     type: "website"
   }
@@ -29,6 +32,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   const site = getSiteConfig();
+  const locale = getLocale();
   const localBusinessSchema = localBusinessJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
@@ -40,10 +44,12 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="ru">
+    <html lang={locale}>
       <body className="font-body text-coal">
         <JsonLd data={localBusinessSchema} />
-        <Layout site={site}>{children}</Layout>
+        <Layout site={site} currentLocale={locale}>
+          {children}
+        </Layout>
       </body>
     </html>
   );

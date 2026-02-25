@@ -7,15 +7,16 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import type { CaseItem } from "@/lib/content/schemas";
+import { t } from "@/lib/i18n";
 
 type PortfolioGridProps = {
   items: CaseItem[];
   heading?: string;
 };
 
-const defaultFilter = "Все";
+const defaultFilter = t("Все");
 
-export function PortfolioGrid({ items, heading = "Портфолио" }: PortfolioGridProps) {
+export function PortfolioGrid({ items, heading = t("Портфолио") }: PortfolioGridProps) {
   const filters = useMemo(() => {
     const allTags = items.flatMap((item) => item.tags);
     const uniq = Array.from(new Set(allTags)).sort((a, b) => a.localeCompare(b, "ru"));
@@ -32,8 +33,8 @@ export function PortfolioGrid({ items, heading = "Портфолио" }: Portfol
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="font-heading text-3xl uppercase text-coal">{heading}</h2>
-        <p className="mt-2 text-sm text-slate-600">Фильтр по сценариям: Standard, Signature и типам конструкций.</p>
+        <h2 className="font-heading text-3xl uppercase text-coal">{t(heading)}</h2>
+        <p className="mt-2 text-sm text-slate-600">{t("Фильтр по сценариям: Standard, Signature и типам конструкций.")}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -63,14 +64,14 @@ export function PortfolioGrid({ items, heading = "Портфолио" }: Portfol
             </Link>
             <div className="space-y-3 p-4">
               <div className="flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-slate-500">
-                <span>{item.city}</span>
+                <span>{t(item.city)}</span>
                 <span>•</span>
                 <span>{item.funnel === "signature" ? "Signature" : "Standard"}</span>
               </div>
-              <h3 className="font-heading text-2xl uppercase text-coal">{item.title}</h3>
-              <p className="text-sm text-slate-600">{item.summary}</p>
+              <h3 className="font-heading text-2xl uppercase text-coal">{t(item.title)}</h3>
+              <p className="text-sm text-slate-600">{t(item.summary)}</p>
               <Link href={`/portfolio/${item.slug}`} className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                Смотреть кейс
+                {t("Смотреть кейс")}
               </Link>
             </div>
           </article>

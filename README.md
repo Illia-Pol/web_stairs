@@ -31,6 +31,29 @@ npm run build
 - `out/` — готовый статический сайт.
 - `public/sitemap.xml`, `public/robots.txt` и копии в `out/` генерируются скриптом `postbuild`.
 
+## Локализация (RU/EN)
+
+- Локаль для статической сборки задается через `NEXT_PUBLIC_LOCALE=ru|en`.
+- Все UI-строки собираются в:
+  - `content/i18n/ru.json`
+  - `content/i18n/en.json`
+- Для синхронизации словарей со строками в коде используйте:
+
+```bash
+npm run i18n:extract
+```
+
+Команда:
+- обновляет `ru.json` ключами из `t("...")`;
+- дополняет `en.json` недостающими ключами (с fallback-значениями).
+- сохраняет ваши ручные переводы в `ru.json` и `en.json` (не перезаписывает существующие значения).
+
+Переключатель языка на сайте:
+- в правом нижнем углу есть мини-виджет RU/EN;
+- ссылки берутся из `content/site.json -> localeLinks`:
+  - `localeLinks.ru`
+  - `localeLinks.en`
+
 ## GitHub Pages (с basePath)
 
 1. Для репозитория `repo-name` задайте env при сборке:
@@ -70,4 +93,5 @@ NEXT_PUBLIC_BASE_PATH=/repo-name npm run build
 npm run typecheck
 npm run lint
 npm run generate:seo
+npm run i18n:extract
 ```

@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
 import { Container, Section } from "@/components/ui/Section";
 import { getFaqItems, getSiteConfig } from "@/lib/content/loaders";
+import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata, faqJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -11,14 +12,14 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/faq",
-  title: `FAQ по бетонным лестницам | ${site.brand.name}`,
-  description: "Ответы на частые вопросы: сроки, гарантия, стоимость, требования к объекту и зона ответственности."
+  title: `${t("FAQ по бетонным лестницам")} | ${site.brand.name}`,
+  description: t("Ответы на частые вопросы: сроки, гарантия, стоимость, требования к объекту и зона ответственности.")
 });
 
 export default function FaqPage() {
   const faqItems = getFaqItems();
   const breadcrumbs = [
-    { name: "Главная", href: "/" },
+    { name: t("Главная"), href: "/" },
     { name: "FAQ", href: "/faq" }
   ];
 
@@ -29,15 +30,15 @@ export default function FaqPage() {
 
       <PageHeader
         kicker="FAQ"
-        title="Частые вопросы"
-        description="Собрали вопросы, которые чаще всего задают перед стартом проекта."
+        title={t("Частые вопросы")}
+        description={t("Собрали вопросы, которые чаще всего задают перед стартом проекта.")}
       />
 
       <Section>
         <Container>
           <Breadcrumbs
             items={[
-              { label: "Главная", href: "/" },
+              { label: t("Главная"), href: "/" },
               { label: "FAQ", href: "/faq" }
             ]}
           />

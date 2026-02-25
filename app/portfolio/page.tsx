@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig } from "@/lib/content/loaders";
+import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -11,15 +12,15 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/portfolio",
-  title: `Портфолио бетонных лестниц | ${site.brand.name}`,
-  description: "Реальные кейсы бетонных лестниц в Беларуси: Standard и Signature проекты с фото и описанием задачи."
+  title: `${t("Портфолио бетонных лестниц")} | ${site.brand.name}`,
+  description: t("Реальные кейсы бетонных лестниц в Беларуси: Standard и Signature проекты с фото и описанием задачи.")
 });
 
 export default function PortfolioPage() {
   const cases = getCases();
   const breadcrumbs = [
-    { name: "Главная", href: "/" },
-    { name: "Портфолио", href: "/portfolio" }
+    { name: t("Главная"), href: "/" },
+    { name: t("Портфолио"), href: "/portfolio" }
   ];
 
   return (
@@ -27,20 +28,20 @@ export default function PortfolioPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
       <PageHeader
-        kicker="Кейсы"
-        title="Портфолио выполненных объектов"
-        description="Собрали проекты по типам лестниц, городам и сценариям. Можно фильтровать Standard / Signature, консоль, парящие и другие категории."
+        kicker={t("Кейсы")}
+        title={t("Портфолио выполненных объектов")}
+        description={t("Собрали проекты по типам лестниц, городам и сценариям. Можно фильтровать Standard / Signature, консоль, парящие и другие категории.")}
       />
 
       <Section>
         <Container>
           <Breadcrumbs
             items={[
-              { label: "Главная", href: "/" },
-              { label: "Портфолио", href: "/portfolio" }
+              { label: t("Главная"), href: "/" },
+              { label: t("Портфолио"), href: "/portfolio" }
             ]}
           />
-          <PortfolioGrid items={cases} heading="Кейсы" />
+          <PortfolioGrid items={cases} heading={t("Кейсы")} />
         </Container>
       </Section>
     </>

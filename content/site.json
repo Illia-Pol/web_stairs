@@ -21,6 +21,10 @@
     "whatsapp": "https://wa.me/{{WHATSAPP_PHONE_INTL}}",
     "viber": "viber://chat?number=%2B{{VIBER_PHONE_INTL}}"
   },
+  "localeLinks": {
+    "ru": "/",
+    "en": "{{EN_SITE_URL}}"
+  },
   "leadEndpoint": "{{LEAD_ENDPOINT_URL}}",
   "telegramFallback": {
     "username": "{{TELEGRAM_USERNAME_OR_BOT_LINK}}",

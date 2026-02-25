@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
+import { t } from "@/lib/i18n";
 
 type LeadFormProps = {
   source: string;
@@ -86,14 +87,14 @@ function buildFallbackMessage(payload: {
   source: string;
 }) {
   return [
-    "Заявка с сайта",
-    `Имя: ${payload.name || "{{CLIENT_NAME}}"}`,
-    `Телефон: ${payload.phone}`,
-    `Город: ${payload.city || "{{CITY}}"}`,
-    `Предпочтительный канал: ${payload.messenger}`,
-    `Сообщение: ${payload.message || "{{CLIENT_MESSAGE}}"}`,
-    `Страница: ${payload.pageUrl}`,
-    `Источник: ${payload.source}`
+    t("Заявка с сайта"),
+    t("Имя: {{VALUE}}", { VALUE: payload.name || "{{CLIENT_NAME}}" }),
+    t("Телефон: {{VALUE}}", { VALUE: payload.phone }),
+    t("Город: {{VALUE}}", { VALUE: payload.city || "{{CITY}}" }),
+    t("Предпочтительный канал: {{VALUE}}", { VALUE: payload.messenger }),
+    t("Сообщение: {{VALUE}}", { VALUE: payload.message || "{{CLIENT_MESSAGE}}" }),
+    t("Страница: {{VALUE}}", { VALUE: payload.pageUrl }),
+    t("Источник: {{VALUE}}", { VALUE: payload.source })
   ].join("\n");
 }
 
@@ -178,9 +179,7 @@ export function LeadForm({
       setFormState(initialState);
     } catch {
       setStatus("error");
-      setErrorMessage(
-        "Не удалось отправить автоматически. Сейчас откроется Telegram, чтобы отправить заявку вручную."
-      );
+      setErrorMessage(t("Не удалось отправить автоматически. Сейчас откроется Telegram, чтобы отправить заявку вручную."));
       setFallbackLink(telegramLink);
       setFallbackText(fallbackMessage);
 
@@ -208,7 +207,7 @@ export function LeadForm({
           type="text"
           value={formState.name}
           onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
-          placeholder="Ваше имя"
+          placeholder={t("Ваше имя")}
           className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
         />
         <input
@@ -216,7 +215,7 @@ export function LeadForm({
           type="tel"
           value={formState.phone}
           onChange={(event) => setFormState((prev) => ({ ...prev, phone: event.target.value }))}
-          placeholder="Телефон или @username"
+          placeholder={t("Телефон или @username")}
           className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
         />
       </div>
@@ -226,7 +225,7 @@ export function LeadForm({
           type="text"
           value={formState.city}
           onChange={(event) => setFormState((prev) => ({ ...prev, city: event.target.value }))}
-          placeholder="Город"
+          placeholder={t("Город")}
           className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
         />
 
@@ -238,7 +237,7 @@ export function LeadForm({
           <option value="telegram">Telegram</option>
           <option value="whatsapp">WhatsApp</option>
           <option value="viber">Viber</option>
-          <option value="phone">Звонок</option>
+          <option value="phone">{t("Звонок")}</option>
         </select>
       </div>
 
@@ -247,7 +246,7 @@ export function LeadForm({
         rows={compact ? 3 : 5}
         value={formState.message}
         onChange={(event) => setFormState((prev) => ({ ...prev, message: event.target.value }))}
-        placeholder="Опишите задачу. [TODO: вставьте реальные подсказки по данным для расчета]"
+        placeholder={t("Опишите задачу. [TODO: вставьте реальные подсказки по данным для расчета]")}
         className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
       />
 
@@ -256,21 +255,21 @@ export function LeadForm({
         autoComplete="off"
         value={formState.honeypot}
         onChange={(event) => setFormState((prev) => ({ ...prev, honeypot: event.target.value }))}
-        placeholder="Ваш сайт"
+        placeholder={t("Ваш сайт")}
         className="hidden"
         aria-hidden="true"
       />
 
       <div className="flex items-center justify-between gap-3">
         <Button type="submit" variant="primary" disabled={!canSubmit}>
-          {status === "loading" ? "Отправка..." : "Оставить заявку"}
+          {status === "loading" ? t("Отправка...") : t("Оставить заявку")}
         </Button>
-        <p className="text-xs text-slate-500">Быстрее ответим, если сразу отправите фото/план в мессенджер.</p>
+        <p className="text-xs text-slate-500">{t("Быстрее ответим, если сразу отправите фото/план в мессенджер.")}</p>
       </div>
 
       {status === "success" ? (
         <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-          Заявка отправлена. Чтобы ускорить расчет, напишите в мессенджер и прикрепите фото/план.
+          {t("Заявка отправлена. Чтобы ускорить расчет, напишите в мессенджер и прикрепите фото/план.")}
         </p>
       ) : null}
 
@@ -285,14 +284,14 @@ export function LeadForm({
                 rel="noreferrer"
                 className="inline-flex items-center rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-semibold text-red-700"
               >
-                Отправить в Telegram сейчас
+                {t("Отправить в Telegram сейчас")}
               </a>
               <button
                 type="button"
                 onClick={onCopyFallbackText}
                 className="inline-flex items-center rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-semibold text-red-700"
               >
-                {copied ? "Текст скопирован" : "Скопировать текст заявки"}
+                {copied ? t("Текст скопирован") : t("Скопировать текст заявки")}
               </button>
             </div>
           ) : null}

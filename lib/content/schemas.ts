@@ -25,6 +25,10 @@ export const SiteConfigSchema = z.object({
     whatsapp: z.string().default("#"),
     viber: z.string().default("#")
   }),
+  localeLinks: z.object({
+    ru: z.string().default("/"),
+    en: z.string().default("{{EN_SITE_URL}}")
+  }),
   leadEndpoint: z.string().default("{{LEAD_ENDPOINT_URL}}"),
   telegramFallback: z.object({
     username: z.string().default("{{TELEGRAM_USERNAME_OR_BOT_LINK}}"),

@@ -9,6 +9,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig, getTypeBySlug, getTypes } from "@/lib/content/loaders";
+import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 type PageProps = {
@@ -30,16 +31,16 @@ export function generateMetadata({ params }: PageProps): Metadata {
     return createPageMetadata({
       baseUrl: site.baseUrl,
       pathname: "/types",
-      title: `Тип лестницы не найден | ${site.brand.name}`,
-      description: "Запрашиваемый тип лестницы не найден."
+      title: `${t("Тип лестницы не найден")} | ${site.brand.name}`,
+      description: t("Запрашиваемый тип лестницы не найден.")
     });
   }
 
   return createPageMetadata({
     baseUrl: site.baseUrl,
     pathname: `/types/${type.slug}`,
-    title: `${type.title} | ${site.brand.name}`,
-    description: type.shortDescription,
+    title: `${t(type.title)} | ${site.brand.name}`,
+    description: t(type.shortDescription),
     image: type.heroImage
   });
 }
@@ -50,16 +51,16 @@ export default function TypeDetailPage({ params }: PageProps) {
 
   const relatedCases = getCases().filter((item) => item.type === type.slug).slice(0, 3);
   const breadcrumbs = [
-    { name: "Главная", href: "/" },
-    { name: "Типы", href: "/types" },
+    { name: t("Главная"), href: "/" },
+    { name: t("Типы"), href: "/types" },
     { name: type.title, href: `/types/${type.slug}` }
   ];
 
   const serviceSchema = serviceJsonLd({
-    name: `${site.brand.name} — ${type.title}`,
+    name: `${site.brand.name} — ${t(type.title)}`,
     baseUrl: site.baseUrl,
-    description: type.fullDescription,
-    serviceType: type.title,
+    description: t(type.fullDescription),
+    serviceType: t(type.title),
     areaServed: site.coverageRegions,
     offers: type.priceHint
   });
@@ -71,15 +72,15 @@ export default function TypeDetailPage({ params }: PageProps) {
 
       <PageHeader
         kicker={type.funnel === "signature" ? "Signature" : "Standard"}
-        title={type.title}
-        description={type.fullDescription}
+        title={t(type.title)}
+        description={t(type.fullDescription)}
         actions={
           <>
             <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-              Отправить план/фото
+              {t("Отправить план/фото")}
             </ButtonLink>
             <ButtonLink href="/prices" variant="ghost" className="border-white/25 text-white hover:bg-white/10">
-              Смотреть цены
+              {t("Смотреть цены")}
             </ButtonLink>
           </>
         }
@@ -89,28 +90,28 @@ export default function TypeDetailPage({ params }: PageProps) {
         <Container>
           <Breadcrumbs
             items={[
-              { label: "Главная", href: "/" },
-              { label: "Типы", href: "/types" },
+              { label: t("Главная"), href: "/" },
+              { label: t("Типы"), href: "/types" },
               { label: type.title, href: `/types/${type.slug}` }
             ]}
           />
 
           <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
             <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">Что входит</h2>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что входит")}</h2>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                {type.benefits.map((benefit) => (
-                  <li key={benefit} className="rounded-lg bg-slate-50 px-3 py-2">
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
+              {type.benefits.map((benefit) => (
+                <li key={benefit} className="rounded-lg bg-slate-50 px-3 py-2">
+                    {t(benefit)}
+                </li>
+              ))}
+            </ul>
             </Card>
 
             <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">Ориентир стоимости</h2>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Ориентир стоимости")}</h2>
               <p className="mt-3 text-2xl font-semibold text-coal">{type.priceHint}</p>
-              <p className="mt-3 text-sm text-slate-700">Точная цена после анализа проема и требований к отделке.</p>
+              <p className="mt-3 text-sm text-slate-700">{t("Точная цена после анализа проема и требований к отделке.")}</p>
             </Card>
           </div>
         </Container>
@@ -118,15 +119,15 @@ export default function TypeDetailPage({ params }: PageProps) {
 
       <Section className="bg-white">
         <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">Связанные кейсы</h2>
+          <h2 className="font-heading text-4xl uppercase text-coal">{t("Связанные кейсы")}</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             {relatedCases.map((item) => (
               <Card key={item.slug}>
-                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{item.city}</p>
-                <h3 className="mt-2 font-heading text-2xl uppercase text-coal">{item.title}</h3>
-                <p className="mt-2 text-sm text-slate-700">{item.summary}</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{t(item.city)}</p>
+                <h3 className="mt-2 font-heading text-2xl uppercase text-coal">{t(item.title)}</h3>
+                <p className="mt-2 text-sm text-slate-700">{t(item.summary)}</p>
                 <Link href={`/portfolio/${item.slug}`} className="mt-3 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                  Открыть кейс
+                  {t("Открыть кейс")}
                 </Link>
               </Card>
             ))}

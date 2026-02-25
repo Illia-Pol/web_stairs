@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "i18n:extract": "node scripts/extract-i18n.mjs",
     "generate:seo": "node scripts/generate-static-seo.mjs",
     "postbuild": "node scripts/generate-static-seo.mjs"
   },

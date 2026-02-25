@@ -2,18 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ButtonLink } from "@/components/ui/Button";
+import { t } from "@/lib/i18n";
 import { assetPath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 
 const primaryNav = [
   { href: "/standard", label: "Standard" },
   { href: "/signature", label: "Signature" },
-  { href: "/types", label: "Типы" },
-  { href: "/features", label: "Решения" },
-  { href: "/portfolio", label: "Портфолио" },
-  { href: "/prices", label: "Цены" },
-  { href: "/knowledge", label: "База знаний" },
-  { href: "/contacts", label: "Контакты" }
+  { href: "/types", label: t("Типы") },
+  { href: "/features", label: t("Решения") },
+  { href: "/portfolio", label: t("Портфолио") },
+  { href: "/prices", label: t("Цены") },
+  { href: "/knowledge", label: t("База знаний") },
+  { href: "/contacts", label: t("Контакты") }
 ];
 
 export function Header({ site }: { site: SiteConfig }) {
@@ -30,7 +31,7 @@ export function Header({ site }: { site: SiteConfig }) {
           />
           <div className="min-w-0">
             <p className="truncate font-heading text-lg uppercase">{site.brand.name}</p>
-            <p className="truncate text-[11px] uppercase tracking-[0.12em] text-slate-400">{site.brand.tagline}</p>
+            <p className="truncate text-[11px] uppercase tracking-[0.12em] text-slate-400">{t(site.brand.tagline)}</p>
           </div>
         </Link>
 
@@ -44,7 +45,7 @@ export function Header({ site }: { site: SiteConfig }) {
 
         <div className="hidden sm:block">
           <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer" className="px-4 py-2">
-            Отправить план/фото
+            {t("Отправить план/фото")}
           </ButtonLink>
         </div>
       </div>

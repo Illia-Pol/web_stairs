@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig, getTypes } from "@/lib/content/loaders";
+import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -16,22 +17,22 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/types",
-  title: `Типы бетонных лестниц | ${site.brand.name}`,
-  description: "Каталог типов лестниц: монолитные, парящие, консольные и другие решения для частных и коммерческих объектов."
+  title: `${t("Типы бетонных лестниц")} | ${site.brand.name}`,
+  description: t("Каталог типов лестниц: монолитные, парящие, консольные и другие решения для частных и коммерческих объектов.")
 });
 
 export default function TypesPage() {
   const types = getTypes();
   const breadcrumbs = [
-    { name: "Главная", href: "/" },
-    { name: "Типы лестниц", href: "/types" }
+    { name: t("Главная"), href: "/" },
+    { name: t("Типы лестниц"), href: "/types" }
   ];
 
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
-    description: "Каталог решений по бетонным лестницам для сценариев Standard и Signature.",
-    serviceType: "Типы бетонных лестниц",
+    description: t("Каталог решений по бетонным лестницам для сценариев Standard и Signature."),
+    serviceType: t("Типы бетонных лестниц"),
     areaServed: site.coverageRegions
   });
 
@@ -41,17 +42,17 @@ export default function TypesPage() {
       <JsonLd data={serviceSchema} />
 
       <PageHeader
-        kicker="Каталог"
-        title="Типы бетонных лестниц"
-        description="Собрали основные конфигурации для быстрого выбора. Для сложных задач делаем индивидуальный инженерный сценарий."
+        kicker={t("Каталог")}
+        title={t("Типы бетонных лестниц")}
+        description={t("Собрали основные конфигурации для быстрого выбора. Для сложных задач делаем индивидуальный инженерный сценарий.")}
       />
 
       <Section>
         <Container>
           <Breadcrumbs
             items={[
-              { label: "Главная", href: "/" },
-              { label: "Типы", href: "/types" }
+              { label: t("Главная"), href: "/" },
+              { label: t("Типы"), href: "/types" }
             ]}
           />
 
@@ -65,11 +66,11 @@ export default function TypesPage() {
                   <p className="text-xs uppercase tracking-[0.14em] text-slate-500">
                     {type.funnel === "signature" ? "Signature" : "Standard"}
                   </p>
-                  <h2 className="mt-2 font-heading text-2xl uppercase text-coal">{type.title}</h2>
-                  <p className="mt-2 text-sm text-slate-600">{type.shortDescription}</p>
-                  <p className="mt-3 text-sm text-slate-700">Ориентир: {type.priceHint}</p>
+                  <h2 className="mt-2 font-heading text-2xl uppercase text-coal">{t(type.title)}</h2>
+                  <p className="mt-2 text-sm text-slate-600">{t(type.shortDescription)}</p>
+                  <p className="mt-3 text-sm text-slate-700">{t("Ориентир")}: {type.priceHint}</p>
                   <Link href={`/types/${type.slug}`} className="mt-3 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                    Подробнее
+                    {t("Подробнее")}
                   </Link>
                 </div>
               </Card>

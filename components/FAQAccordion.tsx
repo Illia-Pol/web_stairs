@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { FaqItem } from "@/lib/content/schemas";
+import { t } from "@/lib/i18n";
 
 export function FAQAccordion({ items }: { items: FaqItem[] }) {
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
@@ -19,11 +20,11 @@ export function FAQAccordion({ items }: { items: FaqItem[] }) {
               onClick={() => setOpenId(isOpen ? null : item.id)}
               className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left"
             >
-              <span className="font-medium text-coal">{item.question}</span>
+              <span className="font-medium text-coal">{t(item.question)}</span>
               <span className="text-xl text-slate-400">{isOpen ? "−" : "+"}</span>
             </button>
 
-            {isOpen ? <p className="border-t border-slate-100 px-4 py-4 text-sm text-slate-600">{item.answer}</p> : null}
+            {isOpen ? <p className="border-t border-slate-100 px-4 py-4 text-sm text-slate-600">{t(item.answer)}</p> : null}
           </div>
         );
       })}

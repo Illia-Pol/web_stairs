@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getGeoPages, getSiteConfig } from "@/lib/content/loaders";
+import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -15,15 +16,15 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/contacts",
-  title: `Контакты и заявка | ${site.brand.name}`,
-  description: "Контакты для расчета бетонной лестницы: телефон, мессенджеры и форма заявки."
+  title: `${t("Контакты и заявка")} | ${site.brand.name}`,
+  description: t("Контакты для расчета бетонной лестницы: телефон, мессенджеры и форма заявки.")
 });
 
 export default function ContactsPage() {
   const cities = getGeoPages();
   const breadcrumbs = [
-    { name: "Главная", href: "/" },
-    { name: "Контакты", href: "/contacts" }
+    { name: t("Главная"), href: "/" },
+    { name: t("Контакты"), href: "/contacts" }
   ];
 
   return (
@@ -31,28 +32,28 @@ export default function ContactsPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
       <PageHeader
-        kicker="Контакты"
-        title="Свяжитесь с нами"
-        description="Быстрее всего ответим в мессенджере. Для точного расчета приложите план или фото проема."
+        kicker={t("Контакты")}
+        title={t("Свяжитесь с нами")}
+        description={t("Быстрее всего ответим в мессенджере. Для точного расчета приложите план или фото проема.")}
       />
 
       <Section>
         <Container>
           <Breadcrumbs
             items={[
-              { label: "Главная", href: "/" },
-              { label: "Контакты", href: "/contacts" }
+              { label: t("Главная"), href: "/" },
+              { label: t("Контакты"), href: "/contacts" }
             ]}
           />
 
           <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
             <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">Контактные данные</h2>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Контактные данные")}</h2>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                <li>Телефон: <a href={`tel:${site.contacts.phoneMain}`}>{site.contacts.phoneMain}</a></li>
+                <li>{t("Телефон")}: <a href={`tel:${site.contacts.phoneMain}`}>{site.contacts.phoneMain}</a></li>
                 <li>Email: <a href={`mailto:${site.contacts.email}`}>{site.contacts.email}</a></li>
-                <li>Адрес: {site.contacts.address}</li>
-                <li>Регионы: {site.coverageRegions}</li>
+                <li>{t("Адрес")}: {site.contacts.address}</li>
+                <li>{t("Регионы")}: {t(site.coverageRegions)}</li>
               </ul>
 
               <div className="mt-5 flex flex-wrap gap-2">
@@ -71,8 +72,8 @@ export default function ContactsPage() {
             </Card>
 
             <Card className="bg-white">
-              <h2 className="font-heading text-3xl uppercase text-coal">Оставить заявку</h2>
-              <p className="mt-2 text-sm text-slate-600">[TODO: добавить SLA по времени ответа]</p>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Оставить заявку")}</h2>
+              <p className="mt-2 text-sm text-slate-600">{t("[TODO: добавить SLA по времени ответа]")}</p>
               <div className="mt-4">
                 <LeadForm source="contacts-page" leadEndpoint={site.leadEndpoint} telegramFallback={site.telegramFallback} telegramFallbackMode={site.telegramFallbackMode} />
               </div>
@@ -80,11 +81,11 @@ export default function ContactsPage() {
           </div>
 
           <Card className="mt-6 bg-[#fffaf1]">
-            <h2 className="font-heading text-3xl uppercase text-coal">Города присутствия</h2>
+            <h2 className="font-heading text-3xl uppercase text-coal">{t("Города присутствия")}</h2>
             <div className="mt-3 flex flex-wrap gap-2 text-sm">
               {cities.map((city) => (
                 <Link key={city.slug} href={`/geo/${city.slug}`} className="rounded-full border border-slate-300 px-3 py-1 hover:bg-white">
-                  {city.city}
+                  {t(city.city)}
                 </Link>
               ))}
             </div>

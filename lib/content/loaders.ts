@@ -50,6 +50,10 @@ const DEFAULT_SITE: SiteConfig = {
     whatsapp: "#",
     viber: "#"
   },
+  localeLinks: {
+    ru: "/",
+    en: "{{EN_SITE_URL}}"
+  },
   leadEndpoint: "{{LEAD_ENDPOINT_URL}}",
   telegramFallback: {
     username: "{{TELEGRAM_USERNAME_OR_BOT_LINK}}",

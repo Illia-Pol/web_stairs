@@ -1,22 +1,23 @@
 import { Card } from "@/components/ui/Card";
 import type { SiteConfig } from "@/lib/content/schemas";
+import { t } from "@/lib/i18n";
 
 export function PriceCards({ site }: { site: SiteConfig }) {
   const cards = [
     {
       name: "Standard",
       value: site.pricing.standardFrom,
-      text: "Рациональные решения с прозрачной сметой и предсказуемыми сроками."
+      text: t("Рациональные решения с прозрачной сметой и предсказуемыми сроками.")
     },
     {
       name: "Mid",
       value: site.pricing.midRange,
-      text: "Проекты средней сложности с повышенными требованиями к геометрии и деталям."
+      text: t("Проекты средней сложности с повышенными требованиями к геометрии и деталям.")
     },
     {
       name: "Signature",
       value: site.pricing.signatureFrom,
-      text: "Сложные инженерные узлы, премиальная архитектура и сопровождение под ключ."
+      text: t("Сложные инженерные узлы, премиальная архитектура и сопровождение под ключ.")
     }
   ];
 
