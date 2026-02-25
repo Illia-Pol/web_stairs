@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body), "Segoe UI", sans-serif;
+  }
+}
+
+.font-heading {
+  font-family: var(--font-heading), "Arial Narrow", sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-body), "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 9% 0%, rgba(190, 155, 104, 0.16), transparent 24%),
+    radial-gradient(circle at 95% 10%, rgba(23, 34, 45, 0.14), transparent 22%),
+    #f4f2ec;
+  color: #182028;
+}
+
+a {
+  color: inherit;
+}
+
+.prose-stairs {
+  @apply max-w-none space-y-4 text-slate-700;
+}
+
+.prose-stairs h2 {
+  @apply font-heading text-2xl uppercase text-coal;
+}
+
+.prose-stairs h3 {
+  @apply font-heading text-xl uppercase text-coal;
+}
+
+.prose-stairs ul {
+  @apply list-disc space-y-1 pl-6;
+}
+
+.prose-stairs ol {
+  @apply list-decimal space-y-1 pl-6;
+}

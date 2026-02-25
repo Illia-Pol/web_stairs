@@ -1,0 +1,30 @@
+---
+slug: grodno-g-shape
+title: Г-образная лестница в коттедже в Гродно
+city: Гродно
+funnel: standard
+type: monolitnaya-lestnitsa
+coverImage: /assets/portfolio/portfolio-3.jpg
+gallery:
+  - /assets/portfolio/portfolio-3.jpg
+  - /assets/catalog-gallery/g-shaped-landing/1.jpg
+priceBand: "{{STANDARD_PRICE_FROM}}"
+year: "{{CASE_YEAR_4}}"
+tags:
+  - standard
+  - г-образная
+  - коттедж
+summary: Классическая монолитная конфигурация для узкого проема с точным шагом.
+---
+## Задача
+Разместить удобную лестницу в узком проеме и сохранить полезную площадь.
+
+## Что сделали
+- Адаптировали геометрию под ограничения объекта.
+- Провели армирование с учетом будущих нагрузок.
+- Подготовили поверхность под чистовую отделку.
+
+## Результат
+Эргономичная лестница без переделок на этапе отделки.
+
+[TODO: добавить видео-обход объекта и отзыв]

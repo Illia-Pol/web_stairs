@@ -1,0 +1,50 @@
+{
+  "baseUrl": "https://{{DOMAIN}}",
+  "brand": {
+    "name": "{{BRAND_NAME}}",
+    "tagline": "Бетонные монолитные лестницы в Беларуси",
+    "founder": "{{FOUNDER_NAME}}"
+  },
+  "contacts": {
+    "phoneMain": "{{PHONE_MAIN}}",
+    "email": "{{EMAIL}}",
+    "address": "{{LEGAL_ADDRESS}}",
+    "workingHours": "Пн-Сб 09:00-20:00"
+  },
+  "legal": {
+    "unp": "{{UNP}}",
+    "legalAddress": "{{LEGAL_ADDRESS}}",
+    "contractModel": "Договор подряда ИП. [TODO: добавить номер регистрации и дату выдачи]"
+  },
+  "messengers": {
+    "telegram": "https://t.me/{{TELEGRAM_USERNAME}}",
+    "whatsapp": "https://wa.me/{{WHATSAPP_PHONE_INTL}}",
+    "viber": "viber://chat?number=%2B{{VIBER_PHONE_INTL}}"
+  },
+  "coverageRegions": "{{COVERAGE_REGIONS}}",
+  "warrantyTerm": "{{WARRANTY_TERM}}",
+  "pricing": {
+    "standardFrom": "{{STANDARD_PRICE_FROM}}",
+    "midRange": "{{MID_PRICE_RANGE}}",
+    "signatureFrom": "{{SIGNATURE_PRICE_FROM}}"
+  },
+  "checklist": [
+    "План этажа или эскиз проема",
+    "Фото/видео текущего состояния объекта",
+    "Высота от чистого пола до чистого пола",
+    "Желаемый тип лестницы и материалы отделки",
+    "Сроки запуска и желаемая дата готовности"
+  ],
+  "processSteps": [
+    "Бриф и сбор исходных данных",
+    "Инженерный расчет и согласование геометрии",
+    "Монтаж опалубки, армирование, бетонирование",
+    "Сдача конструкции и рекомендации под отделку"
+  ],
+  "disclaimer": "Мы выполняем бетонный конструктив и подготовку под отделку. Облицовочные работы (дерево, камень, плитка) не выполняем.",
+  "heroStats": [
+    { "label": "Лестниц в портфолио", "value": "{{COMPLETED_PROJECTS_COUNT}}" },
+    { "label": "Лет практики", "value": "{{YEARS_EXPERIENCE}}" },
+    { "label": "Срок старта", "value": "{{START_TIMELINE}}" }
+  ]
+}
