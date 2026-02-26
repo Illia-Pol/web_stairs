@@ -1,7 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { ButtonLink } from "@/components/ui/Button";
+import { cn } from "@/lib/cn";
 import { t } from "@/lib/i18n";
 import { assetPath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
@@ -55,20 +59,59 @@ const primaryNav: NavItem[] = [
 ];
 
 export function Header({ site }: { site: SiteConfig }) {
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setIsCompact(window.scrollY > 36);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-coal/75 text-ink backdrop-blur">
-      <div className="mx-auto flex min-h-[72px] w-full max-w-[1120px] items-center justify-between gap-4 px-4 py-2 sm:px-6">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-white/10 text-ink backdrop-blur transition-all duration-300",
+        isCompact ? "bg-[rgba(15,17,19,0.92)]" : "bg-[rgba(15,17,19,0.84)]"
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4 px-4 sm:px-6 transition-all duration-300",
+          isCompact ? "min-h-[62px] py-1.5" : "min-h-[72px] py-2"
+        )}
+      >
         <Link href="/" className="flex min-w-0 items-center gap-3">
           <Image
             src={assetPath("/assets/logo.png")}
             alt={site.brand.name}
             width={56}
             height={56}
-            className="rounded-[10px] object-contain"
+            className={cn(
+              "rounded-[10px] object-contain transition-all duration-300",
+              isCompact ? "h-12 w-12" : "h-14 w-14"
+            )}
           />
           <div className="min-w-0">
-            <p className="truncate font-heading text-[1.3rem] uppercase leading-none">{site.brand.name}</p>
-            <p className="truncate text-[11px] uppercase tracking-[0.12em] text-ink-soft">{t(site.brand.tagline)}</p>
+            <p
+              className={cn(
+                "truncate font-heading uppercase leading-none transition-all duration-300",
+                isCompact ? "text-[1.2rem]" : "text-[1.3rem]"
+              )}
+            >
+              {site.brand.name}
+            </p>
+            <p
+              className={cn(
+                "truncate text-[11px] uppercase tracking-[0.12em] text-ink-soft transition-all duration-300",
+                isCompact ? "max-h-0 -translate-y-1 overflow-hidden opacity-0" : "max-h-6 translate-y-0 opacity-100"
+              )}
+            >
+              {t(site.brand.tagline)}
+            </p>
           </div>
         </Link>
 

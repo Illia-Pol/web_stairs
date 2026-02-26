@@ -45,7 +45,7 @@ export default function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className="font-body text-coal">
+      <body className="font-body">
         <JsonLd data={localBusinessSchema} />
         <Layout site={site} currentLocale={locale}>
           {children}
