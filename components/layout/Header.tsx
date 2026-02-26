@@ -23,9 +23,15 @@ const primaryNav: NavItem[] = [
       { href: "/signature", label: "Signature" }
     ]
   },
-  { href: "/types", label: t("Типы") },
-  { href: "/features", label: t("Решения") },
-  { href: "/portfolio", label: t("Портфолио") },
+  {
+    label: t("Портфолио"),
+    children: [
+      { href: "/types", label: t("Типы") },
+      { href: "/features", label: t("Решения") },
+      { href: "/about", label: t("Мастер") },
+      { href: "/faq", label: "FAQ" }
+    ]
+  },
   { href: "/prices", label: t("Цены") },
   { href: "/knowledge", label: t("База знаний") },
   { href: "/contacts", label: t("Контакты") }
