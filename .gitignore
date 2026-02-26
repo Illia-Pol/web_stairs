@@ -39,3 +39,4 @@ coverage/
 .svelte-kit/
 *.tsbuildinfo
 
+.DS_Store
