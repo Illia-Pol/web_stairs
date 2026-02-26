@@ -6,9 +6,23 @@ import { t } from "@/lib/i18n";
 import { assetPath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 
-const primaryNav = [
-  { href: "/standard", label: "Standard" },
-  { href: "/signature", label: "Signature" },
+type NavItem = {
+  label: string;
+  href?: string;
+  children?: Array<{
+    href: string;
+    label: string;
+  }>;
+};
+
+const primaryNav: NavItem[] = [
+  {
+    label: t("Тарифы"),
+    children: [
+      { href: "/standard", label: "Standard" },
+      { href: "/signature", label: "Signature" }
+    ]
+  },
   { href: "/types", label: t("Типы") },
   { href: "/features", label: t("Решения") },
   { href: "/portfolio", label: t("Портфолио") },
@@ -36,11 +50,39 @@ export function Header({ site }: { site: SiteConfig }) {
         </Link>
 
         <nav className="hidden flex-wrap items-center gap-4 text-sm text-slate-200 lg:flex">
-          {primaryNav.map((item) => (
-            <Link key={item.href} href={item.href} className="transition-colors hover:text-white">
-              {item.label}
-            </Link>
-          ))}
+          {primaryNav.map((item) =>
+            item.children ? (
+              <div key={item.label} className="group relative">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1 transition-colors hover:text-white"
+                >
+                  <span>{item.label}</span>
+                  <span className="text-[10px] text-slate-400">▾</span>
+                </button>
+
+                <div className="pointer-events-none absolute left-0 top-full z-20 mt-2 min-w-[190px] translate-y-1 rounded-xl border border-white/10 bg-coal/95 p-2 opacity-0 shadow-card transition-all group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="block rounded-lg px-3 py-2 text-slate-200 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href ?? "/"}
+                className="transition-colors hover:text-white"
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="hidden sm:block">
@@ -50,13 +92,36 @@ export function Header({ site }: { site: SiteConfig }) {
         </div>
       </div>
 
-      <nav className="scrollbar-none overflow-x-auto border-t border-white/10 lg:hidden">
-        <div className="mx-auto flex w-max min-w-full items-center gap-4 px-4 py-3 text-sm text-slate-200">
-          {primaryNav.map((item) => (
-            <Link key={item.href} href={item.href} className="whitespace-nowrap transition-colors hover:text-white">
-              {item.label}
-            </Link>
-          ))}
+      <nav className="border-t border-white/10 lg:hidden">
+        <div className="mx-auto flex flex-wrap items-center gap-4 px-4 py-3 text-sm text-slate-200">
+          {primaryNav.map((item) =>
+            item.children ? (
+              <details key={item.label} className="group relative">
+                <summary className="cursor-pointer list-none whitespace-nowrap transition-colors hover:text-white">
+                  {item.label}
+                </summary>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-200"
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href ?? "/"}
+                className="whitespace-nowrap transition-colors hover:text-white"
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </div>
       </nav>
     </header>
