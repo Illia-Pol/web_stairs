@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadForm } from "@/components/LeadForm";
@@ -81,14 +79,15 @@ export default function ContactsPage() {
           </div>
 
           <Card className="mt-6 bg-[#fffaf1]">
-            <h2 className="font-heading text-3xl uppercase text-coal">{t("Города присутствия")}</h2>
-            <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <h2 className="font-heading text-3xl uppercase text-coal">{t("География работ")}</h2>
+            <p className="mt-2 text-sm text-slate-600">{t("Городские лендинги публикуются под SEO-запросы и не являются частью основной навигации сайта.")}</p>
+            <ul className="mt-3 flex flex-wrap gap-2 text-sm">
               {cities.map((city) => (
-                <Link key={city.slug} href={`/geo/${city.slug}`} className="rounded-full border border-slate-300 px-3 py-1 hover:bg-white">
+                <li key={city.slug} className="rounded-full border border-slate-300 px-3 py-1">
                   {t(city.city)}
-                </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </Card>
         </Container>
       </Section>

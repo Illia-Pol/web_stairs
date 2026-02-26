@@ -4,11 +4,11 @@ import type { SiteConfig } from "@/lib/content/schemas";
 import { t } from "@/lib/i18n";
 
 const links = [
-  { href: "/about", label: t("О компании") },
-  { href: "/process", label: t("Процесс") },
-  { href: "/guarantee", label: t("Гарантия") },
-  { href: "/after-finishing", label: t("После заливки") },
-  { href: "/faq", label: "FAQ" },
+  { href: "/portfolio", label: t("Портфолио") },
+  { href: "/prices", label: t("Цены") },
+  { href: "/questions", label: t("Вопросы") },
+  { href: "/vlog", label: t("Влог") },
+  { href: "/contacts", label: t("Контакты") },
   { href: "/privacy", label: "Privacy" }
 ];
 

@@ -5,7 +5,7 @@ import { t } from "@/lib/i18n";
 export function PriceCards({ site }: { site: SiteConfig }) {
   const cards = [
     {
-      name: "Standard",
+      name: "Classic",
       value: site.pricing.standardFrom,
       text: t("Рациональные решения с прозрачной сметой и предсказуемыми сроками.")
     },

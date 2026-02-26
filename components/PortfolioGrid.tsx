@@ -34,7 +34,7 @@ export function PortfolioGrid({ items, heading = t("Портфолио") }: Port
     <div className="space-y-5">
       <div>
         <h2 className="font-heading text-3xl uppercase text-coal">{t(heading)}</h2>
-        <p className="mt-2 text-sm text-slate-600">{t("Фильтр по сценариям: Standard, Signature и типам конструкций.")}</p>
+        <p className="mt-2 text-sm text-slate-600">{t("Фильтр по сценариям: Classic, Signature и типам конструкций.")}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -57,7 +57,7 @@ export function PortfolioGrid({ items, heading = t("Портфолио") }: Port
       <div className="grid gap-4 md:grid-cols-2">
         {filteredItems.map((item) => (
           <article key={item.slug} className="overflow-hidden rounded-xl2 border border-slate-200 bg-white shadow-soft">
-            <Link href={`/portfolio/${item.slug}`}>
+            <Link href={`/portfolio/projects#${item.slug}`}>
               <div className="relative aspect-[16/10]">
                 <Image src={assetPath(item.coverImage)} alt={item.title} fill className="object-cover" />
               </div>
@@ -66,12 +66,12 @@ export function PortfolioGrid({ items, heading = t("Портфолио") }: Port
               <div className="flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-slate-500">
                 <span>{t(item.city)}</span>
                 <span>•</span>
-                <span>{item.funnel === "signature" ? "Signature" : "Standard"}</span>
+                <span>{item.funnel === "signature" ? "Signature" : "Classic"}</span>
               </div>
               <h3 className="font-heading text-2xl uppercase text-coal">{t(item.title)}</h3>
               <p className="text-sm text-slate-600">{t(item.summary)}</p>
-              <Link href={`/portfolio/${item.slug}`} className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Смотреть кейс")}
+              <Link href={`/portfolio/projects#${item.slug}`} className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Смотреть проект")}
               </Link>
             </div>
           </article>

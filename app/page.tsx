@@ -28,7 +28,7 @@ export const metadata = createPageMetadata({
   pathname: "/",
   title: `${site.brand.name} | ${t("Бетонные монолитные лестницы в Беларуси")}`,
   description: t(
-    "Главная страница-хаб: выберите Standard или Signature сценарий, отправьте план/фото и получите расчет по бетонной лестнице."
+    "Главная страница-хаб: выберите Classic или Signature сценарий, отправьте план/фото и получите расчет по бетонной лестнице."
   )
 });
 
@@ -41,10 +41,10 @@ export default function HomePage() {
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
-    description: t("Проектирование и изготовление бетонных монолитных лестниц в Беларуси по сценариям Standard и Signature."),
+    description: t("Проектирование и изготовление бетонных монолитных лестниц в Беларуси по сценариям Classic и Signature."),
     serviceType: t("Изготовление бетонных лестниц"),
     areaServed: site.coverageRegions,
-    offers: `Standard: ${site.pricing.standardFrom}, Mid: ${site.pricing.midRange}, Signature: ${site.pricing.signatureFrom}`
+    offers: `Classic: ${site.pricing.standardFrom}, Mid: ${site.pricing.midRange}, Signature: ${site.pricing.signatureFrom}`
   });
 
   return (
@@ -64,14 +64,14 @@ export default function HomePage() {
             {t("Бетонные монолитные лестницы под ваш объект")}
           </h1>
           <p className="mt-5 max-w-2xl text-base text-slate-200 sm:text-lg">
-            {t("Выберите формат работы: Standard для рационального решения или Signature для сложных инженерных задач без риска.")}
+            {t("Выберите формат работы: Classic для рационального решения или Signature для сложных инженерных задач без риска.")}
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <ButtonLink href="/standard" className="min-w-[170px]">
-              Standard
+            <ButtonLink href="/prices/tariffs/classic" className="min-w-[170px]">
+              Classic
             </ButtonLink>
-            <ButtonLink href="/signature" variant="secondary" className="min-w-[170px]">
+            <ButtonLink href="/prices/tariffs/signature" variant="secondary" className="min-w-[170px]">
               Signature
             </ButtonLink>
           </div>
@@ -143,10 +143,10 @@ export default function HomePage() {
 
       <Section className="bg-white">
         <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">Standard vs Signature</h2>
+          <h2 className="font-heading text-4xl uppercase text-coal">Classic vs Signature</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <Card>
-              <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Standard</p>
+              <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Classic</p>
               <h3 className="mt-2 font-heading text-2xl uppercase text-coal">{t("Рациональный выбор")}</h3>
               <ul className="mt-3 space-y-2 text-sm text-slate-700">
                 <li>{t("Прозрачная смета и понятный график.")}</li>
@@ -154,8 +154,8 @@ export default function HomePage() {
                 <li>{t("Фокус на надежность и скорость реализации.")}</li>
               </ul>
               <div className="mt-4">
-                <ButtonLink href="/standard" variant="ghost">
-                  {t("Перейти в Standard")}
+                <ButtonLink href="/prices/tariffs/classic" variant="ghost">
+                  {t("Перейти в Classic")}
                 </ButtonLink>
               </div>
             </Card>
@@ -169,7 +169,7 @@ export default function HomePage() {
                 <li>{t("Координация с дизайнером и смежными подрядчиками.")}</li>
               </ul>
               <div className="mt-4">
-                <ButtonLink href="/signature" variant="primary">
+                <ButtonLink href="/prices/tariffs/signature" variant="primary">
                   {t("Перейти в Signature")}
                 </ButtonLink>
               </div>
@@ -185,7 +185,7 @@ export default function HomePage() {
               <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{t("Типы лестниц")}</p>
               <h2 className="mt-2 font-heading text-4xl uppercase text-coal">{t("Выберите тип под ваш объект")}</h2>
             </div>
-            <Link href="/types" className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
+            <Link href="/portfolio/types" className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
               {t("Все типы")}
             </Link>
           </div>
@@ -194,11 +194,11 @@ export default function HomePage() {
             {types.map((type) => (
               <Link
                 key={type.slug}
-                href={`/types/${type.slug}`}
+                href={`/portfolio/types/${type.slug}`}
                 className="group rounded-xl2 border border-slate-200 bg-white p-5 shadow-soft transition-transform hover:-translate-y-1"
               >
                 <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
-                  {type.funnel === "signature" ? "Signature" : "Standard"}
+                  {type.funnel === "signature" ? "Signature" : "Classic"}
                 </p>
                 <h3 className="mt-3 font-heading text-2xl uppercase text-coal">{t(type.title)}</h3>
                 <p className="mt-2 text-sm text-slate-600">{t(type.shortDescription)}</p>
@@ -259,7 +259,7 @@ export default function HomePage() {
         <Container>
           <div className="flex items-end justify-between gap-4">
             <h2 className="font-heading text-4xl uppercase text-coal">FAQ</h2>
-            <Link href="/faq" className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
+            <Link href="/questions/faq" className="text-sm font-semibold text-coal underline-offset-4 hover:underline">
               {t("Смотреть все")}
             </Link>
           </div>

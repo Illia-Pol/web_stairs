@@ -58,34 +58,37 @@ const basePath = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH ?? "");
 
 const staticRoutes = [
   "/",
-  "/standard",
-  "/signature",
-  "/types",
-  "/features",
   "/portfolio",
+  "/portfolio/types",
+  "/portfolio/projects",
+  "/portfolio/master",
   "/prices",
-  "/process",
-  "/guarantee",
-  "/after-finishing",
-  "/faq",
-  "/about",
+  "/prices/calculator",
+  "/prices/tariffs",
+  "/prices/tariffs/classic",
+  "/prices/tariffs/signature",
+  "/prices/guarantee",
+  "/questions",
+  "/questions/faq",
+  "/questions/problems",
+  "/vlog",
+  "/vlog/projects",
+  "/vlog/articles",
+  "/vlog/process",
   "/contacts",
-  "/privacy",
-  "/knowledge"
+  "/privacy"
 ];
 
-const typeRoutes = listSlugsByExt("types", ".json").map((slug) => `/types/${slug}`);
-const featureRoutes = listSlugsByExt("features", ".json").map((slug) => `/features/${slug}`);
-const caseRoutes = listSlugsByExt("cases", ".md").map((slug) => `/portfolio/${slug}`);
+const typeRoutes = listSlugsByExt("types", ".json").map((slug) => `/portfolio/types/${slug}`);
+const featureRoutes = listSlugsByExt("features", ".json").map((slug) => `/questions/problems/${slug}`);
 const geoRoutes = listSlugsByExt("geo", ".json").map((slug) => `/geo/${slug}`);
-const knowledgeRoutes = listSlugsByExt("knowledge", ".md").map((slug) => `/knowledge/${slug}`);
+const knowledgeRoutes = listSlugsByExt("knowledge", ".md").map((slug) => `/vlog/articles/${slug}`);
 
 const allRoutes = [
   ...new Set([
     ...staticRoutes,
     ...typeRoutes,
     ...featureRoutes,
-    ...caseRoutes,
     ...geoRoutes,
     ...knowledgeRoutes
   ])

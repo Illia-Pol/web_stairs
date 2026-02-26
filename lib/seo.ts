@@ -167,6 +167,6 @@ export function articleJsonLd(params: {
       "@type": "Person",
       name: params.authorName
     },
-    mainEntityOfPage: absoluteUrl(params.baseUrl, `/knowledge/${params.slug}`)
+    mainEntityOfPage: absoluteUrl(params.baseUrl, `/vlog/articles/${params.slug}`)
   };
 }

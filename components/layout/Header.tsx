@@ -17,23 +17,40 @@ type NavItem = {
 
 const primaryNav: NavItem[] = [
   {
-    label: t("Тарифы"),
+    label: t("Портфолио"),
+    href: "/portfolio",
     children: [
-      { href: "/standard", label: "Standard" },
-      { href: "/signature", label: "Signature" }
+      { href: "/portfolio/types", label: t("Типы лестниц") },
+      { href: "/portfolio/projects", label: t("Проекты") },
+      { href: "/portfolio/master", label: t("Мастер") }
     ]
   },
   {
-    label: t("Портфолио"),
+    label: t("Цены"),
+    href: "/prices",
     children: [
-      { href: "/types", label: t("Типы") },
-      { href: "/features", label: t("Решения") },
-      { href: "/about", label: t("Мастер") },
-      { href: "/faq", label: "FAQ" }
+      { href: "/prices/calculator", label: t("Калькулятор") },
+      { href: "/prices/tariffs", label: t("Тарифы") },
+      { href: "/prices/guarantee", label: t("Гарантия и договор") }
     ]
   },
-  { href: "/prices", label: t("Цены") },
-  { href: "/knowledge", label: t("База знаний") },
+  {
+    label: t("Вопросы"),
+    href: "/questions",
+    children: [
+      { href: "/questions/faq", label: "FAQ" },
+      { href: "/questions/problems", label: t("Проблемы и решения") }
+    ]
+  },
+  {
+    label: t("Влог"),
+    href: "/vlog",
+    children: [
+      { href: "/vlog/projects", label: t("Проекты") },
+      { href: "/vlog/articles", label: t("Статьи") },
+      { href: "/vlog/process", label: t("Процесс") }
+    ]
+  },
   { href: "/contacts", label: t("Контакты") }
 ];
 
@@ -59,13 +76,15 @@ export function Header({ site }: { site: SiteConfig }) {
           {primaryNav.map((item) =>
             item.children ? (
               <div key={item.label} className="group relative">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 transition-colors hover:text-white"
-                >
-                  <span>{item.label}</span>
+                <div className="inline-flex items-center gap-1">
+                  <Link
+                    href={item.href ?? "/"}
+                    className="transition-colors hover:text-white"
+                  >
+                    {item.label}
+                  </Link>
                   <span className="text-[10px] text-slate-400">▾</span>
-                </button>
+                </div>
 
                 <div className="pointer-events-none absolute left-0 top-full z-20 mt-2 min-w-[190px] translate-y-1 rounded-xl border border-white/10 bg-coal/95 p-2 opacity-0 shadow-card transition-all group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
                   {item.children.map((child) => (
@@ -102,11 +121,14 @@ export function Header({ site }: { site: SiteConfig }) {
         <div className="mx-auto flex flex-wrap items-center gap-4 px-4 py-3 text-sm text-slate-200">
           {primaryNav.map((item) =>
             item.children ? (
-              <details key={item.label} className="group relative">
-                <summary className="cursor-pointer list-none whitespace-nowrap transition-colors hover:text-white">
+              <div key={item.label} className="flex flex-wrap items-center gap-2">
+                <Link
+                  href={item.href ?? "/"}
+                  className="whitespace-nowrap transition-colors hover:text-white"
+                >
                   {item.label}
-                </summary>
-                <div className="mt-2 flex flex-wrap gap-2">
+                </Link>
+                <div className="flex flex-wrap gap-2">
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
@@ -117,7 +139,7 @@ export function Header({ site }: { site: SiteConfig }) {
                     </Link>
                   ))}
                 </div>
-              </details>
+              </div>
             ) : (
               <Link
                 key={item.href}

@@ -2,146 +2,150 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://example.com/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/standard/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/signature/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/types/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/features/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/portfolio/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/portfolio/types/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/portfolio/projects/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/portfolio/master/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/prices/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/process/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/prices/calculator/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/guarantee/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/prices/tariffs/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/after-finishing/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/prices/tariffs/classic/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/faq/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/prices/tariffs/signature/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/about/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/prices/guarantee/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/questions/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/questions/faq/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/questions/problems/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/vlog/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/vlog/projects/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/vlog/articles/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
+  </url>
+  <url>
+    <loc>https://example.com/vlog/process/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/contacts/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/privacy/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/knowledge/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/portfolio/types/konsolnaya-lestnitsa/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/types/konsolnaya-lestnitsa/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/portfolio/types/monolitnaya-lestnitsa/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/types/monolitnaya-lestnitsa/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/portfolio/types/p-obraznaya-lestnitsa/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/types/p-obraznaya-lestnitsa/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/portfolio/types/paryashchaya-lestnitsa/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/types/paryashchaya-lestnitsa/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/questions/problems/chastnyj-dom/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/features/chastnyj-dom/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/questions/problems/prozrachnaya-smeta/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/features/prozrachnaya-smeta/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/questions/problems/slozhnye-uzly/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/features/slozhnye-uzly/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/features/sroki-i-kontrol/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/portfolio/brest-u-shape/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/portfolio/drozdy-floating/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/portfolio/grodno-g-shape/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
-  </url>
-  <url>
-    <loc>https://example.com/portfolio/townhouse-console/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/questions/problems/sroki-i-kontrol/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/brest/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/gomel/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/grodno/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/minsk/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/mogilev/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
     <loc>https://example.com/geo/vitebsk/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/knowledge/chto-vliyaet-na-stoimost/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/vlog/articles/chto-vliyaet-na-stoimost/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/knowledge/kak-podgotovit-proem/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/vlog/articles/kak-podgotovit-proem/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
   <url>
-    <loc>https://example.com/knowledge/standart-vs-signature/</loc>
-    <lastmod>2026-02-26T08:17:31.715Z</lastmod>
+    <loc>https://example.com/vlog/articles/standart-vs-signature/</loc>
+    <lastmod>2026-02-26T14:12:42.238Z</lastmod>
   </url>
 </urlset>

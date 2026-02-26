@@ -13,7 +13,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
   description: t(
-    "Проектирование и изготовление бетонных лестниц в Беларуси: Standard и Signature решения под частные и коммерческие объекты."
+    "Проектирование и изготовление бетонных лестниц в Беларуси: Classic и Signature решения под частные и коммерческие объекты."
   ),
   metadataBase: new URL("https://example.com"),
   openGraph: {

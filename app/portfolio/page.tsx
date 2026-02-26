@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
-import { PortfolioGrid } from "@/components/PortfolioGrid";
+import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
-import { getCases, getSiteConfig } from "@/lib/content/loaders";
+import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
@@ -12,12 +14,11 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/portfolio",
-  title: `${t("Портфолио бетонных лестниц")} | ${site.brand.name}`,
-  description: t("Реальные кейсы бетонных лестниц в Беларуси: Standard и Signature проекты с фото и описанием задачи.")
+  title: `${t("Портфолио")} | ${site.brand.name}`,
+  description: t("Хаб портфолио: каталог типов лестниц, примеры проектов и страница мастера.")
 });
 
-export default function PortfolioPage() {
-  const cases = getCases();
+export default function PortfolioHubPage() {
   const breadcrumbs = [
     { name: t("Главная"), href: "/" },
     { name: t("Портфолио"), href: "/portfolio" }
@@ -28,9 +29,9 @@ export default function PortfolioPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
       <PageHeader
-        kicker={t("Кейсы")}
-        title={t("Портфолио выполненных объектов")}
-        description={t("Собрали проекты по типам лестниц, городам и сценариям. Можно фильтровать Standard / Signature, консоль, парящие и другие категории.")}
+        kicker={t("Портфолио")}
+        title={t("Работы, типы и мастер")}
+        description={t("Отсюда можно перейти в каталог типов лестниц, посмотреть реализованные проекты и познакомиться с мастером.")}
       />
 
       <Section>
@@ -41,7 +42,32 @@ export default function PortfolioPage() {
               { label: t("Портфолио"), href: "/portfolio" }
             ]}
           />
-          <PortfolioGrid items={cases} heading={t("Кейсы")} />
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Типы лестниц")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Каталог конфигураций: монолитные, парящие, консольные и другие решения.")}</p>
+              <Link href="/portfolio/types" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Открыть каталог")}
+              </Link>
+            </Card>
+
+            <Card className="bg-[#fffaf1]">
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Проекты")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Подборка реализованных объектов с фото, краткими итогами и фильтрами.")}</p>
+              <Link href="/portfolio/projects" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Смотреть проекты")}
+              </Link>
+            </Card>
+
+            <Card>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Мастер")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Кто ведет проекты, как устроен контроль качества и подход к сложным объектам.")}</p>
+              <Link href="/portfolio/master" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Перейти к мастеру")}
+              </Link>
+            </Card>
+          </div>
         </Container>
       </Section>
     </>

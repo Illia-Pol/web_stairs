@@ -1,10 +1,11 @@
+import Link from "next/link";
+
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeader } from "@/components/PageHeader";
-import { PriceCards } from "@/components/PriceCards";
 import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
-import { getSiteConfig, getTypes } from "@/lib/content/loaders";
+import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
@@ -13,12 +14,11 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/prices",
-  title: `${t("Цены на бетонные лестницы")} | ${site.brand.name}`,
-  description: t("Ориентиры стоимости, примеры смет и факторы, которые влияют на итоговую цену бетонной лестницы.")
+  title: `${t("Цены, оплата и гарантии")} | ${site.brand.name}`,
+  description: t("Главная по стоимости: калькулятор-ориентир, тарифы, условия оплаты, договор и гарантия.")
 });
 
-export default function PricesPage() {
-  const types = getTypes();
+export default function PricesHubPage() {
   const breadcrumbs = [
     { name: t("Главная"), href: "/" },
     { name: t("Цены"), href: "/prices" }
@@ -27,10 +27,10 @@ export default function PricesPage() {
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
-    description: t("Расчет стоимости бетонной лестницы с учетом типа, геометрии и условий площадки."),
-    serviceType: t("Расчет стоимости бетонной лестницы"),
+    description: t("Стоимость бетонных лестниц, форматы работ, гарантия и договорные условия."),
+    serviceType: t("Цены и условия работ"),
     areaServed: site.coverageRegions,
-    offers: `Standard: ${site.pricing.standardFrom}, Mid: ${site.pricing.midRange}, Signature: ${site.pricing.signatureFrom}`
+    offers: `Classic: ${site.pricing.standardFrom}, Signature: ${site.pricing.signatureFrom}`
   });
 
   return (
@@ -40,8 +40,8 @@ export default function PricesPage() {
 
       <PageHeader
         kicker={t("Цены")}
-        title={t("Ориентиры стоимости")}
-        description={t("Показываем вилки по типам, примеры смет и факторы стоимости до старта работ.")}
+        title={t("Стоимость и условия")}
+        description={t("В этом разделе собраны ориентиры стоимости, форматы тарифов, договор и гарантийные условия.")}
       />
 
       <Section>
@@ -53,73 +53,29 @@ export default function PricesPage() {
             ]}
           />
 
-          <PriceCards site={site} />
-        </Container>
-      </Section>
-
-      <Section className="bg-white">
-        <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{t("Вилки по типам")}</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {types.map((type) => (
-              <Card key={type.slug}>
-                <h3 className="font-heading text-2xl uppercase text-coal">{t(type.title)}</h3>
-                <p className="mt-2 text-sm text-slate-700">{t("Ориентир")}: {type.priceHint}</p>
-                <p className="mt-2 text-sm text-slate-600">{t(type.shortDescription)}</p>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      <Section>
-        <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{t("3 примера смет")}</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3">
             <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 1")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Standard</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_1}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-            <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 2")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Mid</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_2}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-            <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 3")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Signature</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_3}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="bg-white">
-        <Container>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что влияет на цену")}</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                <li>{t("Сложность геометрии и тип лестницы.")}</li>
-                <li>{t("Готовность проема и условия на объекте.")}</li>
-                <li>{t("Требования к точности под финишную отделку.")}</li>
-                <li>{t("Срочность и график смежных работ.")}</li>
-              </ul>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Калькулятор")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Страница с примерными вилками стоимости. Интерактивный калькулятор будет добавлен позже.")}</p>
+              <Link href="/prices/calculator" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Открыть калькулятор")}
+              </Link>
             </Card>
 
             <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что прислать для расчета")}</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                {site.checklist.map((item) => (
-                  <li key={item} className="rounded-lg bg-white px-3 py-2">
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Тарифы")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Classic и Signature: разный уровень инженерной проработки и контроля.")}</p>
+              <Link href="/prices/tariffs" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Перейти к тарифам")}
+              </Link>
+            </Card>
+
+            <Card>
+              <h2 className="font-heading text-3xl uppercase text-coal">{t("Гарантия и договор")}</h2>
+              <p className="mt-2 text-sm text-slate-700">{t("Как оформляется договор ИП, какие гарантии даем и что не входит в зону ответственности.")}</p>
+              <Link href="/prices/guarantee" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                {t("Смотреть условия")}
+              </Link>
             </Card>
           </div>
         </Container>

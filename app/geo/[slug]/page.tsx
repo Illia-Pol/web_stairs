@@ -52,7 +52,6 @@ export default function GeoPage({ params }: PageProps) {
 
   const breadcrumbs = [
     { name: t("Главная"), href: "/" },
-    { name: t("Контакты"), href: "/contacts" },
     { name: geo.city, href: `/geo/${geo.slug}` }
   ];
 
@@ -85,7 +84,6 @@ export default function GeoPage({ params }: PageProps) {
           <Breadcrumbs
             items={[
               { label: t("Главная"), href: "/" },
-              { label: t("Контакты"), href: "/contacts" },
               { label: t(geo.city), href: `/geo/${geo.slug}` }
             ]}
           />
@@ -121,8 +119,8 @@ export default function GeoPage({ params }: PageProps) {
                 <div key={item.slug} className="rounded-lg border border-slate-200 p-3">
                   <h3 className="font-heading text-2xl uppercase text-coal">{item.title}</h3>
                   <p className="mt-1 text-sm text-slate-600">{item.summary}</p>
-                  <Link href={`/portfolio/${item.slug}`} className="mt-2 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                    {t("Смотреть кейс")}
+                  <Link href={`/portfolio/projects#${item.slug}`} className="mt-2 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
+                    {t("Смотреть проект")}
                   </Link>
                 </div>
               ))}
