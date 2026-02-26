@@ -208,7 +208,7 @@ export function LeadForm({
           value={formState.name}
           onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
           placeholder={t("Ваше имя")}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
+          className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
         />
         <input
           required
@@ -216,7 +216,7 @@ export function LeadForm({
           value={formState.phone}
           onChange={(event) => setFormState((prev) => ({ ...prev, phone: event.target.value }))}
           placeholder={t("Телефон или @username")}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
+          className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
         />
       </div>
 
@@ -226,13 +226,13 @@ export function LeadForm({
           value={formState.city}
           onChange={(event) => setFormState((prev) => ({ ...prev, city: event.target.value }))}
           placeholder={t("Город")}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
+          className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
         />
 
         <select
           value={formState.messenger}
           onChange={(event) => setFormState((prev) => ({ ...prev, messenger: event.target.value }))}
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
+          className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
         >
           <option value="telegram">Telegram</option>
           <option value="whatsapp">WhatsApp</option>
@@ -247,7 +247,7 @@ export function LeadForm({
         value={formState.message}
         onChange={(event) => setFormState((prev) => ({ ...prev, message: event.target.value }))}
         placeholder={t("Опишите задачу. [TODO: вставьте реальные подсказки по данным для расчета]")}
-        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-coal outline-none focus:border-bronze"
+        className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
       />
 
       <input

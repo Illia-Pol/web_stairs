@@ -29,8 +29,8 @@ export function LocaleSwitcher({ site, currentLocale }: LocaleSwitcherProps) {
   ];
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 rounded-xl border border-slate-200 bg-white/95 p-2 shadow-soft backdrop-blur">
-      <p className="px-2 pb-1 text-[10px] uppercase tracking-[0.12em] text-slate-500">{t("Язык")}</p>
+    <div className="fixed bottom-4 right-4 z-50 rounded-xl border border-white/15 bg-coal/90 p-2 text-ink shadow-card backdrop-blur">
+      <p className="px-2 pb-1 text-[10px] uppercase tracking-[0.12em] text-ink-soft">{t("Язык")}</p>
       <div className="flex items-center gap-1">
         {options.map((option) => {
           const active = option.code === currentLocale;
@@ -43,7 +43,7 @@ export function LocaleSwitcher({ site, currentLocale }: LocaleSwitcherProps) {
               href={disabled ? "#" : href}
               aria-disabled={disabled}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold uppercase transition-colors ${
-                active ? "bg-coal text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                active ? "bg-bronze text-coal" : "bg-white/10 text-ink-soft hover:bg-white/15 hover:text-ink"
               } ${disabled ? "pointer-events-none opacity-50" : ""}`}
             >
               {option.code}

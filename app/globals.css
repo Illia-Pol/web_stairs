@@ -2,8 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap");
+
 :root {
   color-scheme: light;
+  --bg: #f4f2ec;
+  --ink: #f3f2ef;
+  --ink-soft: #b9b4aa;
+  --accent: #c7a46a;
+  --accent-deep: #a68553;
+  --stroke-dark: rgba(255, 255, 255, 0.1);
+  --stroke-light: rgba(15, 17, 19, 0.12);
+  --panel: #1b1f23;
+  --radius: 16px;
 }
 
 * {
@@ -27,14 +38,26 @@
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 9% 0%, rgba(190, 155, 104, 0.16), transparent 24%),
-    radial-gradient(circle at 95% 10%, rgba(23, 34, 45, 0.14), transparent 22%),
-    #f4f2ec;
+    radial-gradient(circle at 12% 0%, rgba(199, 164, 106, 0.16), transparent 24%),
+    radial-gradient(circle at 94% 8%, rgba(21, 24, 27, 0.15), transparent 24%),
+    var(--bg);
   color: #182028;
+  line-height: 1.5;
 }
 
 a {
   color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.kicker {
+  @apply text-xs font-semibold uppercase tracking-[0.12em] text-bronze;
 }
 
 .prose-stairs {
@@ -55,4 +78,10 @@ a {
 
 .prose-stairs ol {
   @apply list-decimal space-y-1 pl-6;
+}
+
+input,
+select,
+textarea {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }

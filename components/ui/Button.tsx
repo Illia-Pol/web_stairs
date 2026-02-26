@@ -13,11 +13,11 @@ type BaseProps = {
 
 const variantMap: Record<ButtonVariant, string> = {
   primary:
-    "bg-bronze text-coal hover:bg-[#cfaf7d] shadow-soft border border-bronze/70",
+    "border border-[#b58f59] bg-gradient-to-br from-bronze to-bronze-deep text-coal shadow-[0_10px_24px_rgba(199,164,106,.32)] hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(199,164,106,.36)]",
   secondary:
-    "bg-coal text-white hover:bg-graphite border border-white/15",
+    "border border-white/15 bg-coal text-ink hover:bg-graphite",
   ghost:
-    "bg-transparent text-coal border border-coal/25 hover:bg-coal/5"
+    "border border-slate-300 bg-transparent text-coal shadow-none hover:bg-slate-100/70"
 };
 
 export function Button({
@@ -29,7 +29,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-200",
+        "inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60",
         variantMap[variant],
         className
       )}
@@ -51,7 +51,7 @@ export function ButtonLink({
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-200",
+        "inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200",
         variantMap[variant],
         className
       )}
