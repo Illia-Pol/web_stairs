@@ -1,0 +1,34 @@
+{
+  "brand_title": "BETOSTEP",
+  "brand_subtitle": "Архитектурный бетон",
+
+  "nav_portfolio": "Портфолио",
+  "nav_portfolio_types": "Типы лестниц",
+  "nav_portfolio_projects": "Проекты",
+  "nav_portfolio_master": "Мастер",
+
+  "nav_prices": "Цены",
+  "nav_prices_calculator": "Калькулятор",
+  "nav_prices_tariffs": "Тарифы",
+  "nav_prices_guarantee": "Гарантия и договор",
+
+  "nav_questions": "Вопросы",
+  "nav_questions_faq": "FAQ",
+  "nav_questions_problems": "Проблемы и решения",
+
+  "nav_vlog": "Влог",
+  "nav_vlog_projects": "Последние проекты",
+  "nav_vlog_articles": "Статьи",
+  "nav_vlog_process": "Процесс",
+
+  "nav_contacts": "Контакты",
+
+  "cta_send_plan": "Запросить 3D - ПЛАН",
+
+  "menu_label": "Меню",
+  "menu_open": "Открыть меню",
+  "menu_close": "Закрыть меню",
+
+  "switcher_language": "Язык",
+  "switcher_currency": "Валюта"
+}

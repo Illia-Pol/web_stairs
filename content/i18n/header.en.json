@@ -1,0 +1,34 @@
+{
+  "brand_title": "BETOSTEP",
+  "brand_subtitle": "Architectural concrete",
+
+  "nav_portfolio": "Portfolio",
+  "nav_portfolio_types": "Stair types",
+  "nav_portfolio_projects": "Projects",
+  "nav_portfolio_master": "Master",
+
+  "nav_prices": "Pricing",
+  "nav_prices_calculator": "Calculator",
+  "nav_prices_tariffs": "Tariffs",
+  "nav_prices_guarantee": "Warranty & contract",
+
+  "nav_questions": "Questions",
+  "nav_questions_faq": "FAQ",
+  "nav_questions_problems": "Problems & solutions",
+
+  "nav_vlog": "Vlog",
+  "nav_vlog_projects": "Last Projects",
+  "nav_vlog_articles": "Articles",
+  "nav_vlog_process": "Process",
+
+  "nav_contacts": "Contacts",
+
+  "cta_send_plan": "Reqest 3D - Plan",
+
+  "menu_label": "Menu",
+  "menu_open": "Open menu",
+  "menu_close": "Close menu",
+  
+  "switcher_language": "Language",
+  "switcher_currency": "Currency"
+}

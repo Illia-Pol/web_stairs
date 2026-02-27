@@ -2,9 +2,9 @@
 import Script from "next/script";
 
 import { JsonLd } from "@/components/JsonLd";
+import { getSiteConfig } from "@/lib/content/loaders";
 import { assetPath } from "@/lib/paths";
 import { createPageMetadata, faqJsonLd, serviceJsonLd } from "@/lib/seo";
-import { getSiteConfig } from "@/lib/content/loaders";
 
 const site = getSiteConfig();
 
@@ -13,37 +13,25 @@ const projects = [
     image: "/assets/portfolio/portfolio-1.jpg",
     alt: "Парящая лестница в современном интерьере",
     title: "Парящая лестница в частном доме",
-    text: "Минималистичный профиль, точная геометрия под чистовую отделку."
+    text: "Минималистичный профиль и точная геометрия под чистовую отделку."
   },
   {
     image: "/assets/portfolio/portfolio-2.jpg",
     alt: "Консольные ступени с подсветкой и чистыми линиями",
     title: "Консольные ступени с подсветкой",
-    text: "Скрытые закладные, инженерный расчет узлов, подготовка под дизайнерскую отделку."
-  },
-  {
-    image: "/assets/portfolio/portfolio-3.jpg",
-    alt: "Г-образная лестница с точной геометрией поворота",
-    title: "Лестница с забежными ступенями",
-    text: "Классический силуэт и максимум комфорта: элегантно, воздушно и удобно — монолит может выглядеть легким."
+    text: "Скрытые закладные, инженерный расчет узлов и подготовка под дизайнерскую отделку."
   },
   {
     image: "/assets/portfolio/portfolio-4.jpg",
     alt: "Монолитная лестница с широкой площадкой и комфортным подъемом",
     title: "Парящие ступени на боковом косоуре",
-    text: "Максимум дизайна при самой простой конфигурации лестницы."
-  },
-  {
-    image: "/assets/portfolio/portfolio-5.jpg",
-    alt: "Парящий марш на скрытом каркасе с тонким профилем",
-    title: "Винтовая лестница в квартире",
-    text: "Минимум места, максимум комфорта."
+    text: "Дизайнерский акцент при лаконичной и надежной конструктивной схеме."
   },
   {
     image: "/assets/portfolio/portfolio-6.jpg",
     alt: "П-образная лестница с разворотом и компактной посадкой",
     title: "П-образная лестница с разворотом",
-    text: "Компактная посадка и четкий ритм ступеней."
+    text: "Компактная посадка и комфортный шаг для ежедневного использования."
   }
 ];
 
@@ -83,54 +71,80 @@ const types = [
     alt: "Полувинтовая",
     title: "Полувинтовая",
     gallery: ["/assets/catalog-gallery/half-spiral/1.jpg", "/assets/catalog-gallery/half-spiral/2.jpg"]
-  },
-  {
-    icon: "/assets/catalog/catalog-7.png",
-    alt: "Винтовая",
-    title: "Винтовая",
-    gallery: ["/assets/catalog-gallery/spiral/1.jpg", "/assets/catalog-gallery/spiral/2.jpg"]
-  },
-  {
-    icon: "/assets/catalog/catalog-8.png",
-    alt: "Крыльцо и входная группа",
-    title: "Крыльцо / входная группа",
-    gallery: ["/assets/catalog-gallery/porch/1.jpg", "/assets/catalog-gallery/porch/2.jpg"]
   }
-];
-
-const benefits = [
-  { icon: "/assets/icons/ic-6.png", alt: "Надежность", title: "Прочность", text: "Монолитная конструкция рассчитана на долгий срок эксплуатации." },
-  { icon: "/assets/icons/ic-7.png", alt: "Экологичность", title: "Экологичность", text: "Бетон безопасен для жилых помещений и не выделяет вредных веществ." },
-  { icon: "/assets/icons/ic-8.png", alt: "Звукоизоляция", title: "Тишина", text: "Хорошая звукоизоляция снижает шум при ежедневном использовании." },
-  { icon: "/assets/icons/ic-9.png", alt: "Конструктив", title: "Надежный конструктив", text: "Проектируем узлы так, чтобы лестница работала как единая инженерная система." },
-  { icon: "/assets/icons/ic-10.png", alt: "Дизайн", title: "Гибкий дизайн", text: "От строгого минимализма до сложной архитектурной пластики." }
 ];
 
 const faqItems = [
   {
     id: "faq-1",
-    question: "Сколько занимает изготовление?",
-    answer: "В среднем 2-3 дня на объекте после готовности опалубки и согласованного проекта."
+    question: "Сколько занимает изготовление лестницы?",
+    answer: "Обычно 2-3 дня на объекте после согласования геометрии и готовности к старту работ."
   },
   {
     id: "faq-2",
-    question: "Можно ли изготовить монолитную лестницу при деревянных перекрытиях?",
-    answer: "Да, возможно, но проект требуется рассчитывать индивидуально. Важно правильно распределить нагрузки и предусмотреть конструктивные узлы — это решается на стадии проекта."
+    question: "Можно ли сделать лестницу при сложном проёме?",
+    answer: "Да. Сначала рассчитываем нагрузку и узлы, затем предлагаем рабочую конструктивную схему под ваш объект."
   },
   {
     id: "faq-3",
-    question: "Как выглядит путь от пустого пролета до готовой лестницы?",
-    answer: "Замер и обсуждение → проект и согласование геометрии → армирование и бетонирование → приемка и рекомендации по отделке."
+    question: "Что нужно отправить для предварительного расчета?",
+    answer: "Фото/видео проема, высоту между этажами, желаемый тип лестницы и ориентир по срокам."
   },
   {
     id: "faq-4",
-    question: "Будет ли бетонная лестница слишком тяжёлой для моего дома и какие требования к основанию?",
-    answer: "Мы считаем нагрузку под ваш дом: если основание слабое, усиливаем опоры или меняем схему опирания лестницы, чтобы конструкция была безопасной."
+    question: "Почему часть ваших объектов встречается на других ресурсах?",
+    answer: "Часть работ выполнена как подрядные проекты. По запросу подтверждаем авторство конкретного объекта."
+  }
+];
+
+const infoLinks = [
+  {
+    title: "Вопросы и решения",
+    text: "Если сомневаетесь в конструкции, сроках или безопасности, начните с этой страницы.",
+    href: "/questions"
   },
   {
-    id: "faq-5",
-    question: "Почему ваши объекты встречаются на других сайтах?",
-    answer: "Часть проектов выполнялась нами в формате подрядных работ, поэтому фото могут публиковаться на других ресурсах и под другим логотипом. По запросу подтверждаем авторство конкретного объекта."
+    title: "FAQ",
+    text: "Короткие ответы на самые частые вопросы до звонка и замера.",
+    href: "/questions/faq"
+  },
+  {
+    title: "Проблемы и сложные случаи",
+    text: "Разбор нестандартных задач: сложные узлы, узкие проемы, высокая цена ошибки.",
+    href: "/questions/problems"
+  },
+  {
+    title: "Процесс по объекту",
+    text: "Пошагово: от первичных данных и расчета до армирования и сдачи конструкции.",
+    href: "/vlog/process"
+  },
+  {
+    title: "Проекты во влоге",
+    text: "Больше реальных объектов, деталей узлов и комментариев с площадки.",
+    href: "/vlog/projects"
+  },
+  {
+    title: "Статьи",
+    text: "Практика по подбору типа лестницы, подготовке проема и формированию бюджета.",
+    href: "/vlog/articles"
+  }
+];
+
+const priceCards = [
+  {
+    name: "Classic",
+    value: site.pricing.standardFrom,
+    note: "Рациональные решения с проверенной геометрией и прозрачной сметой."
+  },
+  {
+    name: "Mid",
+    value: site.pricing.midRange,
+    note: "Индивидуальные задачи средней сложности с усиленным контролем узлов."
+  },
+  {
+    name: "Signature",
+    value: site.pricing.signatureFrom,
+    note: "Сложные архитектурные объекты: парящие и консольные решения, премиальная проработка."
   }
 ];
 
@@ -175,7 +189,7 @@ export default function HomePage() {
             </p>
             <div className="hero-cta">
               <a className="btn" href="#contact">Бесплатный замер и консультация</a>
-              <a className="btn btn-ghost" href="#types">Смотреть типы лестниц</a>
+              <a className="btn btn-ghost" href="#projects">Смотреть проекты</a>
             </div>
             <div className="trust-strip">
               <div>
@@ -211,11 +225,12 @@ export default function HomePage() {
         <div className="container">
           <div className="section-head reveal-up">
             <p className="kicker">Портфолио</p>
-            <h2>Работы, которые продают качество</h2>
+            <h2>Лучшие кейсы с объектов</h2>
+            <p className="section-note">Сначала показываем реальный уровень работ: конструктив, геометрия, визуальный результат.</p>
           </div>
           <div className="project-grid">
             {projects.map((project, index) => (
-              <article key={project.title} className={`project-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}>
+              <article key={project.title} className={`project-card reveal-up ${index % 2 === 1 ? "delay-1" : ""}`.trim()}>
                 <div className="project-image">
                   <img src={assetPath(project.image)} alt={project.alt} loading="lazy" />
                 </div>
@@ -227,17 +242,17 @@ export default function HomePage() {
             ))}
           </div>
           <div className="portfolio-footer reveal-up">
-            <p>Больше реализованных работ, информации о нашей деятельности и блог — в <a className="inline-link" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>.</p>
+            <p>Смотреть больше реализованных объектов можно в разделе <a className="inline-link" href="/portfolio/projects">Проекты</a> и во <a className="inline-link" href="/vlog/projects">влоге</a>.</p>
           </div>
-          <p className="portfolio-auth-note reveal-up">Все фото на сайте и в Instagram — реальные объекты, выполненные нашим мастером. Часть работ может встречаться на других ресурсах и под другими логотипами как подрядные проекты. Если хотите проверить конкретный объект, отправьте ссылку или фото — подтвердим, наш это проект или нет.</p>
         </div>
       </section>
 
       <section className="section section-dark" id="types">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">Каталог</p>
-            <h2>Типы лестниц</h2>
+            <p className="kicker">Типовые решения</p>
+            <h2>Классические форматы лестниц</h2>
+            <p className="section-note">Кроме сложных кейсов делаем и стандартные рабочие конфигурации для частных домов.</p>
           </div>
           <div className="types-grid">
             {types.map((type, index) => {
@@ -245,7 +260,7 @@ export default function HomePage() {
               return (
                 <article
                   key={type.title}
-                  className={`type-card reveal-up ${index % 4 === 1 ? "delay-1" : index % 4 === 2 ? "delay-2" : index % 4 === 3 ? "delay-3" : ""}`.trim()}
+                  className={`type-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}
                   data-icon={assetPath(type.icon)}
                   data-gallery={gallery}
                 >
@@ -266,7 +281,6 @@ export default function HomePage() {
             })}
           </div>
           <p className="types-note reveal-up">Откройте карточку, чтобы посмотреть реальные фото проектов.</p>
-          <p className="types-note types-note-sub reveal-up">Приведенные типы лестниц — это стандартизированные примеры. Каждый конкретный проект реализуется индивидуально под геометрию и задачи объекта.</p>
         </div>
       </section>
 
@@ -283,108 +297,117 @@ export default function HomePage() {
         </div>
       </div>
 
-      <section className="section section-accent" id="benefits">
+      <section className="section section-dark" id="prices">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">Почему бетон</p>
-            <h2>Преимущества для вашего дома</h2>
+            <p className="kicker">Ориентиры по цене</p>
+            <h2>Сколько стоит лестница и от чего зависит бюджет</h2>
           </div>
-          <div className="benefits-grid">
-            {benefits.map((benefit, index) => (
-              <article key={benefit.title} className={`benefit-card reveal-up ${index === 1 ? "delay-1" : index === 2 ? "delay-2" : index === 3 ? "delay-3" : index === 4 ? "delay-4" : ""}`.trim()}>
-                <img src={assetPath(benefit.icon)} alt={benefit.alt} loading="eager" decoding="sync" />
-                <h3>{benefit.title}</h3>
-                <p>{benefit.text}</p>
-              </article>
-            ))}
+
+          <div className="prices-wrap">
+            <article className="calculator-card reveal-up">
+              <p className="kicker">Калькулятор</p>
+              <h3>Онлайн-оценка по параметрам объекта</h3>
+              <p>[TODO: здесь будет интерактивный калькулятор расчета стоимости по типу лестницы и геометрии.]</p>
+              <a className="btn btn-small" href="/prices/calculator">Калькулятор (скоро)</a>
+            </article>
+
+            <div className="price-grid">
+              {priceCards.map((card, index) => (
+                <article key={card.name} className={`price-card reveal-up ${index === 1 ? "delay-1" : index === 2 ? "delay-2" : ""}`.trim()}>
+                  <p className="price-label">{card.name}</p>
+                  <p className="price-value">{card.value}</p>
+                  <p className="price-note">{card.note}</p>
+                </article>
+              ))}
+            </div>
           </div>
+
+          <p className="price-footnote reveal-up">На итоговую цену влияют проем, тип конструкции, армирование, подготовка основания и сложность узлов. Детальный расчет — после исходных данных.</p>
         </div>
       </section>
 
       <section className="section section-dark" id="segments">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">Линейки продукта</p>
-            <h2>Две модели внутри одного бренда</h2>
+            <p className="kicker">Форматы работы</p>
+            <h2>Classic и Signature</h2>
           </div>
           <div className="segment-grid">
             <article className="segment-card reveal-up">
-              <h3>Standard</h3>
-              <p className="segment-sub">Для тех, кому важен баланс цены и надежности</p>
+              <h3>Classic</h3>
+              <p className="segment-sub">Рациональный подход для типовых и умеренно сложных объектов</p>
               <ul>
-                <li>Типовые проверенные конфигурации</li>
-                <li>Быстрые сроки старта</li>
-                <li>Фиксированная логика сметы</li>
-                <li>Оптимально для частных домов</li>
+                <li>Проверенные конфигурации</li>
+                <li>Прозрачная смета</li>
+                <li>Оптимальный баланс цены и надежности</li>
               </ul>
             </article>
             <article className="segment-card featured reveal-up delay-1">
               <h3>Signature</h3>
-              <p className="segment-sub">Для архитектурно сложных и премиальных проектов</p>
+              <p className="segment-sub">Сложные архитектурные решения с повышенной инженерной детализацией</p>
               <ul>
-                <li>Индивидуальная инженерная проработка</li>
-                <li>Парящие и консольные решения</li>
-                <li>Работа с дизайнером/архитектором</li>
-                <li>Расширенный контроль качества</li>
+                <li>Консольные и парящие узлы</li>
+                <li>Индивидуальная проработка под объект</li>
+                <li>Расширенный контроль ключевых этапов</li>
               </ul>
             </article>
           </div>
         </div>
       </section>
 
-      <section className="section section-accent" id="master">
-        <div className="container master-wrap reveal-up">
-          <div className="master-text">
-            <p className="kicker">Ключевое лицо компании</p>
-            <h2>Мастер в центре бренда</h2>
-            <p>
-              Ваше сильнейшее преимущество не только бетон и технология, а опыт мастера, который сделал
-              более 1000 лестниц за 15+ лет практики. Мастер в одном лице — персональный гарант результата:
-              объясняет решения, показывает кейсы и ведет клиента к сделке.
-            </p>
-            <ul className="master-points">
-              <li>Личный разбор сложных проектов</li>
-              <li>Видео-комментарии по каждому кейсу</li>
-              <li>Публичный стандарт качества работ</li>
+      <section className="section section-accent" id="guarantee">
+        <div className="container guarantee-wrap">
+          <article className="guarantee-card reveal-up">
+            <p className="kicker">Гарантия</p>
+            <h2>Договор, ответственность и контроль качества</h2>
+            <p>Работаем по договору подряда ИП. До начала работ фиксируем объем, этапы и смету.</p>
+            <ul className="guarantee-list">
+              <li>Гарантия на конструктив: {site.warrantyTerm}</li>
+              <li>Прозрачные этапы и фиксация договоренностей</li>
+              <li>Подготовка под отделку: дерево, камень, плитка</li>
+              <li>Облицовочные работы не выполняем, но даем корректную подготовку под подрядчика</li>
             </ul>
-            <a className="btn master-cta" href="#contact">Запросить консультацию мастера</a>
-          </div>
-          <div className="master-photo-card">
+            <a className="btn btn-small" href="/prices/guarantee">Подробнее о гарантии и договоре</a>
+          </article>
+
+          <div className="master-photo-card reveal-up delay-1">
             <div className="master-photo">
               <img src={assetPath("/assets/master.jpg")} alt="Максим Владимирович Соколовский" />
             </div>
             <div className="master-bio">
               <h3>Максим Владимирович Соколовский</h3>
-              <p>Инженер‑конструктор. Более 30 лет в профессиональном строительстве: от сложных монолитных конструкций до частной архитектуры. Сегодня концентрируется на бетонных лестницах, доводя геометрию, прочность и внешний вид до инженерного совершенства.</p>
+              <p>Инженер‑конструктор. Более 30 лет в профессиональном строительстве и более 15 лет специализации на бетонных лестницах.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section section-dark" id="consult">
-        <div className="container consult-wrap reveal-up">
-          <div>
-            <p className="kicker">Оценка по телефону</p>
-            <h2>Мастер сориентирует по стоимости даже по описанию</h2>
-            <p className="lead">Позвоните в удобное время, расскажите про объект — получите ориентир по цене, срокам и возможным решениям.</p>
-          </div>
-          <div className="consult-card">
-            <p className="consult-label">Связь с мастером: Максим Владимирович.</p>
-            <a className="btn" href="tel:+375296512022">+375 (29) 651 20 22</a>
-            <p className="consult-note">Можно прислать фото/план в Telegram, WhatsApp, Viber или Instagram.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section-dark" id="faq">
+      <section className="section section-dark" id="more-info">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">FAQ</p>
-            <h2>Частые вопросы клиентов</h2>
+            <p className="kicker">Узнать больше</p>
+            <h2>Дополнительная информация по выбору, рискам и процессу</h2>
+            <p className="section-note">Если хотите глубже разобраться перед заявкой, начните с нужного раздела.</p>
+          </div>
+
+          <div className="info-grid">
+            {infoLinks.map((item, index) => (
+              <article key={item.title} className={`info-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <a className="inline-link" href={item.href}>Перейти в раздел</a>
+              </article>
+            ))}
+          </div>
+
+          <div className="section-head faq-compact-head reveal-up">
+            <p className="kicker">Короткий FAQ</p>
+            <h2>Самые частые вопросы перед заявкой</h2>
           </div>
           <div className="faq-grid">
             {faqItems.map((item, index) => (
-              <details key={item.id} className={`faq-item reveal-up ${index === 1 || index === 4 ? "delay-1" : index === 2 ? "delay-2" : ""}`.trim()}>
+              <details key={item.id} className={`faq-item reveal-up ${index === 1 ? "delay-1" : index === 2 ? "delay-2" : ""}`.trim()}>
                 <summary>{item.question}</summary>
                 <div className="faq-answer">
                   <p>{item.answer}</p>
