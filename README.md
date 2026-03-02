@@ -54,16 +54,30 @@ npm run i18n:extract
   - `localeLinks.ru`
   - `localeLinks.en`
 
-## GitHub Pages (с basePath)
+## GitHub Pages (автодеплой из `main`)
 
-1. Для репозитория `repo-name` задайте env при сборке:
+Репозиторий настроен на деплой через GitHub Actions:
+- workflow: [`.github/workflows/deploy-pages.yml`](./.github/workflows/deploy-pages.yml)
+- триггер: каждый `push` в ветку `main`
+- публикация: артефакт из `out/`
 
-```bash
-NEXT_PUBLIC_BASE_PATH=/repo-name npm run build
+Что нужно сделать один раз в GitHub:
+1. `Settings -> Pages -> Source`: выбрать `GitHub Actions`.
+2. Убедиться, что Actions имеют право деплоя Pages (по умолчанию для owner/repo обычно уже включено).
+
+Локально ничего коммитить из `out/`/`docs/` не нужно — это собирается в CI.
+
+Если проект будет жить в подпапке (`https://user.github.io/repo-name/`), поменяйте в workflow переменную:
+
+```yaml
+NEXT_PUBLIC_BASE_PATH: "/repo-name"
 ```
 
-2. Задеплойте содержимое `out/` в GitHub Pages.
-3. Убедитесь, что `content/site.json -> baseUrl` указывает на публичный домен.
+Для custom domain (например, `https://betostep.by`) оставьте пустую:
+
+```yaml
+NEXT_PUBLIC_BASE_PATH: ""
+```
 
 ## Serverless endpoint (Vercel)
 

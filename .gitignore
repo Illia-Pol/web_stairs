@@ -30,6 +30,8 @@ node_modules/
 # Build / cache outputs
 dist/
 build/
+out/
+docs/
 coverage/
 .cache/
 .parcel-cache/
