@@ -223,21 +223,20 @@ function initCatalogGallery() {
   const nextBtn = document.getElementById("catalog-next");
   if (!modal || !modalImg || !caption || !prevBtn || !nextBtn) return;
 
-  let activeSlides = [];
-  let activeTitle = "";
+  const allSlides = [];
+  const cardEntries = [];
   let currentIndex = 0;
 
   const renderModal = () => {
-    const src = activeSlides[currentIndex];
-    if (!src) return;
-    modalImg.src = src;
-    caption.textContent = `${activeTitle} · Фото ${currentIndex + 1} из ${activeSlides.length}`;
+    const slide = allSlides[currentIndex];
+    if (!slide) return;
+    modalImg.src = slide.src;
+    caption.textContent = `Фото ${currentIndex + 1} из ${allSlides.length} · ${slide.title}`;
   };
 
-  const openModal = (slides, title) => {
-    activeSlides = slides;
-    activeTitle = title;
-    currentIndex = 0;
+  const openModal = (startIndex) => {
+    if (!allSlides.length) return;
+    currentIndex = startIndex;
     renderModal();
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
@@ -251,8 +250,8 @@ function initCatalogGallery() {
   };
 
   const step = (delta) => {
-    if (!activeSlides.length) return;
-    currentIndex = (currentIndex + delta + activeSlides.length) % activeSlides.length;
+    if (!allSlides.length) return;
+    currentIndex = (currentIndex + delta + allSlides.length) % allSlides.length;
     renderModal();
   };
 
@@ -277,20 +276,30 @@ function initCatalogGallery() {
     const gallery = raw.split("|").map((item) => item.trim()).filter(Boolean);
     if (!gallery.length) return;
 
+    const globalIndexes = gallery.map((src) => {
+      allSlides.push({ src, title });
+      return allSlides.length - 1;
+    });
+    cardEntries.push({ card, gallery, globalIndexes, title });
+  });
+
+  cardEntries.forEach(({ card, gallery, globalIndexes }) => {
+    const firstSlideIndex = globalIndexes[0];
+
     const dots = card.querySelector(".type-dots");
     if (dots && !dots.querySelector(".type-open-btn")) {
       const openBtn = document.createElement("button");
       openBtn.type = "button";
       openBtn.className = "type-open-btn";
-      openBtn.textContent = "Открыть фото";
+      openBtn.textContent = card.dataset.openLabel || "Открыть фото";
       dots.appendChild(openBtn);
       openBtn.addEventListener("click", (event) => {
         event.stopPropagation();
-        openModal(gallery, title);
+        openModal(firstSlideIndex);
       });
     }
 
-    card.addEventListener("click", () => openModal(gallery, title));
+    card.addEventListener("click", () => openModal(firstSlideIndex));
   });
 }
 

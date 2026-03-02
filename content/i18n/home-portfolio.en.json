@@ -1,0 +1,38 @@
+{
+  "section_kicker": "Portfolio",
+  "section_title": "Best completed projects",
+  "section_note": "We start with real work quality: structure, geometry, and final visual result.",
+
+  "project_1_alt": "Floating staircase in a modern interior",
+  "project_1_title": "Floating staircase in a private house",
+  "project_1_text": "Minimal profile and precise geometry prepared for final finishing.",
+
+  "project_2_alt": "Cantilever steps with lighting and clean lines",
+  "project_2_title": "Cantilever steps with lighting",
+  "project_2_text": "Hidden embedded parts, engineering node calculations, and preparation for designer finishing.",
+
+  "project_3_alt": "L-shaped staircase with precise turn geometry",
+  "project_3_title": "Winder staircase",
+  "project_3_text": "Classic silhouette and daily comfort: elegant, light-looking, and convenient in use.",
+
+  "project_4_alt": "Monolithic staircase with a wide landing and comfortable rise",
+  "project_4_title": "Floating steps on side stringer",
+  "project_4_text": "A strong design accent with a concise and reliable structural scheme.",
+
+  "project_5_alt": "Floating flight on a hidden frame with a thin profile",
+  "project_5_title": "Spiral staircase in an apartment",
+  "project_5_text": "Minimum space usage with maximum comfort and expressive interior form.",
+
+  "project_6_alt": "U-shaped staircase with turn and compact footprint",
+  "project_6_title": "U-shaped staircase with turn",
+  "project_6_text": "Compact layout and comfortable step rhythm for everyday use.",
+
+  "footer_line_start": "See more completed projects in",
+  "footer_link_projects": "Projects",
+  "footer_line_middle": "in",
+  "footer_link_vlog": "Vlog",
+  "footer_line_end": "and on",
+  "footer_link_instagram": "Instagram",
+
+  "auth_note": "Our work may appear on other websites and under other brands, as part of the projects were delivered in a subcontractor format. We can confirm authorship for a specific project on request."
+}

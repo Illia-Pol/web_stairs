@@ -292,7 +292,7 @@ a {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.6em;
+  top: 50%;
   width: 0.42rem;
   height: 0.42rem;
   border-radius: 999px;
@@ -543,11 +543,15 @@ a {
 .catalog-modal__dialog {
   position: relative;
   width: min(920px, 100%);
+  max-height: calc(100dvh - 2rem);
   border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: #111417;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .catalog-modal__close {
@@ -567,15 +571,23 @@ a {
   grid-template-columns: 42px minmax(0, 1fr) 42px;
   align-items: center;
   gap: 0.75rem;
-  min-height: clamp(280px, 58vh, 620px);
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
 }
 
 .catalog-modal__media img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100dvh - 210px);
   object-fit: contain;
+  object-position: center;
   border-radius: 12px;
   background: #0a0d10;
+  justify-self: center;
+  align-self: center;
+  display: block;
 }
 
 .catalog-modal__nav {
@@ -594,6 +606,7 @@ a {
   text-align: center;
   color: var(--ink-soft);
   font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 .types-note {
@@ -1194,9 +1207,12 @@ textarea {
   .contact-grid,
   .project-grid,
   .segment-grid,
-  .types-grid,
   .faq-grid {
     grid-template-columns: 1fr;
+  }
+
+  .types-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .benefits-grid {
@@ -1216,6 +1232,10 @@ textarea {
   .footer-wrap {
     flex-direction: column;
   }
+
+  .project-grid-home > :nth-child(n + 4) {
+    display: none;
+  }
 }
 
 @media (max-width: 620px) {
@@ -1226,6 +1246,11 @@ textarea {
   .trust-strip,
   .benefits-grid {
     grid-template-columns: 1fr;
+  }
+
+  .types-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
 
   .phone-input-row {
@@ -1248,12 +1273,18 @@ textarea {
 
   .catalog-modal__dialog {
     padding: 0.8rem;
+    max-height: calc(100dvh - 1.4rem);
   }
 
   .catalog-modal__media {
     grid-template-columns: 36px minmax(0, 1fr) 36px;
-    min-height: clamp(240px, 52vh, 500px);
+    flex: 1;
+    min-height: 0;
     gap: 0.45rem;
+  }
+
+  .catalog-modal__media img {
+    max-height: calc(100dvh - 190px);
   }
 
   .catalog-modal__nav {
