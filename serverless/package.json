@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "formidable": "^3.5.2",
     "zod": "^3.24.1"
   }
 }

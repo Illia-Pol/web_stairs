@@ -39,5 +39,13 @@
   "form_msg_lead_phone": "Phone",
   "form_msg_lead_region": "Region",
   "form_msg_lead_comment": "Comment",
-  "form_msg_lead_files": "Photos/files"
+  "form_msg_lead_files": "Photos/files",
+
+  "form_msg_submit_success": "Request sent. Thank you! We will contact you shortly.",
+  "form_msg_submit_error": "Automatic sending failed. Telegram will open now so you can submit manually.",
+  "form_msg_submit_fallback_btn": "Send in Telegram now",
+  "form_msg_submit_copy_btn": "Copy request text",
+  "form_msg_submit_copy_success": "Request text copied",
+  "form_msg_submit_sending": "Sending...",
+  "form_msg_submit_default": "Send request"
 }

@@ -1,8 +1,12 @@
+const fs = require("node:fs/promises");
+const formidable = require("formidable");
 const { z } = require("zod");
 
 const RATE_WINDOW_MS = 60_000;
 const RATE_LIMIT = 10;
 const TELEGRAM_TIMEOUT_MS = 7_000;
+const MAX_FILES = 8;
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 
 const LeadPayloadSchema = z.object({
   name: z.string().trim().max(80).optional().default(""),
@@ -79,6 +83,13 @@ function normalizeText(value) {
   return String(value).replace(/\r/g, "").trim();
 }
 
+function firstValue(value) {
+  if (Array.isArray(value)) {
+    return value[0] ?? "";
+  }
+  return value ?? "";
+}
+
 function parseRequestBody(req) {
   const { body } = req;
 
@@ -103,6 +114,47 @@ function parseRequestBody(req) {
   if (typeof body === "object") return body;
 
   throw new Error("BAD_BODY");
+}
+
+async function parseMultipartForm(req) {
+  const form = formidable({
+    multiples: true,
+    maxFiles: MAX_FILES,
+    maxFileSize: MAX_FILE_SIZE_BYTES,
+    allowEmptyFiles: false
+  });
+
+  const { fields, files } = await new Promise((resolve, reject) => {
+    form.parse(req, (error, parsedFields, parsedFiles) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve({ fields: parsedFields, files: parsedFiles });
+    });
+  });
+
+  const normalizedFields = {
+    name: String(firstValue(fields.name || "")).trim(),
+    phone: String(firstValue(fields.phone || "")).trim(),
+    city: String(firstValue(fields.city || "")).trim(),
+    message: String(firstValue(fields.message || "")).trim(),
+    pageUrl: String(firstValue(fields.pageUrl || "")).trim(),
+    source: String(firstValue(fields.source || "")).trim(),
+    honeypot: String(firstValue(fields.honeypot || "")).trim()
+  };
+
+  const rawFiles = files.files;
+  const normalizedFiles = Array.isArray(rawFiles)
+    ? rawFiles
+    : rawFiles
+      ? [rawFiles]
+      : [];
+
+  return {
+    fields: normalizedFields,
+    files: normalizedFiles
+  };
 }
 
 function buildMessage(data) {
@@ -161,6 +213,76 @@ async function sendTelegramMessage({ botToken, chatId, text }) {
   }
 }
 
+async function sendTelegramPhotos({ botToken, chatId, files }) {
+  if (!Array.isArray(files) || files.length === 0) {
+    return { ok: true };
+  }
+
+  const media = [];
+  const formData = new FormData();
+
+  for (let index = 0; index < files.length; index += 1) {
+    const file = files[index];
+    const filePath = file?.filepath;
+    if (!filePath) {
+      continue;
+    }
+
+    const content = await fs.readFile(filePath);
+    const mimeType = file.mimetype || "application/octet-stream";
+    const filename = file.originalFilename || `lead-photo-${index + 1}.jpg`;
+    const attachKey = `file${index}`;
+
+    formData.append(attachKey, new Blob([content], { type: mimeType }), filename);
+    media.push({
+      type: "photo",
+      media: `attach://${attachKey}`
+    });
+  }
+
+  if (media.length === 0) {
+    return { ok: true };
+  }
+
+  formData.append("chat_id", chatId);
+  formData.append("media", JSON.stringify(media));
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), TELEGRAM_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMediaGroup`, {
+      method: "POST",
+      body: formData,
+      signal: controller.signal
+    });
+
+    if (!response.ok) {
+      return { ok: false, error: "TELEGRAM_MEDIA_API_ERROR" };
+    }
+
+    let parsed = null;
+    try {
+      parsed = await response.json();
+    } catch {
+      return { ok: false, error: "TELEGRAM_MEDIA_BAD_RESPONSE" };
+    }
+
+    if (!parsed || parsed.ok !== true) {
+      return { ok: false, error: "TELEGRAM_MEDIA_NOT_OK" };
+    }
+
+    return { ok: true };
+  } catch (error) {
+    if (error && typeof error === "object" && error.name === "AbortError") {
+      return { ok: false, error: "TELEGRAM_MEDIA_TIMEOUT" };
+    }
+    return { ok: false, error: "TELEGRAM_MEDIA_REQUEST_FAILED" };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 module.exports = async function handler(req, res) {
   const allowedOrigins = parseAllowedOrigins(process.env.CORS_ALLOW_ORIGINS);
   const corsState = setCorsHeaders(req, res, allowedOrigins);
@@ -185,11 +307,19 @@ module.exports = async function handler(req, res) {
     return res.status(429).json({ ok: false, error: "RATE_LIMIT" });
   }
 
+  const contentType = String(req.headers["content-type"] || "");
   let parsedBody = {};
+  let uploadedFiles = [];
   try {
-    parsedBody = parseRequestBody(req);
+    if (contentType.includes("multipart/form-data")) {
+      const multipart = await parseMultipartForm(req);
+      parsedBody = multipart.fields;
+      uploadedFiles = multipart.files;
+    } else {
+      parsedBody = parseRequestBody(req);
+    }
   } catch {
-    return res.status(400).json({ ok: false, error: "INVALID_JSON" });
+    return res.status(400).json({ ok: false, error: "INVALID_BODY" });
   }
 
   const parsed = LeadPayloadSchema.safeParse(parsedBody);
@@ -219,6 +349,16 @@ module.exports = async function handler(req, res) {
 
   if (!telegramResult.ok) {
     return res.status(502).json({ ok: false, error: telegramResult.error });
+  }
+
+  const mediaResult = await sendTelegramPhotos({
+    botToken,
+    chatId,
+    files: uploadedFiles
+  });
+
+  if (!mediaResult.ok) {
+    return res.status(502).json({ ok: false, error: mediaResult.error });
   }
 
   return res.status(200).json({ ok: true });

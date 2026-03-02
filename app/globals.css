@@ -1360,6 +1360,13 @@ textarea {
   gap: 0.7rem;
 }
 
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .photo-picker-row {
   margin-top: 0.65rem;
   display: flex;
@@ -1458,6 +1465,29 @@ textarea {
 
 .photo-picker-status.is-error {
   color: #f0c18b;
+}
+
+.lead-submit-status {
+  margin-top: 0.55rem;
+  min-height: 1.25rem;
+  font-size: 0.82rem;
+  color: rgba(244, 242, 238, 0.84);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.lead-submit-status.is-success {
+  color: #7dd39f;
+}
+
+.lead-submit-status.is-error {
+  color: #f0c18b;
+}
+
+.lead-fallback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .form-note {

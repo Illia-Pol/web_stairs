@@ -48,10 +48,18 @@ function initLeadForm() {
   if (!form) return;
   const phoneCodeField = document.getElementById("phone-code");
   const phoneField = document.getElementById("phone");
+  const submitButton = form.querySelector('button[type="submit"]');
   const photoInput = document.getElementById("photo-files");
   const photoAddBtn = document.getElementById("photo-add-btn");
   const photoPreviewStrip = document.getElementById("photo-preview-strip");
   const photoPickerStatus = document.getElementById("photo-picker-status");
+  const submitStatus = document.getElementById("lead-submit-status");
+  const honeypotField = document.getElementById("honeypot");
+
+  const REQUEST_TIMEOUT_MS = 7000;
+  const REDIRECT_DELAY_MS = 1000;
+  const defaultSubmitLabel = form.dataset.msgSubmitDefault || (submitButton ? submitButton.textContent.trim() : "Отправить заявку");
+  const sendingSubmitLabel = form.dataset.msgSubmitSending || "Отправка...";
 
   const MAX_PHOTO_COUNT = 8;
   const MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024;
@@ -73,14 +81,95 @@ function initLeadForm() {
     leadPhone: form.dataset.msgLeadPhone || "Телефон",
     leadRegion: form.dataset.msgLeadRegion || "Регион",
     leadComment: form.dataset.msgLeadComment || "Комментарий",
-    leadFiles: form.dataset.msgLeadFiles || "Фото/файлы"
+    leadFiles: form.dataset.msgLeadFiles || "Фото/файлы",
+    submitSuccess: form.dataset.msgSubmitSuccess || "Заявка отправлена. Спасибо! Мы свяжемся с вами в ближайшее время.",
+    submitError: form.dataset.msgSubmitError || "Не удалось отправить автоматически. Сейчас откроется Telegram, чтобы отправить заявку вручную.",
+    submitFallbackBtn: form.dataset.msgSubmitFallbackBtn || "Отправить в Telegram сейчас",
+    submitCopyBtn: form.dataset.msgSubmitCopyBtn || "Скопировать текст заявки",
+    submitCopySuccess: form.dataset.msgSubmitCopySuccess || "Текст заявки скопирован"
   };
+
+  const endpoint = form.dataset.leadEndpoint || "";
+  const fallbackMode = form.dataset.telegramFallbackMode || "auto_redirect";
+  const fallbackUsername = form.dataset.telegramFallbackUsername || "";
+  const fallbackUrl = form.dataset.telegramFallbackUrl || CONTACTS.telegram;
 
   const applyTokens = (template, tokens) => {
     if (!tokens) return template;
     return Object.entries(tokens).reduce((acc, [key, value]) => {
       return acc.replaceAll(`{{${key}}}`, String(value));
     }, template);
+  };
+
+  const isPlaceholder = (value) => typeof value === "string" && value.includes("{{") && value.includes("}}");
+
+  const extractTelegramUsername = (value) => {
+    if (!value || isPlaceholder(value)) return "";
+    return value
+      .trim()
+      .replace(/^https?:\/\/t\.me\//, "")
+      .replace(/^@/, "")
+      .replace(/\?.*$/, "")
+      .replace(/\/$/, "");
+  };
+
+  const buildTelegramFallbackLink = (text) => {
+    const encodedText = encodeURIComponent(text);
+    const username = extractTelegramUsername(fallbackUsername) || extractTelegramUsername(fallbackUrl);
+    if (username) {
+      return `https://t.me/${username}?text=${encodedText}`;
+    }
+    const base = !isPlaceholder(fallbackUrl) && fallbackUrl ? fallbackUrl : CONTACTS.telegram;
+    const joinSymbol = base.includes("?") ? "&" : "?";
+    return `${base}${joinSymbol}text=${encodedText}`;
+  };
+
+  const setSubmitState = ({ type = "idle", message = "", fallbackLink = "", fallbackText = "" } = {}) => {
+    if (!submitStatus) return;
+    submitStatus.textContent = "";
+    submitStatus.classList.remove("is-error", "is-success");
+    submitStatus.innerHTML = "";
+    if (!message) return;
+
+    submitStatus.classList.add(type === "error" ? "is-error" : type === "success" ? "is-success" : "");
+    const textNode = document.createElement("p");
+    textNode.textContent = message;
+    submitStatus.appendChild(textNode);
+
+    if (type !== "error" || !fallbackLink) return;
+
+    const actions = document.createElement("div");
+    actions.className = "lead-fallback-actions";
+
+    const tgBtn = document.createElement("a");
+    tgBtn.href = fallbackLink;
+    tgBtn.target = "_blank";
+    tgBtn.rel = "noreferrer";
+    tgBtn.className = "btn btn-small";
+    tgBtn.textContent = msg.submitFallbackBtn;
+    actions.appendChild(tgBtn);
+
+    const copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "btn btn-small";
+    copyBtn.textContent = msg.submitCopyBtn;
+    copyBtn.addEventListener("click", async () => {
+      try {
+        if (!navigator?.clipboard) return;
+        await navigator.clipboard.writeText(fallbackText);
+        copyBtn.textContent = msg.submitCopySuccess;
+      } catch {
+        // ignore clipboard errors
+      }
+    });
+    actions.appendChild(copyBtn);
+    submitStatus.appendChild(actions);
+  };
+
+  const setSubmitting = (loading) => {
+    if (!submitButton) return;
+    submitButton.disabled = Boolean(loading);
+    submitButton.textContent = loading ? sendingSubmitLabel : defaultSubmitLabel;
   };
 
   const phoneFormats = {
@@ -265,8 +354,9 @@ function initLeadForm() {
     field.addEventListener("blur", () => validateField(field, message, validate, invalidMessage));
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    setSubmitState();
 
     let isValid = true;
     let firstInvalid = null;
@@ -292,6 +382,7 @@ function initLeadForm() {
     const phone = localPhone.startsWith("+") ? localPhone : `${phoneCode} ${localPhone}`.trim();
     const region = document.getElementById("region").value.trim();
     const message = document.getElementById("message").value.trim();
+    const honeypot = honeypotField ? honeypotField.value.trim() : "";
     const photoSummary = selectedPhotos.length
       ? selectedPhotos.map((file) => file.name).join(", ")
       : "-";
@@ -305,12 +396,78 @@ function initLeadForm() {
       `${msg.leadFiles}: ${photoSummary}`
     ].join("\n");
 
-    const url = `${CONTACTS.telegram}?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    const telegramLink = buildTelegramFallbackLink(text);
+    const payload = {
+      name,
+      phone,
+      city: region,
+      message: message
+        ? `${message}\n\n${msg.leadFiles}: ${photoSummary}`
+        : `${msg.leadFiles}: ${photoSummary}`,
+      pageUrl: window.location.href,
+      source: "home_form",
+      honeypot
+    };
 
-    selectedPhotos = [];
-    renderPhotoPreviews();
-    setPhotoStatus("");
+    const requestBody = new FormData();
+    requestBody.append("name", payload.name);
+    requestBody.append("phone", payload.phone);
+    requestBody.append("city", payload.city);
+    requestBody.append("message", payload.message);
+    requestBody.append("pageUrl", payload.pageUrl);
+    requestBody.append("source", payload.source);
+    requestBody.append("honeypot", payload.honeypot);
+    selectedPhotos.forEach((file) => {
+      requestBody.append("files", file, file.name);
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+    try {
+      setSubmitting(true);
+      if (!endpoint || isPlaceholder(endpoint)) {
+        throw new Error("LEAD_ENDPOINT_NOT_CONFIGURED");
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: requestBody,
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP_${response.status}`);
+      }
+
+      const result = await response.json();
+      if (!result || result.ok !== true) {
+        throw new Error("ENDPOINT_RESPONSE_NOT_OK");
+      }
+
+      setSubmitState({ type: "success", message: msg.submitSuccess });
+      form.reset();
+      updatePhoneFormat();
+      selectedPhotos = [];
+      renderPhotoPreviews();
+      setPhotoStatus("");
+    } catch {
+      setSubmitState({
+        type: "error",
+        message: msg.submitError,
+        fallbackLink: telegramLink,
+        fallbackText: text
+      });
+
+      if (fallbackMode === "auto_redirect") {
+        window.setTimeout(() => {
+          window.location.href = telegramLink;
+        }, REDIRECT_DELAY_MS);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setSubmitting(false);
+    }
   });
 }
 

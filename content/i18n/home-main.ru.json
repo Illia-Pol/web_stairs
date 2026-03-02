@@ -39,5 +39,13 @@
   "form_msg_lead_phone": "Телефон",
   "form_msg_lead_region": "Регион",
   "form_msg_lead_comment": "Комментарий",
-  "form_msg_lead_files": "Фото/файлы"
+  "form_msg_lead_files": "Фото/файлы",
+
+  "form_msg_submit_success": "Заявка отправлена. Спасибо! Мы свяжемся с вами в ближайшее время.",
+  "form_msg_submit_error": "Не удалось отправить автоматически. Сейчас откроется Telegram, чтобы отправить заявку вручную.",
+  "form_msg_submit_fallback_btn": "Отправить в Telegram сейчас",
+  "form_msg_submit_copy_btn": "Скопировать текст заявки",
+  "form_msg_submit_copy_success": "Текст заявки скопирован",
+  "form_msg_submit_sending": "Отправка...",
+  "form_msg_submit_default": "Отправить заявку"
 }

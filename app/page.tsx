@@ -396,6 +396,10 @@ export default function HomePage() {
             className="lead-form reveal-up delay-1"
             id="lead-form"
             noValidate
+            data-lead-endpoint={site.leadEndpoint}
+            data-telegram-fallback-username={site.telegramFallback.username}
+            data-telegram-fallback-url={site.telegramFallback.url}
+            data-telegram-fallback-mode={site.telegramFallbackMode}
             data-msg-remove-photo-aria={thm("form_msg_remove_photo_aria")}
             data-msg-photo-added={thm("form_msg_photo_added")}
             data-msg-photo-invalid-type={thm("form_msg_photo_invalid_type")}
@@ -411,6 +415,13 @@ export default function HomePage() {
             data-msg-lead-region={thm("form_msg_lead_region")}
             data-msg-lead-comment={thm("form_msg_lead_comment")}
             data-msg-lead-files={thm("form_msg_lead_files")}
+            data-msg-submit-success={thm("form_msg_submit_success")}
+            data-msg-submit-error={thm("form_msg_submit_error")}
+            data-msg-submit-fallback-btn={thm("form_msg_submit_fallback_btn")}
+            data-msg-submit-copy-btn={thm("form_msg_submit_copy_btn")}
+            data-msg-submit-copy-success={thm("form_msg_submit_copy_success")}
+            data-msg-submit-sending={thm("form_msg_submit_sending")}
+            data-msg-submit-default={thm("form_msg_submit_default")}
           >
             <label className="field">
               <span className="field-label">{thm("form_name")}</span>
@@ -440,6 +451,7 @@ export default function HomePage() {
               {thm("form_message")}
               <textarea id="message" rows={4} placeholder={thm("form_message_placeholder")} />
             </label>
+            <input id="honeypot" className="honeypot-field" type="text" autoComplete="off" tabIndex={-1} aria-hidden="true" />
             <div className="photo-picker-row">
               <input id="photo-files" className="photo-input" type="file" accept="image/*" multiple />
               <button type="button" className="photo-add-tile" id="photo-add-btn" aria-label={thm("form_add_photo_aria")}>
@@ -452,6 +464,7 @@ export default function HomePage() {
             <div className="lead-form-actions">
               <button type="submit" className="btn full">{thm("form_submit")}</button>
             </div>
+            <div className="lead-submit-status" id="lead-submit-status" aria-live="polite" />
             <p className="form-note">{thm("form_policy_prefix")} <a className="inline-link" href="/privacy">{thm("form_policy_link")}</a>.</p>
           </form>
         </div>
