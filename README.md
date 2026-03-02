@@ -8,7 +8,7 @@
 - Контент: JSON/MD в `/content` + валидация через `zod`.
 - Лид-форма: POST во внешний endpoint (`content/site.json -> leadEndpoint`).
 - Fallback при ошибке отправки: автопереход в Telegram deep link + ручная кнопка.
-- Отдельный backend: `/serverless` (Vercel Function `POST /lead`).
+- Отдельный backend: `/serverless` (Vercel Function `POST /api/lead`).
 
 ## Локальный запуск
 
@@ -76,14 +76,14 @@ NEXT_PUBLIC_BASE_PATH=/repo-name npm run build
    - `TELEGRAM_BOT_TOKEN`
    - `TELEGRAM_CHAT_ID`
 3. После деплоя получите URL вида:
-   - `https://{{VERCEL_PROJECT}}.vercel.app/lead`
+   - `https://{{VERCEL_PROJECT}}.vercel.app/api/lead`
 4. Запишите его в `content/site.json -> leadEndpoint`.
 
 ## Важные настройки контента
 
 В `content/site.json` обязательно заполнить:
 
-- `leadEndpoint`: `{{LEAD_ENDPOINT_URL}}`
+- `leadEndpoint`: `https://{{VERCEL_PROJECT}}.vercel.app/api/lead`
 - `telegramFallback.username` и/или `telegramFallback.url`
 - `telegramFallbackMode`: `auto_redirect` или `button_only`
 
