@@ -1,5 +1,5 @@
 const fs = require("node:fs/promises");
-const formidable = require("formidable");
+const formidableModule = require("formidable");
 const { z } = require("zod");
 
 const RATE_WINDOW_MS = 60_000;
@@ -29,14 +29,42 @@ function parseAllowedOrigins(raw) {
   if (!raw) return [];
   return raw
     .split(",")
-    .map((item) => item.trim())
+    .map((item) => item.trim().replace(/\/+$/, ""))
     .filter(Boolean);
+}
+
+function isLocalDevOrigin(origin) {
+  if (!origin) return false;
+  try {
+    const url = new URL(origin);
+    return ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function matchesAllowedOrigin(origin, allowedOrigins) {
+  if (!origin) return false;
+  const normalizedOrigin = origin.replace(/\/+$/, "");
+
+  if (isLocalDevOrigin(normalizedOrigin)) {
+    return true;
+  }
+
+  return allowedOrigins.some((allowed) => {
+    if (allowed === "*") return true;
+    if (allowed.endsWith(":*")) {
+      const prefix = allowed.slice(0, -1);
+      return normalizedOrigin.startsWith(prefix);
+    }
+    return normalizedOrigin === allowed;
+  });
 }
 
 function setCorsHeaders(req, res, allowedOrigins) {
   const origin = typeof req.headers.origin === "string" ? req.headers.origin : "";
   const hasAllowlist = allowedOrigins.length > 0;
-  const isOriginAllowed = !hasAllowlist || (origin && allowedOrigins.includes(origin));
+  const isOriginAllowed = !hasAllowlist || matchesAllowedOrigin(origin, allowedOrigins);
 
   if (hasAllowlist) {
     if (origin && isOriginAllowed) {
@@ -117,7 +145,10 @@ function parseRequestBody(req) {
 }
 
 async function parseMultipartForm(req) {
-  const form = formidable({
+  const createFormidable = typeof formidableModule === "function"
+    ? formidableModule
+    : formidableModule.formidable;
+  const form = createFormidable({
     multiples: true,
     maxFiles: MAX_FILES,
     maxFileSize: MAX_FILE_SIZE_BYTES,
@@ -216,6 +247,56 @@ async function sendTelegramMessage({ botToken, chatId, text }) {
 async function sendTelegramPhotos({ botToken, chatId, files }) {
   if (!Array.isArray(files) || files.length === 0) {
     return { ok: true };
+  }
+
+  if (files.length === 1) {
+    const file = files[0];
+    const filePath = file?.filepath;
+    if (!filePath) {
+      return { ok: true };
+    }
+
+    const content = await fs.readFile(filePath);
+    const mimeType = file.mimetype || "application/octet-stream";
+    const filename = file.originalFilename || "lead-photo-1.jpg";
+    const formData = new FormData();
+    formData.append("chat_id", chatId);
+    formData.append("photo", new Blob([content], { type: mimeType }), filename);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TELEGRAM_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+        method: "POST",
+        body: formData,
+        signal: controller.signal
+      });
+
+      if (!response.ok) {
+        return { ok: false, error: "TELEGRAM_PHOTO_API_ERROR" };
+      }
+
+      let parsed = null;
+      try {
+        parsed = await response.json();
+      } catch {
+        return { ok: false, error: "TELEGRAM_PHOTO_BAD_RESPONSE" };
+      }
+
+      if (!parsed || parsed.ok !== true) {
+        return { ok: false, error: "TELEGRAM_PHOTO_NOT_OK" };
+      }
+
+      return { ok: true };
+    } catch (error) {
+      if (error && typeof error === "object" && error.name === "AbortError") {
+        return { ok: false, error: "TELEGRAM_PHOTO_TIMEOUT" };
+      }
+      return { ok: false, error: "TELEGRAM_PHOTO_REQUEST_FAILED" };
+    } finally {
+      clearTimeout(timeoutId);
+    }
   }
 
   const media = [];
