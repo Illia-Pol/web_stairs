@@ -4,7 +4,7 @@
 
 ## Что делает endpoint
 
-- Маршрут: `POST /lead` (через rewrite на `api/lead.js`).
+- Маршрут: `POST /api/lead`.
 - Принимает JSON из фронтенд-формы.
 - Валидирует payload через `zod`.
 - Проверяет honeypot (если заполнен, возвращает `ok: true` без отправки).
@@ -44,7 +44,7 @@
 3. Добавьте переменные окружения (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, опционально `CORS_ALLOW_ORIGINS`).
 4. Нажмите Deploy.
 5. Получите URL вида:
-   - `https://{{VERCEL_PROJECT}}.vercel.app/lead`
+   - `https://{{VERCEL_PROJECT}}.vercel.app/api/lead`
 
 ## Привязка к фронтенду
 
@@ -52,7 +52,7 @@
 
 ```json
 {
-  "leadEndpoint": "https://{{VERCEL_PROJECT}}.vercel.app/lead",
+  "leadEndpoint": "https://{{VERCEL_PROJECT}}.vercel.app/api/lead",
   "telegramFallback": {
     "username": "{{TELEGRAM_USERNAME}}",
     "url": "https://t.me/{{TELEGRAM_USERNAME}}"
@@ -66,7 +66,7 @@
 ## Быстрая проверка endpoint
 
 ```bash
-curl -i -X POST "https://{{VERCEL_PROJECT}}.vercel.app/lead" \
+curl -i -X POST "https://{{VERCEL_PROJECT}}.vercel.app/api/lead" \
   -H "Content-Type: application/json" \
   -d '{
     "name":"Test",
