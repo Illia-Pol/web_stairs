@@ -183,7 +183,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer" className="whitespace-nowrap px-3 py-2 text-[11px]">
+          <ButtonLink href="/#contact" className="whitespace-nowrap px-3 py-2 text-[11px]">
             {th("cta_send_plan")}
           </ButtonLink>
           <LocaleSwitcher site={site} currentLocale={currentLocale} className="hidden xl:block" />
@@ -245,9 +245,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
 
           <div className="mt-3">
             <ButtonLink
-              href={site.messengers.telegram}
-              target="_blank"
-              rel="noreferrer"
+              href="/#contact"
               onClick={() => setMobileMenuOpen(false)}
               className="w-full text-xs"
             >
