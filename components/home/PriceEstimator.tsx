@@ -37,6 +37,8 @@ type BottomOption = {
 };
 
 const MIN_PRICE_BYN = 2700;
+const MIN_HEIGHT_CM = 20;
+const EASTER_EGG_HEIGHT_CM = 10000;
 
 const STAIR_OPTIONS: StairOption[] = [
   {
@@ -169,6 +171,18 @@ export function PriceEstimator() {
     if (!height) {
       setIsLoading(false);
       setResult(null);
+      return;
+    }
+
+    if (height <= MIN_HEIGHT_CM) {
+      setIsLoading(false);
+      setResult(thpr("calc_result_too_low"));
+      return;
+    }
+
+    if (height > EASTER_EGG_HEIGHT_CM) {
+      setIsLoading(false);
+      setResult(thpr("calc_result_too_high"));
       return;
     }
 
@@ -312,7 +326,11 @@ export function PriceEstimator() {
         {isLoading ? (
           <div className="calc-result-skeleton" aria-hidden="true" />
         ) : result ? (
-          <p className="calc-result-value">{thpr("calc_result_value", { VALUE: result })}</p>
+          result === thpr("calc_result_too_high") || result === thpr("calc_result_too_low") ? (
+            <p className="calc-result-error">{result}</p>
+          ) : (
+            <p className="calc-result-value">{thpr("calc_result_value", { VALUE: result })}</p>
+          )
         ) : (
           <p className="calc-result-empty">{thpr("calc_result_empty")}</p>
         )}
