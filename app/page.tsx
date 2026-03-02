@@ -377,22 +377,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section section-dark" id="contact">
+      <section className="section section-accent" id="contact">
         <div className="container contact-grid">
           <div className="reveal-up">
             <p className="kicker">{thm("contact_kicker")}</p>
-            <h2>{thm("contact_title")}</h2>
+            <h2 className="contact-title">{thm("contact_title")}</h2>
             <p>{thm("contact_text")}</p>
             <div className="contact-links">
-              <a id="phone-link" href="tel:+375296512022">+375 (29) 651 20 22</a>
-              <a id="telegram-link" href="https://t.me/Sokolmaxxx" target="_blank" rel="noreferrer">Telegram</a>
-              <a id="whatsapp-link" href="https://wa.me/375296512022" target="_blank" rel="noreferrer">WhatsApp</a>
-              <a id="viber-link" href="viber://chat?number=%2B375296512022">Viber</a>
-              <a id="instagram-link" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>
+              <a id="phone-link" className="btn btn-small contact-link-btn" href="tel:+375296512022">+375 (29) 651 20 22</a>
+              <a id="telegram-link" className="btn btn-small contact-link-btn" href="https://t.me/Sokolmaxxx" target="_blank" rel="noreferrer">Telegram</a>
+              <a id="whatsapp-link" className="btn btn-small contact-link-btn" href="https://wa.me/375296512022" target="_blank" rel="noreferrer">WhatsApp</a>
+              <a id="viber-link" className="btn btn-small contact-link-btn" href="viber://chat?number=%2B375296512022">Viber</a>
+              <a id="instagram-link" className="btn btn-small contact-link-btn" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>
             </div>
           </div>
 
-          <form className="lead-form reveal-up delay-1" id="lead-form" noValidate>
+          <form
+            className="lead-form reveal-up delay-1"
+            id="lead-form"
+            noValidate
+            data-msg-remove-photo-aria={thm("form_msg_remove_photo_aria")}
+            data-msg-photo-added={thm("form_msg_photo_added")}
+            data-msg-photo-invalid-type={thm("form_msg_photo_invalid_type")}
+            data-msg-photo-too-large={thm("form_msg_photo_too_large")}
+            data-msg-photo-max-count={thm("form_msg_photo_max_count")}
+            data-msg-name-required={thm("form_msg_name_required")}
+            data-msg-phone-required={thm("form_msg_phone_required")}
+            data-msg-phone-invalid={thm("form_msg_phone_invalid")}
+            data-msg-region-required={thm("form_msg_region_required")}
+            data-msg-lead-title={thm("form_msg_lead_title")}
+            data-msg-lead-name={thm("form_msg_lead_name")}
+            data-msg-lead-phone={thm("form_msg_lead_phone")}
+            data-msg-lead-region={thm("form_msg_lead_region")}
+            data-msg-lead-comment={thm("form_msg_lead_comment")}
+            data-msg-lead-files={thm("form_msg_lead_files")}
+          >
             <label className="field">
               <span className="field-label">{thm("form_name")}</span>
               <input type="text" id="name" required />

@@ -1,0 +1,43 @@
+{
+  "contact_kicker": "Request",
+  "contact_title": "Get an estimate and work plan",
+  "contact_text": "Leave your contacts and project parameters. We will get back to you within one business day.",
+
+  "form_name": "Your name",
+  "form_phone": "Phone",
+  "form_region": "City / region",
+  "form_message": "What needs to be done",
+  "form_message_placeholder": "Stair type, construction stage, deadlines",
+  "form_submit": "Send request",
+  "form_add_photo_aria": "Add photo/plan",
+  "form_add_photo_hint": "You can add up to 8 photos (JPG/PNG/WebP, up to 10 MB each).",
+  "form_policy_prefix": "By clicking the button, you agree with the",
+  "form_policy_link": "privacy policy",
+
+  "form_country_by": "BY +375",
+  "form_country_ru": "RU +7",
+  "form_country_pl": "PL +48",
+  "form_country_lt": "LT +370",
+  "form_country_lv": "LV +371",
+
+  "form_phone_placeholder": "29 123-45-67",
+  "form_phone_title": "Enter phone number without country code",
+
+  "form_msg_remove_photo_aria": "Remove photo",
+  "form_msg_photo_added": "Added photos: {{COUNT}}",
+  "form_msg_photo_invalid_type": "File \"{{NAME}}\" was skipped: only image files are allowed.",
+  "form_msg_photo_too_large": "File \"{{NAME}}\" was skipped: size is over 10 MB.",
+  "form_msg_photo_max_count": "You can upload no more than {{MAX}} photos.",
+
+  "form_msg_name_required": "Enter your name",
+  "form_msg_phone_required": "Enter your phone number",
+  "form_msg_phone_invalid": "Enter a valid phone number",
+  "form_msg_region_required": "Enter city / region",
+
+  "form_msg_lead_title": "New lead from website:",
+  "form_msg_lead_name": "Name",
+  "form_msg_lead_phone": "Phone",
+  "form_msg_lead_region": "Region",
+  "form_msg_lead_comment": "Comment",
+  "form_msg_lead_files": "Photos/files"
+}

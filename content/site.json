@@ -1,34 +1,34 @@
 {
   "baseUrl": "https://{{DOMAIN}}",
   "brand": {
-    "name": "{{BRAND_NAME}}",
+    "name": "BETOSTEP",
     "tagline": "Бетонные монолитные лестницы в Беларуси",
-    "founder": "{{FOUNDER_NAME}}"
+    "founder": "Максим Владимирович Соколовский"
   },
   "contacts": {
-    "phoneMain": "{{PHONE_MAIN}}",
-    "email": "{{EMAIL}}",
-    "address": "{{LEGAL_ADDRESS}}",
+    "phoneMain": "+375296512022",
+    "email": "",
+    "address": "",
     "workingHours": "Пн-Сб 09:00-20:00"
   },
   "legal": {
-    "unp": "{{UNP}}",
-    "legalAddress": "{{LEGAL_ADDRESS}}",
+    "unp": "",
+    "legalAddress": "",
     "contractModel": "Договор подряда ИП. [TODO: добавить номер регистрации и дату выдачи]"
   },
   "messengers": {
-    "telegram": "https://t.me/{{TELEGRAM_USERNAME}}",
-    "whatsapp": "https://wa.me/{{WHATSAPP_PHONE_INTL}}",
-    "viber": "viber://chat?number=%2B{{VIBER_PHONE_INTL}}"
+    "telegram": "https://t.me/Sokolmaxxx",
+    "whatsapp": "https://wa.me/375296512022",
+    "viber": "viber://chat?number=%2B375296512022"
   },
   "localeLinks": {
     "ru": "/",
-    "en": "{{EN_SITE_URL}}"
+    "en": "/?lang=en"
   },
   "leadEndpoint": "{{LEAD_ENDPOINT_URL}}",
   "telegramFallback": {
-    "username": "{{TELEGRAM_USERNAME_OR_BOT_LINK}}",
-    "url": "https://t.me/{{TELEGRAM_USERNAME_OR_BOT_LINK}}"
+    "username": "Sokolmaxxx",
+    "url": "https://t.me/Sokolmaxxx"
   },
   "telegramFallbackMode": "auto_redirect",
   "coverageRegions": "{{COVERAGE_REGIONS}}",

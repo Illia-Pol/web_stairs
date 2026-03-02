@@ -1,0 +1,24 @@
+{
+  "more_info_kicker": "Learn more",
+  "more_info_title": "Additional guidance on selection, risks, and process",
+  "more_info_note": "If you want to understand the details before requesting, start with the relevant section.",
+  "more_info_link_text": "Open section",
+
+  "info_1_title": "Questions and solutions",
+  "info_1_text": "If you are unsure about structure, timing, or safety, start here.",
+
+  "info_2_title": "FAQ",
+  "info_2_text": "Short answers to the most common questions before a call and on-site visit.",
+
+  "info_3_title": "Problems and complex cases",
+  "info_3_text": "Breakdown of non-standard tasks: complex nodes, narrow openings, high cost of mistakes.",
+
+  "info_4_title": "Project process",
+  "info_4_text": "Step-by-step: from initial data and estimate to reinforcement and handover.",
+
+  "info_5_title": "Projects in vlog",
+  "info_5_text": "More real projects, node details, and site comments.",
+
+  "info_6_title": "Articles",
+  "info_6_text": "Practical guidance on stair type selection, opening preparation, and budget planning."
+}

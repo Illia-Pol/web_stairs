@@ -1,7 +1,14 @@
+import en from "@/content/i18n/home-prices.en.json";
 import ru from "@/content/i18n/home-prices.ru.json";
+import { getLocale } from "@/lib/i18n";
 
 type HomePricesDictionary = typeof ru;
 export type HomePricesLocaleKey = keyof HomePricesDictionary;
+
+function getHomePricesDictionary() {
+  const locale = getLocale();
+  return locale === "en" ? (en as HomePricesDictionary) : (ru as HomePricesDictionary);
+}
 
 function applyTokens(template: string, tokens?: Record<string, string | number>): string {
   if (!tokens) return template;
@@ -11,6 +18,7 @@ function applyTokens(template: string, tokens?: Record<string, string | number>)
 }
 
 export function thpr(key: HomePricesLocaleKey, tokens?: Record<string, string | number>): string {
-  const value = ru[key] ?? key;
+  const dict = getHomePricesDictionary();
+  const value = dict[key] ?? ru[key] ?? key;
   return applyTokens(value, tokens);
 }

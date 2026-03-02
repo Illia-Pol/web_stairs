@@ -21,5 +21,23 @@
   "form_country_lv": "LV +371",
 
   "form_phone_placeholder": "29 123-45-67",
-  "form_phone_title": "Укажите номер без кода страны"
+  "form_phone_title": "Укажите номер без кода страны",
+
+  "form_msg_remove_photo_aria": "Удалить фото",
+  "form_msg_photo_added": "Добавлено фото: {{COUNT}}",
+  "form_msg_photo_invalid_type": "Файл \"{{NAME}}\" пропущен: нужен формат изображения.",
+  "form_msg_photo_too_large": "Файл \"{{NAME}}\" пропущен: размер больше 10 МБ.",
+  "form_msg_photo_max_count": "Можно добавить не более {{MAX}} фото.",
+
+  "form_msg_name_required": "Введите имя",
+  "form_msg_phone_required": "Введите телефон",
+  "form_msg_phone_invalid": "Введите корректный номер",
+  "form_msg_region_required": "Введите город / регион",
+
+  "form_msg_lead_title": "Новая заявка с сайта:",
+  "form_msg_lead_name": "Имя",
+  "form_msg_lead_phone": "Телефон",
+  "form_msg_lead_region": "Регион",
+  "form_msg_lead_comment": "Комментарий",
+  "form_msg_lead_files": "Фото/файлы"
 }

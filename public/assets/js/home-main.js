@@ -58,6 +58,31 @@ function initLeadForm() {
   let selectedPhotos = [];
   let previewUrls = [];
 
+  const msg = {
+    removePhotoAria: form.dataset.msgRemovePhotoAria || "Удалить фото",
+    photoAdded: form.dataset.msgPhotoAdded || "Добавлено фото: {{COUNT}}",
+    photoInvalidType: form.dataset.msgPhotoInvalidType || "Файл \"{{NAME}}\" пропущен: нужен формат изображения.",
+    photoTooLarge: form.dataset.msgPhotoTooLarge || "Файл \"{{NAME}}\" пропущен: размер больше 10 МБ.",
+    photoMaxCount: form.dataset.msgPhotoMaxCount || "Можно добавить не более {{MAX}} фото.",
+    nameRequired: form.dataset.msgNameRequired || "Введите имя",
+    phoneRequired: form.dataset.msgPhoneRequired || "Введите телефон",
+    phoneInvalid: form.dataset.msgPhoneInvalid || "Введите корректный номер",
+    regionRequired: form.dataset.msgRegionRequired || "Введите город / регион",
+    leadTitle: form.dataset.msgLeadTitle || "Новая заявка с сайта:",
+    leadName: form.dataset.msgLeadName || "Имя",
+    leadPhone: form.dataset.msgLeadPhone || "Телефон",
+    leadRegion: form.dataset.msgLeadRegion || "Регион",
+    leadComment: form.dataset.msgLeadComment || "Комментарий",
+    leadFiles: form.dataset.msgLeadFiles || "Фото/файлы"
+  };
+
+  const applyTokens = (template, tokens) => {
+    if (!tokens) return template;
+    return Object.entries(tokens).reduce((acc, [key, value]) => {
+      return acc.replaceAll(`{{${key}}}`, String(value));
+    }, template);
+  };
+
   const phoneFormats = {
     "+375": "29 123-45-67",
     "+7": "999 123-45-67",
@@ -97,6 +122,7 @@ function initLeadForm() {
     selectedPhotos.forEach((file, index) => {
       const tile = document.createElement("div");
       tile.className = "photo-preview-tile";
+      tile.dataset.index = String(index);
 
       const img = document.createElement("img");
       const src = URL.createObjectURL(file);
@@ -104,7 +130,28 @@ function initLeadForm() {
       img.src = src;
       img.alt = `Фото ${index + 1}`;
 
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "photo-remove-btn";
+      removeBtn.setAttribute("aria-label", msg.removePhotoAria);
+      removeBtn.textContent = "×";
+      removeBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const removeIndex = Number(tile.dataset.index);
+        if (Number.isFinite(removeIndex)) {
+          selectedPhotos.splice(removeIndex, 1);
+          renderPhotoPreviews();
+          if (selectedPhotos.length) {
+            setPhotoStatus(applyTokens(msg.photoAdded, { COUNT: selectedPhotos.length }));
+          } else {
+            setPhotoStatus("");
+          }
+        }
+      });
+
       tile.appendChild(img);
+      tile.appendChild(removeBtn);
       photoPreviewStrip.appendChild(tile);
     });
   };
@@ -116,17 +163,17 @@ function initLeadForm() {
 
     Array.from(incomingFiles).forEach((file) => {
       if (!file.type || !file.type.startsWith("image/")) {
-        issues.push(`Файл "${file.name}" пропущен: нужен формат изображения.`);
+        issues.push(applyTokens(msg.photoInvalidType, { NAME: file.name }));
         return;
       }
 
       if (file.size > MAX_PHOTO_SIZE_BYTES) {
-        issues.push(`Файл "${file.name}" пропущен: размер больше 10 МБ.`);
+        issues.push(applyTokens(msg.photoTooLarge, { NAME: file.name }));
         return;
       }
 
       if (selectedPhotos.length >= MAX_PHOTO_COUNT) {
-        issues.push(`Можно добавить не более ${MAX_PHOTO_COUNT} фото.`);
+        issues.push(applyTokens(msg.photoMaxCount, { MAX: MAX_PHOTO_COUNT }));
         return;
       }
 
@@ -146,7 +193,7 @@ function initLeadForm() {
     }
 
     if (selectedPhotos.length) {
-      setPhotoStatus(`Добавлено фото: ${selectedPhotos.length}`);
+      setPhotoStatus(applyTokens(msg.photoAdded, { COUNT: selectedPhotos.length }));
     } else {
       setPhotoStatus("");
     }
@@ -165,11 +212,11 @@ function initLeadForm() {
   }
 
   const requiredFields = [
-    { id: "name", message: "Введите имя" },
+    { id: "name", message: msg.nameRequired },
     {
       id: "phone",
-      message: "Введите телефон",
-      invalidMessage: "Введите корректный номер",
+      message: msg.phoneRequired,
+      invalidMessage: msg.phoneInvalid,
       validate: (value) => {
         const localDigits = value.replace(/\D/g, "");
         const code = phoneCodeField ? phoneCodeField.value : "+375";
@@ -177,7 +224,7 @@ function initLeadForm() {
         return localDigits.length === expectedLocalLength;
       }
     },
-    { id: "region", message: "Введите город / регион" }
+    { id: "region", message: msg.regionRequired }
   ];
 
   const getFieldLabel = (field) => field.closest(".field");
@@ -250,12 +297,12 @@ function initLeadForm() {
       : "-";
 
     const text = [
-      "Новая заявка с сайта:",
-      `Имя: ${name}`,
-      `Телефон: ${phone}`,
-      `Регион: ${region}`,
-      `Комментарий: ${message || "-"}`,
-      `Фото/файлы: ${photoSummary}`
+      msg.leadTitle,
+      `${msg.leadName}: ${name}`,
+      `${msg.leadPhone}: ${phone}`,
+      `${msg.leadRegion}: ${region}`,
+      `${msg.leadComment}: ${message || "-"}`,
+      `${msg.leadFiles}: ${photoSummary}`
     ].join("\n");
 
     const url = `${CONTACTS.telegram}?text=${encodeURIComponent(text)}`;
