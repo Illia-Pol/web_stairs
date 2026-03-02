@@ -1,0 +1,54 @@
+{
+  "prices_kicker": "Ориентиры по цене",
+  "prices_title": "Сколько стоит лестница и от чего зависит бюджет",
+
+  "price_classic_name": "Classic",
+  "price_classic_note": "Рациональные решения с проверенной геометрией, прозрачной сметой и прогнозируемыми сроками.",
+  "price_signature_name": "Signature",
+  "price_signature_note": "Премиальный подход для сложных нестандартных кейсов с повышенными требованиями к инженерии и деталям.",
+
+  "calculator_kicker": "Калькулятор Classic",
+  "calculator_title": "Ориентировочная стоимость для Classic",
+  "calculator_note": "Калькулятор считает только формат Classic по выбранной конфигурации.",
+  "calculator_signature_hint": "Для Signature оставьте заявку с кратким описанием проекта — подготовим ориентировочный просчет максимально быстро:",
+  "calculator_signature_link": "Оставить заявку",
+
+  "calc_label_stair_type": "Вид лестницы",
+  "calc_stair_straight": "Прямая",
+  "calc_stair_desc_straight": "Один марш, базовая геометрия.",
+  "calc_stair_l_landing": "Г-образная с площадкой",
+  "calc_stair_desc_l_landing": "Поворот на 90° через площадку.",
+  "calc_stair_u_landing": "П-образная с площадкой",
+  "calc_stair_desc_u_landing": "Поворот на 180° через площадку.",
+  "calc_stair_l_winder": "Г-образная с забежными",
+  "calc_stair_desc_l_winder": "Поворот за счет забежных ступеней.",
+  "calc_stair_u_winder": "П-образная с забежными",
+  "calc_stair_desc_u_winder": "Компактный разворот на 180°.",
+  "calc_stair_half_spiral": "Полувинтовая",
+  "calc_stair_desc_half_spiral": "Мягкий закрученный разворот.",
+  "calc_stair_spiral": "Винтовая",
+  "calc_stair_desc_spiral": "Спиральная компоновка вокруг оси.",
+  "calc_stair_porch": "Крыльцо",
+  "calc_stair_desc_porch": "Наружная лестница входной группы.",
+
+  "calc_label_bottom_type": "Тип исполнения",
+  "calc_type_smooth": "Гладкое дно",
+  "calc_type_desc_smooth": "Низ марша ровный, без повторения профиля ступеней.",
+  "calc_type_mirrored": "Обратная / зеркальная ступень",
+  "calc_type_desc_mirrored": "Нижний профиль повторяет рисунок верхних ступеней.",
+  "calc_type_floating": "Парящая ступень",
+  "calc_type_desc_floating": "Ступени визуально легче, с опорой на косоур/скрытые узлы.",
+
+  "calc_label_height": "Высота между этажами (см)",
+  "calc_placeholder_height": "Например: 300",
+  "calc_select_stair_placeholder": "Выберите вид лестницы",
+  "calc_select_bottom_placeholder": "Выберите тип исполнения",
+
+  "calc_result_title": "Актуальный ориентир по стоимости Classic",
+  "calc_result_value": "Итого: {{VALUE}}",
+  "calc_result_empty": "Выберите вид лестницы, тип исполнения и укажите высоту, чтобы увидеть расчет.",
+  "calc_result_note": "Итог зависит от геометрии проема, толщины перекрытий, армирования, условий на объекте и требований под отделку.",
+  "calc_result_link_text": "Оставить заявку",
+
+  "prices_footnote": "Ставки расчета по высоте: гладкое дно — 9.20 BYN/см, обратная/зеркальная ступень — 10.20 BYN/см, парящая — 12.20 BYN/см."
+}

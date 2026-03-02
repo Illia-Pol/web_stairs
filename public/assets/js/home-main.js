@@ -48,6 +48,15 @@ function initLeadForm() {
   if (!form) return;
   const phoneCodeField = document.getElementById("phone-code");
   const phoneField = document.getElementById("phone");
+  const photoInput = document.getElementById("photo-files");
+  const photoAddBtn = document.getElementById("photo-add-btn");
+  const photoPreviewStrip = document.getElementById("photo-preview-strip");
+  const photoPickerStatus = document.getElementById("photo-picker-status");
+
+  const MAX_PHOTO_COUNT = 8;
+  const MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024;
+  let selectedPhotos = [];
+  let previewUrls = [];
 
   const phoneFormats = {
     "+375": "29 123-45-67",
@@ -72,8 +81,88 @@ function initLeadForm() {
     phoneField.placeholder = sample;
   };
 
+  const setPhotoStatus = (message = "", isError = false) => {
+    if (!photoPickerStatus) return;
+    photoPickerStatus.textContent = message;
+    photoPickerStatus.classList.toggle("is-error", Boolean(isError));
+  };
+
+  const renderPhotoPreviews = () => {
+    if (!photoPreviewStrip) return;
+
+    previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    previewUrls = [];
+    photoPreviewStrip.innerHTML = "";
+
+    selectedPhotos.forEach((file, index) => {
+      const tile = document.createElement("div");
+      tile.className = "photo-preview-tile";
+
+      const img = document.createElement("img");
+      const src = URL.createObjectURL(file);
+      previewUrls.push(src);
+      img.src = src;
+      img.alt = `Фото ${index + 1}`;
+
+      tile.appendChild(img);
+      photoPreviewStrip.appendChild(tile);
+    });
+  };
+
+  const addPhotos = (incomingFiles) => {
+    if (!incomingFiles || !incomingFiles.length) return;
+
+    const issues = [];
+
+    Array.from(incomingFiles).forEach((file) => {
+      if (!file.type || !file.type.startsWith("image/")) {
+        issues.push(`Файл "${file.name}" пропущен: нужен формат изображения.`);
+        return;
+      }
+
+      if (file.size > MAX_PHOTO_SIZE_BYTES) {
+        issues.push(`Файл "${file.name}" пропущен: размер больше 10 МБ.`);
+        return;
+      }
+
+      if (selectedPhotos.length >= MAX_PHOTO_COUNT) {
+        issues.push(`Можно добавить не более ${MAX_PHOTO_COUNT} фото.`);
+        return;
+      }
+
+      const duplicate = selectedPhotos.some(
+        (item) => item.name === file.name && item.size === file.size && item.lastModified === file.lastModified
+      );
+      if (duplicate) return;
+
+      selectedPhotos.push(file);
+    });
+
+    renderPhotoPreviews();
+
+    if (issues.length) {
+      setPhotoStatus(issues[0], true);
+      return;
+    }
+
+    if (selectedPhotos.length) {
+      setPhotoStatus(`Добавлено фото: ${selectedPhotos.length}`);
+    } else {
+      setPhotoStatus("");
+    }
+  };
+
   updatePhoneFormat();
   if (phoneCodeField) phoneCodeField.addEventListener("change", updatePhoneFormat);
+  if (photoAddBtn && photoInput) {
+    photoAddBtn.addEventListener("click", () => photoInput.click());
+  }
+  if (photoInput) {
+    photoInput.addEventListener("change", (event) => {
+      addPhotos(event.target.files);
+      photoInput.value = "";
+    });
+  }
 
   const requiredFields = [
     { id: "name", message: "Введите имя" },
@@ -156,17 +245,25 @@ function initLeadForm() {
     const phone = localPhone.startsWith("+") ? localPhone : `${phoneCode} ${localPhone}`.trim();
     const region = document.getElementById("region").value.trim();
     const message = document.getElementById("message").value.trim();
+    const photoSummary = selectedPhotos.length
+      ? selectedPhotos.map((file) => file.name).join(", ")
+      : "-";
 
     const text = [
       "Новая заявка с сайта:",
       `Имя: ${name}`,
       `Телефон: ${phone}`,
       `Регион: ${region}`,
-      `Комментарий: ${message || "-"}`
+      `Комментарий: ${message || "-"}`,
+      `Фото/файлы: ${photoSummary}`
     ].join("\n");
 
     const url = `${CONTACTS.telegram}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "noopener,noreferrer");
+
+    selectedPhotos = [];
+    renderPhotoPreviews();
+    setPhotoStatus("");
   });
 }
 

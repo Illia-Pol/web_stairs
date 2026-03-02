@@ -2,13 +2,17 @@
 import Script from "next/script";
 
 import { JsonLd } from "@/components/JsonLd";
+import { PriceEstimator } from "@/components/home/PriceEstimator";
 import { getSiteConfig } from "@/lib/content/loaders";
+import { thg } from "@/lib/i18n-home-guarantee";
 import { thh } from "@/lib/i18n-home-hero";
 import { thm } from "@/lib/i18n-home-main";
+import { thmi } from "@/lib/i18n-home-more-info";
 import { thst } from "@/lib/i18n-home-stair-types";
 import { thp } from "@/lib/i18n-home-portfolio";
+import { thpr } from "@/lib/i18n-home-prices";
 import { assetPath } from "@/lib/paths";
-import { createPageMetadata, faqJsonLd, serviceJsonLd } from "@/lib/seo";
+import { createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -102,77 +106,49 @@ const types = [
   }
 ];
 
-const faqItems = [
-  {
-    id: "faq-1",
-    question: thm("faq_1_question"),
-    answer: thm("faq_1_answer")
-  },
-  {
-    id: "faq-2",
-    question: thm("faq_2_question"),
-    answer: thm("faq_2_answer")
-  },
-  {
-    id: "faq-3",
-    question: thm("faq_3_question"),
-    answer: thm("faq_3_answer")
-  },
-  {
-    id: "faq-4",
-    question: thm("faq_4_question"),
-    answer: thm("faq_4_answer")
-  }
-];
-
 const infoLinks = [
   {
-    title: thm("info_1_title"),
-    text: thm("info_1_text"),
+    title: thmi("info_1_title"),
+    text: thmi("info_1_text"),
     href: "/questions"
   },
   {
-    title: thm("info_2_title"),
-    text: thm("info_2_text"),
+    title: thmi("info_2_title"),
+    text: thmi("info_2_text"),
     href: "/questions/faq"
   },
   {
-    title: thm("info_3_title"),
-    text: thm("info_3_text"),
+    title: thmi("info_3_title"),
+    text: thmi("info_3_text"),
     href: "/questions/problems"
   },
   {
-    title: thm("info_4_title"),
-    text: thm("info_4_text"),
+    title: thmi("info_4_title"),
+    text: thmi("info_4_text"),
     href: "/vlog/process"
   },
   {
-    title: thm("info_5_title"),
-    text: thm("info_5_text"),
+    title: thmi("info_5_title"),
+    text: thmi("info_5_text"),
     href: "/vlog/projects"
   },
   {
-    title: thm("info_6_title"),
-    text: thm("info_6_text"),
+    title: thmi("info_6_title"),
+    text: thmi("info_6_text"),
     href: "/vlog/articles"
   }
 ];
 
 const priceCards = [
   {
-    name: thm("price_classic_name"),
+    name: thpr("price_classic_name"),
     value: site.pricing.standardFrom,
-    note: thm("price_classic_note")
+    note: thpr("price_classic_note")
   },
   {
-    name: thm("price_mid_name"),
-    value: site.pricing.midRange,
-    note: thm("price_mid_note")
-  },
-  {
-    name: thm("price_signature_name"),
+    name: thpr("price_signature_name"),
     value: site.pricing.signatureFrom,
-    note: thm("price_signature_note")
+    note: thpr("price_signature_note")
   }
 ];
 
@@ -195,7 +171,6 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={serviceSchema} />
-      <JsonLd data={faqJsonLd(faqItems)} />
 
       <section className="hero" id="hero">
         <div className="hero-slider" aria-hidden="true">
@@ -335,58 +310,22 @@ export default function HomePage() {
       <section className="section section-dark" id="prices">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">{thm("prices_kicker")}</p>
-            <h2>{thm("prices_title")}</h2>
+            <p className="kicker">{thpr("prices_kicker")}</p>
+            <h2>{thpr("prices_title")}</h2>
           </div>
 
           <div className="prices-wrap">
-            <article className="calculator-card reveal-up">
-              <p className="kicker">{thm("calculator_kicker")}</p>
-              <h3>{thm("calculator_title")}</h3>
-              <p>{thm("calculator_note")}</p>
-              <a className="btn btn-small" href="/prices/calculator">{thm("calculator_button")}</a>
-            </article>
-
-            <div className="price-grid">
+            <div className="price-grid tariff-grid">
               {priceCards.map((card, index) => (
-                <article key={card.name} className={`price-card reveal-up ${index === 1 ? "delay-1" : index === 2 ? "delay-2" : ""}`.trim()}>
+                <article key={card.name} className={`price-card reveal-up ${index === 1 ? "delay-1" : ""}`.trim()}>
                   <p className="price-label">{card.name}</p>
                   <p className="price-value">{card.value}</p>
                   <p className="price-note">{card.note}</p>
                 </article>
               ))}
             </div>
-          </div>
 
-          <p className="price-footnote reveal-up">{thm("prices_footnote")}</p>
-        </div>
-      </section>
-
-      <section className="section section-dark" id="segments">
-        <div className="container">
-          <div className="section-head reveal-up">
-            <p className="kicker">{thm("segments_kicker")}</p>
-            <h2>{thm("segments_title")}</h2>
-          </div>
-          <div className="segment-grid">
-            <article className="segment-card reveal-up">
-              <h3>{thm("segment_classic_title")}</h3>
-              <p className="segment-sub">{thm("segment_classic_subtitle")}</p>
-              <ul>
-                <li>{thm("segment_classic_item_1")}</li>
-                <li>{thm("segment_classic_item_2")}</li>
-                <li>{thm("segment_classic_item_3")}</li>
-              </ul>
-            </article>
-            <article className="segment-card featured reveal-up delay-1">
-              <h3>{thm("segment_signature_title")}</h3>
-              <p className="segment-sub">{thm("segment_signature_subtitle")}</p>
-              <ul>
-                <li>{thm("segment_signature_item_1")}</li>
-                <li>{thm("segment_signature_item_2")}</li>
-                <li>{thm("segment_signature_item_3")}</li>
-              </ul>
-            </article>
+            <PriceEstimator />
           </div>
         </div>
       </section>
@@ -394,25 +333,25 @@ export default function HomePage() {
       <section className="section section-accent" id="guarantee">
         <div className="container guarantee-wrap">
           <article className="guarantee-card reveal-up">
-            <p className="kicker">{thm("guarantee_kicker")}</p>
-            <h2>{thm("guarantee_title")}</h2>
-            <p>{thm("guarantee_lead")}</p>
+            <p className="kicker">{thg("guarantee_kicker")}</p>
+            <h2>{thg("guarantee_title")}</h2>
+            <p>{thg("guarantee_lead")}</p>
             <ul className="guarantee-list">
-              <li>{thm("guarantee_item_1", { WARRANTY_TERM: site.warrantyTerm })}</li>
-              <li>{thm("guarantee_item_2")}</li>
-              <li>{thm("guarantee_item_3")}</li>
-              <li>{thm("guarantee_item_4")}</li>
+              <li>{thg("guarantee_item_1", { WARRANTY_TERM: site.warrantyTerm })}</li>
+              <li>{thg("guarantee_item_2")}</li>
+              <li>{thg("guarantee_item_3")}</li>
+              <li>{thg("guarantee_item_4")}</li>
             </ul>
-            <a className="btn btn-small" href="/prices/guarantee">{thm("guarantee_button")}</a>
+            <a className="btn btn-small" href="/prices/guarantee">{thg("guarantee_button")}</a>
           </article>
 
           <div className="master-photo-card reveal-up delay-1">
             <div className="master-photo">
-              <img src={assetPath("/assets/master.jpg")} alt={thm("master_alt")} />
+              <img src={assetPath("/assets/master.jpg")} alt={thg("master_alt")} />
             </div>
             <div className="master-bio">
-              <h3>{thm("master_name")}</h3>
-              <p>{thm("master_bio")}</p>
+              <h3>{thg("master_name")}</h3>
+              <p>{thg("master_bio")}</p>
             </div>
           </div>
         </div>
@@ -421,9 +360,9 @@ export default function HomePage() {
       <section className="section section-dark" id="more-info">
         <div className="container">
           <div className="section-head reveal-up">
-            <p className="kicker">{thm("more_info_kicker")}</p>
-            <h2>{thm("more_info_title")}</h2>
-            <p className="section-note">{thm("more_info_note")}</p>
+            <p className="kicker">{thmi("more_info_kicker")}</p>
+            <h2>{thmi("more_info_title")}</h2>
+            <p className="section-note">{thmi("more_info_note")}</p>
           </div>
 
           <div className="info-grid">
@@ -431,23 +370,8 @@ export default function HomePage() {
               <article key={item.title} className={`info-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <a className="inline-link" href={item.href}>{thm("more_info_link_text")}</a>
+                <a className="inline-link" href={item.href}>{thmi("more_info_link_text")}</a>
               </article>
-            ))}
-          </div>
-
-          <div className="section-head faq-compact-head reveal-up">
-            <p className="kicker">{thm("faq_kicker")}</p>
-            <h2>{thm("faq_title")}</h2>
-          </div>
-          <div className="faq-grid">
-            {faqItems.map((item, index) => (
-              <details key={item.id} className={`faq-item reveal-up ${index === 1 ? "delay-1" : index === 2 ? "delay-2" : ""}`.trim()}>
-                <summary>{item.question}</summary>
-                <div className="faq-answer">
-                  <p>{item.answer}</p>
-                </div>
-              </details>
             ))}
           </div>
         </div>
@@ -497,7 +421,18 @@ export default function HomePage() {
               {thm("form_message")}
               <textarea id="message" rows={4} placeholder={thm("form_message_placeholder")} />
             </label>
-            <button type="submit" className="btn full">{thm("form_submit")}</button>
+            <div className="photo-picker-row">
+              <input id="photo-files" className="photo-input" type="file" accept="image/*" multiple />
+              <button type="button" className="photo-add-tile" id="photo-add-btn" aria-label={thm("form_add_photo_aria")}>
+                +
+              </button>
+              <div className="photo-preview-strip" id="photo-preview-strip" aria-live="polite" />
+            </div>
+            <p className="photo-picker-note">{thm("form_add_photo_hint")}</p>
+            <p className="photo-picker-status" id="photo-picker-status" aria-live="polite" />
+            <div className="lead-form-actions">
+              <button type="submit" className="btn full">{thm("form_submit")}</button>
+            </div>
             <p className="form-note">{thm("form_policy_prefix")} <a className="inline-link" href="/privacy">{thm("form_policy_link")}</a>.</p>
           </form>
         </div>

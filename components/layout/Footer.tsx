@@ -1,15 +1,16 @@
 import Link from "next/link";
 
 import type { SiteConfig } from "@/lib/content/schemas";
+import { thf } from "@/lib/i18n-footer";
 import { t } from "@/lib/i18n";
 
 const links = [
-  { href: "/portfolio", label: t("Портфолио") },
-  { href: "/prices", label: t("Цены") },
-  { href: "/questions", label: t("Вопросы") },
-  { href: "/vlog", label: t("Влог") },
-  { href: "/contacts", label: t("Контакты") },
-  { href: "/privacy", label: "Privacy" }
+  { href: "/portfolio", label: thf("link_portfolio") },
+  { href: "/prices", label: thf("link_prices") },
+  { href: "/questions", label: thf("link_questions") },
+  { href: "/vlog", label: thf("link_vlog") },
+  { href: "/contacts", label: thf("link_contacts") },
+  { href: "/privacy", label: thf("privacy_label") }
 ];
 
 export function Footer({ site }: { site: SiteConfig }) {
@@ -20,12 +21,12 @@ export function Footer({ site }: { site: SiteConfig }) {
           <p className="font-heading text-2xl uppercase text-ink">{site.brand.name}</p>
           <p className="mt-3 max-w-sm text-sm text-[#bbb5aa]">{t(site.brand.tagline)}</p>
           <p className="mt-4 text-sm text-[#bbb5aa]">
-            {t("Основатель")}: {site.brand.founder}
+            {thf("founder_label")}: {site.brand.founder}
           </p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-[0.16em] text-[#bbb5aa]">{t("Навигация")}</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-[#bbb5aa]">{thf("navigation_title")}</p>
           <ul className="mt-3 space-y-2 text-sm text-[#dddbd6]">
             {links.map((link) => (
               <li key={link.href}>
@@ -38,22 +39,18 @@ export function Footer({ site }: { site: SiteConfig }) {
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-[0.16em] text-[#bbb5aa]">{t("Контакты")}</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-[#bbb5aa]">{thf("contacts_title")}</p>
           <ul className="mt-3 space-y-2 text-sm text-[#dddbd6]">
             <li>
-              {t("Телефон")}: <a href={`tel:${site.contacts.phoneMain}`}>{site.contacts.phoneMain}</a>
+              {thf("phone_label")}: <a href={`tel:${site.contacts.phoneMain}`}>{site.contacts.phoneMain}</a>
             </li>
             <li>
               Email: <a href={`mailto:${site.contacts.email}`}>{site.contacts.email}</a>
             </li>
-            <li>{t("УНП")}: {site.legal.unp}</li>
+            <li>{thf("unp_label")}: {site.legal.unp}</li>
             <li>{site.contacts.address}</li>
           </ul>
         </div>
-      </div>
-
-      <div className="mx-auto mt-8 w-full max-w-[1120px] border-t border-white/10 px-4 pt-4 text-xs text-[#bbb5aa] sm:px-6">
-        <p>{t(site.disclaimer)}</p>
       </div>
     </footer>
   );

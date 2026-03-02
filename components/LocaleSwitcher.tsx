@@ -6,9 +6,9 @@ import { cn } from "@/lib/cn";
 import { th } from "@/lib/i18n-header";
 import { withBasePath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
+import { CURRENCY_CODES, type CurrencyCode, DEFAULT_CURRENCY, isCurrencyCode } from "@/lib/constants/currency";
 
 type Locale = "ru" | "en";
-type Currency = "BYN" | "RUB";
 
 type LocaleSwitcherProps = {
   site: SiteConfig;
@@ -34,13 +34,13 @@ function resolveHref(raw: string): string {
 
 export function LocaleSwitcher({ site, currentLocale, className, compact = false }: LocaleSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currency, setCurrency] = useState<Currency>("BYN");
+  const [currency, setCurrency] = useState<CurrencyCode>(DEFAULT_CURRENCY);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(CURRENCY_STORAGE_KEY);
-      if (saved === "BYN" || saved === "RUB") {
+      if (saved && isCurrencyCode(saved)) {
         setCurrency(saved);
       }
     } catch {
@@ -73,12 +73,12 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
     { code: "en", label: "EN", href: site.localeLinks.en }
   ];
 
-  const currencyOptions: Array<{ code: Currency; label: string }> = [
-    { code: "BYN", label: "BYN" },
-    { code: "RUB", label: "RUB" }
-  ];
+  const currencyOptions: Array<{ code: CurrencyCode; label: string }> = CURRENCY_CODES.map((code) => ({
+    code,
+    label: code
+  }));
 
-  const selectCurrency = (nextCurrency: Currency) => {
+  const selectCurrency = (nextCurrency: CurrencyCode) => {
     setCurrency(nextCurrency);
     try {
       window.localStorage.setItem(CURRENCY_STORAGE_KEY, nextCurrency);
