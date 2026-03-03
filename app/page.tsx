@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Script from "next/script";
 
+import { HomePricesSection } from "@/components/home/HomePricesSection";
 import { JsonLd } from "@/components/JsonLd";
-import { PriceEstimator } from "@/components/home/PriceEstimator";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { thg } from "@/lib/i18n-home-guarantee";
 import { thh } from "@/lib/i18n-home-hero";
@@ -10,7 +10,6 @@ import { thm } from "@/lib/i18n-home-main";
 import { thmi } from "@/lib/i18n-home-more-info";
 import { thst } from "@/lib/i18n-home-stair-types";
 import { thp } from "@/lib/i18n-home-portfolio";
-import { thpr } from "@/lib/i18n-home-prices";
 import { assetPath } from "@/lib/paths";
 import { createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
@@ -136,19 +135,6 @@ const infoLinks = [
     title: thmi("info_6_title"),
     text: thmi("info_6_text"),
     href: "/vlog/articles"
-  }
-];
-
-const priceCards = [
-  {
-    name: thpr("price_classic_name"),
-    value: site.pricing.standardFrom,
-    note: thpr("price_classic_note")
-  },
-  {
-    name: thpr("price_signature_name"),
-    value: site.pricing.signatureFrom,
-    note: thpr("price_signature_note")
   }
 ];
 
@@ -307,28 +293,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <section className="section section-dark" id="prices">
-        <div className="container">
-          <div className="section-head reveal-up">
-            <p className="kicker">{thpr("prices_kicker")}</p>
-            <h2>{thpr("prices_title")}</h2>
-          </div>
-
-          <div className="prices-wrap">
-            <div className="price-grid tariff-grid">
-              {priceCards.map((card, index) => (
-                <article key={card.name} className={`price-card reveal-up ${index === 1 ? "delay-1" : ""}`.trim()}>
-                  <p className="price-label">{card.name}</p>
-                  <p className="price-value">{card.value}</p>
-                  <p className="price-note">{card.note}</p>
-                </article>
-              ))}
-            </div>
-
-            <PriceEstimator />
-          </div>
-        </div>
-      </section>
+      <HomePricesSection />
 
       <section className="section section-accent" id="guarantee">
         <div className="container guarantee-wrap">
@@ -367,11 +332,14 @@ export default function HomePage() {
 
           <div className="info-grid">
             {infoLinks.map((item, index) => (
-              <article key={item.title} className={`info-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}>
+              <a
+                key={item.title}
+                className={`info-card info-card-link reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}
+                href={item.href}
+              >
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <a className="inline-link" href={item.href}>{thmi("more_info_link_text")}</a>
-              </article>
+              </a>
             ))}
           </div>
         </div>

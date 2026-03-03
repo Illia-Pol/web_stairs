@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import { th } from "@/lib/i18n-header";
+import { LOCALE_STORAGE_KEY } from "@/lib/i18n";
 import { withBasePath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 import { CURRENCY_CODES, type CurrencyCode, DEFAULT_CURRENCY, isCurrencyCode } from "@/lib/constants/currency";
@@ -18,6 +19,25 @@ type LocaleSwitcherProps = {
 };
 
 const CURRENCY_STORAGE_KEY = "site-preferred-currency";
+
+function normalizeLocale(input: string | null | undefined): Locale {
+  if (!input) return "ru";
+  return input.toLowerCase() === "en" ? "en" : "ru";
+}
+
+function resolveClientLocale(fallback: Locale): Locale {
+  if (typeof window === "undefined") return fallback;
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get("lang");
+    const fromPath = window.location.pathname.split("/").filter(Boolean)[0];
+    const fromStorage = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+    return normalizeLocale(fromQuery || fromPath || fromStorage || fallback);
+  } catch {
+    return fallback;
+  }
+}
 
 function isExternal(url: string): boolean {
   return /^https?:\/\//.test(url);
@@ -35,7 +55,12 @@ function resolveHref(raw: string): string {
 export function LocaleSwitcher({ site, currentLocale, className, compact = false }: LocaleSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currency, setCurrency] = useState<CurrencyCode>(DEFAULT_CURRENCY);
+  const [locale, setLocale] = useState<Locale>(currentLocale);
   const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setLocale(resolveClientLocale(currentLocale));
+  }, [currentLocale]);
 
   useEffect(() => {
     try {
@@ -99,7 +124,7 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
         aria-expanded={isOpen}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span>{currentLocale.toUpperCase()}</span>
+        <span>{locale.toUpperCase()}</span>
         <span className="text-ink-soft/60">/</span>
         <span>{currency}</span>
         <span className={cn("text-[10px] transition-transform", isOpen && "rotate-180")}>▾</span>
@@ -116,7 +141,7 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
           <p className="mb-1.5 text-[9px] uppercase tracking-[0.12em] text-ink-soft">{th("switcher_language")}</p>
           <div className="grid grid-cols-2 gap-1">
             {localeOptions.map((option) => {
-              const active = option.code === currentLocale;
+              const active = option.code === locale;
               const disabled = isPlaceholder(option.href);
               const href = resolveHref(option.href);
 
@@ -125,7 +150,15 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
                   key={option.code}
                   href={disabled ? "#" : href}
                   aria-disabled={disabled}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setLocale(option.code);
+                    try {
+                      window.localStorage.setItem(LOCALE_STORAGE_KEY, option.code);
+                    } catch {
+                      // no-op
+                    }
+                  }}
                   className={cn(
                     "inline-flex w-full items-center justify-center rounded-md px-2 py-1 text-[11px] font-semibold uppercase transition-colors",
                     active ? "bg-bronze text-coal" : "text-ink-soft hover:bg-white/10 hover:text-ink",

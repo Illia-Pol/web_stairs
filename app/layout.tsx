@@ -16,6 +16,13 @@ export const metadata: Metadata = {
     "Проектирование и изготовление бетонных лестниц в Беларуси: Classic и Signature решения под частные и коммерческие объекты."
   ),
   metadataBase: new URL("https://example.com"),
+  icons: {
+    icon: [
+      { url: withBasePath("/assets/logo.png"), type: "image/png" }
+    ],
+    shortcut: [withBasePath("/assets/logo.png")],
+    apple: [{ url: withBasePath("/assets/logo.png") }]
+  },
   openGraph: {
     title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
     description: t(
