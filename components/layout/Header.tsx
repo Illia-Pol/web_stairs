@@ -9,6 +9,7 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { th } from "@/lib/i18n-header";
+import { localeFromPathname, type Locale } from "@/lib/i18n";
 import { assetPath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 
@@ -21,53 +22,56 @@ type NavItem = {
   }>;
 };
 
-function getPrimaryNav(): NavItem[] {
+function getPrimaryNav(locale: "ru" | "en"): NavItem[] {
   return [
     {
-      label: th("nav_portfolio"),
+      label: th("nav_portfolio", locale),
       href: "/portfolio",
       children: [
-        { href: "/portfolio/types", label: th("nav_portfolio_types") },
-        { href: "/portfolio/projects", label: th("nav_portfolio_projects") },
-        { href: "/portfolio/master", label: th("nav_portfolio_master") }
+        { href: "/portfolio/types", label: th("nav_portfolio_types", locale) },
+        { href: "/portfolio/projects", label: th("nav_portfolio_projects", locale) },
+        { href: "/portfolio/master", label: th("nav_portfolio_master", locale) }
       ]
     },
     {
-      label: th("nav_prices"),
+      label: th("nav_prices", locale),
       href: "/prices",
       children: [
-        { href: "/prices/calculator", label: th("nav_prices_calculator") },
-        { href: "/prices/tariffs", label: th("nav_prices_tariffs") },
-        { href: "/prices/guarantee", label: th("nav_prices_guarantee") }
+        { href: "/prices/calculator", label: th("nav_prices_calculator", locale) },
+        { href: "/prices/tariffs", label: th("nav_prices_tariffs", locale) },
+        { href: "/prices/guarantee", label: th("nav_prices_guarantee", locale) }
       ]
     },
     {
-      label: th("nav_questions"),
+      label: th("nav_questions", locale),
       href: "/questions",
       children: [
-        { href: "/questions/faq", label: th("nav_questions_faq") },
-        { href: "/questions/problems", label: th("nav_questions_problems") }
+        { href: "/questions/faq", label: th("nav_questions_faq", locale) },
+        { href: "/questions/problems", label: th("nav_questions_problems", locale) }
       ]
     },
     {
-      label: th("nav_vlog"),
+      label: th("nav_vlog", locale),
       href: "/vlog",
       children: [
-        { href: "/vlog/projects", label: th("nav_vlog_projects") },
-        { href: "/vlog/articles", label: th("nav_vlog_articles") },
-        { href: "/vlog/process", label: th("nav_vlog_process") }
+        { href: "/vlog/projects", label: th("nav_vlog_projects", locale) },
+        { href: "/vlog/articles", label: th("nav_vlog_articles", locale) },
+        { href: "/vlog/process", label: th("nav_vlog_process", locale) }
       ]
     },
-    { href: "/contacts", label: th("nav_contacts") }
+    { href: "/contacts", label: th("nav_contacts", locale) }
   ];
 }
 
 export function Header({ site, currentLocale }: { site: SiteConfig; currentLocale: "ru" | "en" }) {
   const pathname = usePathname();
+  const [uiLocale, setUiLocale] = useState<Locale>(currentLocale);
   const [isCompact, setIsCompact] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const primaryNav = getPrimaryNav();
-  const localizedBrandTitle = th("brand_title");
+  const primaryNav = getPrimaryNav(uiLocale);
+  const localizedBrandTitle = th("brand_title", uiLocale);
+  const homeHref = uiLocale === "en" ? "/en" : "/";
+  const contactAnchorHref = uiLocale === "en" ? "/en/#contact" : "/#contact";
   const brandTitle =
     localizedBrandTitle.includes("{{") && localizedBrandTitle.includes("}}")
       ? site.brand.name
@@ -85,6 +89,11 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
 
   useEffect(() => {
     setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname) return;
+    setUiLocale(localeFromPathname(pathname));
   }, [pathname]);
 
   useEffect(() => {
@@ -111,7 +120,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
           isCompact ? "min-h-[62px] py-1.5" : "min-h-[72px] py-2"
         )}
       >
-        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3">
+        <Link href={homeHref} className="flex min-w-0 shrink-0 items-center gap-3">
           <Image
             src={assetPath("/assets/logo.png")}
             alt={brandTitle}
@@ -137,7 +146,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
                 isCompact ? "max-h-0 -translate-y-1 overflow-hidden opacity-0" : "max-h-6 translate-y-0 opacity-100"
               )}
             >
-              {th("brand_subtitle")}
+              {th("brand_subtitle", uiLocale)}
             </p>
           </div>
         </Link>
@@ -183,17 +192,17 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <ButtonLink href="/#contact" className="whitespace-nowrap px-3 py-2 text-[11px]">
-            {th("cta_send_plan")}
+          <ButtonLink href={contactAnchorHref} className="whitespace-nowrap px-3 py-2 text-[11px]">
+            {th("cta_send_plan", uiLocale)}
           </ButtonLink>
-          <LocaleSwitcher site={site} currentLocale={currentLocale} className="hidden xl:block" />
+          <LocaleSwitcher site={site} currentLocale={uiLocale} className="hidden xl:block" />
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
-          <LocaleSwitcher site={site} currentLocale={currentLocale} compact />
+          <LocaleSwitcher site={site} currentLocale={uiLocale} compact />
           <button
             type="button"
-            aria-label={mobileMenuOpen ? th("menu_close") : th("menu_open")}
+            aria-label={mobileMenuOpen ? th("menu_close", uiLocale) : th("menu_open", uiLocale)}
             aria-expanded={mobileMenuOpen}
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             className="inline-flex h-9 items-center gap-2 rounded-full border border-white/15 px-3 text-xs font-semibold uppercase tracking-[0.08em] text-ink-soft transition-colors hover:bg-white/5 hover:text-ink"
@@ -218,7 +227,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
                 )}
               />
             </span>
-            <span>{th("menu_label")}</span>
+            <span>{th("menu_label", uiLocale)}</span>
           </button>
         </div>
       </div>
@@ -245,11 +254,11 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
 
           <div className="mt-3">
             <ButtonLink
-              href="/#contact"
+              href={contactAnchorHref}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full text-xs"
             >
-              {th("cta_send_plan")}
+              {th("cta_send_plan", uiLocale)}
             </ButtonLink>
           </div>
         </div>

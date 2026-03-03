@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { formatCurrency } from "@/lib/constants/currency";
+import type { Locale } from "@/lib/i18n";
 import type { HomePricesLocaleKey } from "@/lib/i18n-home-prices";
 import { thpr } from "@/lib/i18n-home-prices";
 import { assetPath } from "@/lib/paths";
@@ -130,7 +131,7 @@ function parseHeightCm(raw: string): number {
   return value;
 }
 
-export function PriceEstimator() {
+export function PriceEstimator({ locale }: { locale: Locale }) {
   const [stairType, setStairType] = useState<StairType | null>(null);
   const [bottomType, setBottomType] = useState<BottomType | null>(null);
   const [heightCm, setHeightCm] = useState("");
@@ -141,6 +142,7 @@ export function PriceEstimator() {
 
   const stairDropdownRef = useRef<HTMLDivElement | null>(null);
   const bottomDropdownRef = useRef<HTMLDivElement | null>(null);
+  const tp = (key: HomePricesLocaleKey, tokens?: Record<string, string | number>) => thpr(key, tokens, locale);
 
   const selectedStair = stairType ? STAIR_OPTIONS.find((option) => option.value === stairType) ?? null : null;
   const selectedBottom = bottomType ? BOTTOM_OPTIONS.find((option) => option.value === bottomType) ?? null : null;
@@ -176,13 +178,13 @@ export function PriceEstimator() {
 
     if (height <= MIN_HEIGHT_CM) {
       setIsLoading(false);
-      setResult(thpr("calc_result_too_low"));
+      setResult(thpr("calc_result_too_low", undefined, locale));
       return;
     }
 
     if (height > EASTER_EGG_HEIGHT_CM) {
       setIsLoading(false);
-      setResult(thpr("calc_result_too_high"));
+      setResult(thpr("calc_result_too_high", undefined, locale));
       return;
     }
 
@@ -196,21 +198,21 @@ export function PriceEstimator() {
     }, 760);
 
     return () => window.clearTimeout(timer);
-  }, [heightCm, selectedBottom, selectedStair]);
+  }, [heightCm, locale, selectedBottom, selectedStair]);
 
   return (
     <article className="calculator-card reveal-up">
-      <p className="kicker">{thpr("calculator_kicker")}</p>
-      <h3>{thpr("calculator_title")}</h3>
-      <p>{thpr("calculator_note")}</p>
+      <p className="kicker">{tp("calculator_kicker")}</p>
+      <h3>{tp("calculator_title")}</h3>
+      <p>{tp("calculator_note")}</p>
       <p className="calc-signature-hint">
-        {thpr("calculator_signature_hint")}{" "}
-        <a className="inline-link" href="#contact">{thpr("calculator_signature_link")}</a>.
+        {tp("calculator_signature_hint")}{" "}
+        <a className="inline-link" href="#contact">{tp("calculator_signature_link")}</a>.
       </p>
 
       <div className="calc-form">
         <label className="calc-field">
-          <span className="calc-label">{thpr("calc_label_stair_type")}</span>
+          <span className="calc-label">{tp("calc_label_stair_type")}</span>
           <div className="calc-type-select" ref={stairDropdownRef}>
             <button
               type="button"
@@ -222,15 +224,15 @@ export function PriceEstimator() {
               {selectedStair ? (
                 <span className="calc-choice-card calc-choice-card-stair is-active is-static">
                   <span className="calc-choice-media">
-                    <Image src={assetPath(selectedStair.image)} alt={thpr(selectedStair.labelKey)} width={40} height={30} />
+                    <Image src={assetPath(selectedStair.image)} alt={tp(selectedStair.labelKey)} width={40} height={30} />
                   </span>
                   <span>
-                    <strong>{thpr(selectedStair.labelKey)}</strong>
-                    <small>{thpr(selectedStair.descriptionKey)}</small>
+                    <strong>{tp(selectedStair.labelKey)}</strong>
+                    <small>{tp(selectedStair.descriptionKey)}</small>
                   </span>
                 </span>
               ) : (
-                <span className="calc-type-placeholder">{thpr("calc_select_stair_placeholder")}</span>
+                <span className="calc-type-placeholder">{tp("calc_select_stair_placeholder")}</span>
               )}
               <span className={`calc-type-arrow ${isStairMenuOpen ? "is-open" : ""}`}>▾</span>
             </button>
@@ -247,11 +249,11 @@ export function PriceEstimator() {
                   }}
                 >
                   <span className="calc-choice-media">
-                    <Image src={assetPath(option.image)} alt={thpr(option.labelKey)} width={40} height={30} />
+                    <Image src={assetPath(option.image)} alt={tp(option.labelKey)} width={40} height={30} />
                   </span>
                   <span>
-                    <strong>{thpr(option.labelKey)}</strong>
-                    <small>{thpr(option.descriptionKey)}</small>
+                    <strong>{tp(option.labelKey)}</strong>
+                    <small>{tp(option.descriptionKey)}</small>
                   </span>
                 </button>
               ))}
@@ -260,7 +262,7 @@ export function PriceEstimator() {
         </label>
 
         <label className="calc-field">
-          <span className="calc-label">{thpr("calc_label_bottom_type")}</span>
+          <span className="calc-label">{tp("calc_label_bottom_type")}</span>
           <div className="calc-type-select" ref={bottomDropdownRef}>
             <button
               type="button"
@@ -272,15 +274,15 @@ export function PriceEstimator() {
               {selectedBottom ? (
                 <span className="calc-choice-card is-active is-static">
                   <span className="calc-choice-media">
-                    <Image src={assetPath(selectedBottom.image)} alt={thpr(selectedBottom.labelKey)} width={64} height={40} />
+                    <Image src={assetPath(selectedBottom.image)} alt={tp(selectedBottom.labelKey)} width={64} height={40} />
                   </span>
                   <span>
-                    <strong>{thpr(selectedBottom.labelKey)}</strong>
-                    <small>{thpr(selectedBottom.descriptionKey)}</small>
+                    <strong>{tp(selectedBottom.labelKey)}</strong>
+                    <small>{tp(selectedBottom.descriptionKey)}</small>
                   </span>
                 </span>
               ) : (
-                <span className="calc-type-placeholder">{thpr("calc_select_bottom_placeholder")}</span>
+                <span className="calc-type-placeholder">{tp("calc_select_bottom_placeholder")}</span>
               )}
               <span className={`calc-type-arrow ${isBottomMenuOpen ? "is-open" : ""}`}>▾</span>
             </button>
@@ -297,11 +299,11 @@ export function PriceEstimator() {
                   }}
                 >
                   <span className="calc-choice-media">
-                    <Image src={assetPath(option.image)} alt={thpr(option.labelKey)} width={64} height={40} />
+                    <Image src={assetPath(option.image)} alt={tp(option.labelKey)} width={64} height={40} />
                   </span>
                   <span>
-                    <strong>{thpr(option.labelKey)}</strong>
-                    <small>{thpr(option.descriptionKey)}</small>
+                    <strong>{tp(option.labelKey)}</strong>
+                    <small>{tp(option.descriptionKey)}</small>
                   </span>
                 </button>
               ))}
@@ -310,33 +312,33 @@ export function PriceEstimator() {
         </label>
 
         <label className="calc-field">
-          <span className="calc-label">{thpr("calc_label_height")}</span>
+          <span className="calc-label">{tp("calc_label_height")}</span>
           <input
             type="number"
             step={1}
             value={heightCm}
             onChange={(event) => setHeightCm(event.target.value)}
-            placeholder={thpr("calc_placeholder_height")}
+            placeholder={tp("calc_placeholder_height")}
           />
         </label>
       </div>
 
       <div className={`calc-result calc-result-live ${isLoading ? "is-loading" : ""}`}>
-        <p className="calc-result-title">{thpr("calc_result_title")}</p>
+        <p className="calc-result-title">{tp("calc_result_title")}</p>
         {isLoading ? (
           <div className="calc-result-skeleton" aria-hidden="true" />
         ) : result ? (
-          result === thpr("calc_result_too_high") || result === thpr("calc_result_too_low") ? (
+          result === tp("calc_result_too_high") || result === tp("calc_result_too_low") ? (
             <p className="calc-result-error">{result}</p>
           ) : (
-            <p className="calc-result-value">{thpr("calc_result_value", { VALUE: result })}</p>
+            <p className="calc-result-value">{tp("calc_result_value", { VALUE: result })}</p>
           )
         ) : (
-          <p className="calc-result-empty">{thpr("calc_result_empty")}</p>
+          <p className="calc-result-empty">{tp("calc_result_empty")}</p>
         )}
         <p className="calc-result-note">
-          {thpr("calc_result_note")}{" "}
-          <a className="inline-link" href="#contact">{thpr("calc_result_link_text")}</a>.
+          {tp("calc_result_note")}{" "}
+          <a className="inline-link" href="#contact">{tp("calc_result_link_text")}</a>.
         </p>
       </div>
     </article>

@@ -1,33 +1,24 @@
 import en from "@/content/i18n/en.json";
 import ru from "@/content/i18n/ru.json";
 
-type Locale = "ru" | "en";
+export type Locale = "ru" | "en";
 
 const DEFAULT_LOCALE: Locale = "ru";
 export const LOCALE_STORAGE_KEY = "site-preferred-locale";
 
-function normalizeLocale(input: string | undefined): Locale {
+export function normalizeLocale(input: string | undefined | null): Locale {
   if (!input) return DEFAULT_LOCALE;
   const value = input.trim().toLowerCase();
   return value === "en" ? "en" : "ru";
 }
 
+export function localeFromPathname(pathname: string | undefined | null): Locale {
+  if (!pathname) return DEFAULT_LOCALE;
+  const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "";
+  return normalizeLocale(firstSegment);
+}
+
 export function getLocale(): Locale {
-  if (typeof window !== "undefined") {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const fromQuery = params.get("lang");
-      const fromPath = window.location.pathname.split("/").filter(Boolean)[0];
-      const fromStorage = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-
-      const resolved = normalizeLocale(fromQuery || fromPath || fromStorage || process.env.NEXT_PUBLIC_LOCALE);
-      window.localStorage.setItem(LOCALE_STORAGE_KEY, resolved);
-      return resolved;
-    } catch {
-      return normalizeLocale(process.env.NEXT_PUBLIC_LOCALE);
-    }
-  }
-
   return normalizeLocale(process.env.NEXT_PUBLIC_LOCALE);
 }
 
@@ -47,8 +38,8 @@ function applyTokens(template: string, tokens?: Record<string, string | number>)
   }, template);
 }
 
-export function t(value: string, tokens?: Record<string, string | number>): string {
-  const locale = getLocale();
+export function t(value: string, tokens?: Record<string, string | number>, localeOverride?: Locale): string {
+  const locale = localeOverride ?? getLocale();
   const dict = getDictionary(locale);
   const fallback = (ru as Record<string, string>)[value] ?? value;
   const translated = dict[value] ?? fallback;

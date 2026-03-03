@@ -23,7 +23,7 @@
   },
   "localeLinks": {
     "ru": "/",
-    "en": "/?lang=en"
+    "en": "/en"
   },
   "leadEndpoint": "https://web-stairs.vercel.app/api/lead",
   "telegramFallback": {

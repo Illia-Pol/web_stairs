@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import { th } from "@/lib/i18n-header";
-import { LOCALE_STORAGE_KEY } from "@/lib/i18n";
 import { withBasePath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
 import { CURRENCY_CODES, type CurrencyCode, DEFAULT_CURRENCY, isCurrencyCode } from "@/lib/constants/currency";
@@ -19,25 +18,6 @@ type LocaleSwitcherProps = {
 };
 
 const CURRENCY_STORAGE_KEY = "site-preferred-currency";
-
-function normalizeLocale(input: string | null | undefined): Locale {
-  if (!input) return "ru";
-  return input.toLowerCase() === "en" ? "en" : "ru";
-}
-
-function resolveClientLocale(fallback: Locale): Locale {
-  if (typeof window === "undefined") return fallback;
-
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const fromQuery = params.get("lang");
-    const fromPath = window.location.pathname.split("/").filter(Boolean)[0];
-    const fromStorage = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-    return normalizeLocale(fromQuery || fromPath || fromStorage || fallback);
-  } catch {
-    return fallback;
-  }
-}
 
 function isExternal(url: string): boolean {
   return /^https?:\/\//.test(url);
@@ -55,12 +35,8 @@ function resolveHref(raw: string): string {
 export function LocaleSwitcher({ site, currentLocale, className, compact = false }: LocaleSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currency, setCurrency] = useState<CurrencyCode>(DEFAULT_CURRENCY);
-  const [locale, setLocale] = useState<Locale>(currentLocale);
+  const locale = currentLocale;
   const rootRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    setLocale(resolveClientLocale(currentLocale));
-  }, [currentLocale]);
 
   useEffect(() => {
     try {
@@ -152,12 +128,6 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
                   aria-disabled={disabled}
                   onClick={() => {
                     setIsOpen(false);
-                    setLocale(option.code);
-                    try {
-                      window.localStorage.setItem(LOCALE_STORAGE_KEY, option.code);
-                    } catch {
-                      // no-op
-                    }
                   }}
                   className={cn(
                     "inline-flex w-full items-center justify-center rounded-md px-2 py-1 text-[11px] font-semibold uppercase transition-colors",
