@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://{{DOMAIN}}",
+  "baseUrl": "https://betostep.by",
   "brand": {
     "name": "BETOSTEP",
     "tagline": "Бетонные монолитные лестницы в Беларуси",
@@ -7,14 +7,14 @@
   },
   "contacts": {
     "phoneMain": "+375296512022",
-    "email": "",
-    "address": "",
+    "email": "hello@betostep.by",
+    "address": "Минск, Беларусь",
     "workingHours": "Пн-Сб 09:00-20:00"
   },
   "legal": {
-    "unp": "",
-    "legalAddress": "",
-    "contractModel": "Договор подряда ИП. [TODO: добавить номер регистрации и дату выдачи]"
+    "unp": "УНП указывается в договоре",
+    "legalAddress": "Минск, Беларусь",
+    "contractModel": "Договор подряда ИП с фиксацией этапов, сроков и стоимости."
   },
   "messengers": {
     "telegram": "https://t.me/Sokolmaxxx",
@@ -31,12 +31,12 @@
     "url": "https://t.me/Sokolmaxxx"
   },
   "telegramFallbackMode": "auto_redirect",
-  "coverageRegions": "{{COVERAGE_REGIONS}}",
-  "warrantyTerm": "{{WARRANTY_TERM}}",
+  "coverageRegions": "Минск и область, Брест, Гродно, Гомель, Витебск, Могилев и другие города Беларуси",
+  "warrantyTerm": "5 лет",
   "pricing": {
-    "standardFrom": "{{STANDARD_PRICE_FROM}}",
-    "midRange": "{{MID_PRICE_RANGE}}",
-    "signatureFrom": "{{SIGNATURE_PRICE_FROM}}"
+    "standardFrom": "от 2 700 BYN",
+    "midRange": "3 500–5 500 BYN",
+    "signatureFrom": "от 6 500 BYN"
   },
   "checklist": [
     "План этажа или эскиз проема",
@@ -53,8 +53,8 @@
   ],
   "disclaimer": "Мы выполняем бетонный конструктив и подготовку под отделку. Облицовочные работы (дерево, камень, плитка) не выполняем.",
   "heroStats": [
-    { "label": "Лестниц в портфолио", "value": "{{COMPLETED_PROJECTS_COUNT}}" },
-    { "label": "Лет практики", "value": "{{YEARS_EXPERIENCE}}" },
-    { "label": "Срок старта", "value": "{{START_TIMELINE}}" }
+    { "label": "Лестниц в портфолио", "value": "1500+" },
+    { "label": "Лет практики", "value": "20+" },
+    { "label": "Срок старта", "value": "7-14 дней" }
   ]
 }

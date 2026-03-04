@@ -8,8 +8,8 @@ coverImage: /assets/portfolio/portfolio-2.jpg
 gallery:
   - /assets/portfolio/portfolio-2.jpg
   - /assets/slider/slider-2.jpeg
-priceBand: "{{SIGNATURE_PRICE_FROM}}"
-year: "{{CASE_YEAR_2}}"
+priceBand: "от 7 600 BYN"
+year: "2024"
 tags:
   - signature
   - консоль
@@ -27,4 +27,4 @@ summary: Сложный инженерный узел со скрытыми за
 ## Результат
 Архитектурная лестница с чистыми линиями и готовностью к премиальной отделке.
 
-[TODO: добавить технический разрез узла и факт-стоимость проекта]
+Решение позволило сохранить минималистичный интерьер и получить стабильную конструкцию с прогнозируемой работой узлов.

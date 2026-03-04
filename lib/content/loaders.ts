@@ -28,22 +28,22 @@ const ROOT_DIR = process.cwd();
 const CONTENT_DIR = path.join(ROOT_DIR, "content");
 
 const DEFAULT_SITE: SiteConfig = {
-  baseUrl: "https://{{DOMAIN}}",
+  baseUrl: "https://betostep.by",
   brand: {
-    name: "{{BRAND_NAME}}",
+    name: "BETOSTEP",
     tagline: "Бетонные монолитные лестницы в Беларуси",
-    founder: "{{FOUNDER_NAME}}"
+    founder: "Максим Владимирович Соколовский"
   },
   contacts: {
-    phoneMain: "{{PHONE_MAIN}}",
-    email: "{{EMAIL}}",
-    address: "{{LEGAL_ADDRESS}}",
+    phoneMain: "+375296512022",
+    email: "hello@betostep.by",
+    address: "Минск, Беларусь",
     workingHours: "Пн-Сб 09:00-20:00"
   },
   legal: {
-    unp: "{{UNP}}",
-    legalAddress: "{{LEGAL_ADDRESS}}",
-    contractModel: "[TODO: добавить модель договора]"
+    unp: "УНП указывается в договоре",
+    legalAddress: "Минск, Беларусь",
+    contractModel: "Договор подряда ИП с фиксацией этапов, сроков и стоимости."
   },
   messengers: {
     telegram: "#",
@@ -52,20 +52,20 @@ const DEFAULT_SITE: SiteConfig = {
   },
   localeLinks: {
     ru: "/",
-    en: "{{EN_SITE_URL}}"
+    en: "/en"
   },
-  leadEndpoint: "{{LEAD_ENDPOINT_URL}}",
+  leadEndpoint: "https://web-stairs.vercel.app/api/lead",
   telegramFallback: {
-    username: "{{TELEGRAM_USERNAME_OR_BOT_LINK}}",
-    url: "https://t.me/{{TELEGRAM_USERNAME_OR_BOT_LINK}}"
+    username: "Sokolmaxxx",
+    url: "https://t.me/Sokolmaxxx"
   },
   telegramFallbackMode: "auto_redirect",
-  coverageRegions: "{{COVERAGE_REGIONS}}",
-  warrantyTerm: "{{WARRANTY_TERM}}",
+  coverageRegions: "Минск и область, Брест, Гродно, Гомель, Витебск, Могилев и другие города Беларуси",
+  warrantyTerm: "5 лет",
   pricing: {
-    standardFrom: "{{STANDARD_PRICE_FROM}}",
-    midRange: "{{MID_PRICE_RANGE}}",
-    signatureFrom: "{{SIGNATURE_PRICE_FROM}}"
+    standardFrom: "от 2 700 BYN",
+    midRange: "3 500–5 500 BYN",
+    signatureFrom: "от 6 500 BYN"
   },
   checklist: [],
   processSteps: [],

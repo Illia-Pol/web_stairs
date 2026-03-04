@@ -7,7 +7,7 @@
   "address_label": "Адрес",
   "regions_label": "Регионы",
   "regions_value": "Беларусь, Россия, Польша",
-  "contacts_todo": "[TODO: заполните контактные данные в content/site.json]",
+  "contacts_todo": "Контактные данные временно недоступны.",
 
   "form_kicker": "Заявка",
   "form_title": "Оставить заявку",

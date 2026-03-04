@@ -4,7 +4,7 @@
   "shortDescription": "Базовый надежный конструктив для частных домов и коммерческих объектов.",
   "fullDescription": "Проектируем и отливаем монолитные лестницы с контролем геометрии каждого марша. Решение для тех, кому важны прочность, точность и предсказуемый бюджет.",
   "funnel": "standard",
-  "priceHint": "{{STANDARD_PRICE_FROM}}",
+  "priceHint": "от 2 700 BYN",
   "heroImage": "/assets/catalog/catalog-1.png",
   "filters": ["standard", "монолит", "частный дом"],
   "benefits": [

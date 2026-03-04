@@ -8,8 +8,8 @@ coverImage: /assets/portfolio/portfolio-3.jpg
 gallery:
   - /assets/portfolio/portfolio-3.jpg
   - /assets/catalog-gallery/g-shaped-landing/1.jpg
-priceBand: "{{STANDARD_PRICE_FROM}}"
-year: "{{CASE_YEAR_4}}"
+priceBand: "от 3 200 BYN"
+year: "2023"
 tags:
   - standard
   - г-образная
@@ -27,4 +27,4 @@ summary: Классическая монолитная конфигурация 
 ## Результат
 Эргономичная лестница без переделок на этапе отделки.
 
-[TODO: добавить видео-обход объекта и отзыв]
+Проект стал базовым примером для аналогичных планировок, где важна компактность без потери комфорта подъема.

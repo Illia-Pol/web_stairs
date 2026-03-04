@@ -96,7 +96,7 @@ export function Footer({ site }: { site: SiteConfig }) {
                 Viber: <a href={site.messengers.viber} target="_blank" rel="noreferrer">Viber</a>
               </li>
             ) : null}
-            {!hasAnyContactLine ? <li>{t("[TODO: заполните контактные данные в content/site.json]", undefined, uiLocale)}</li> : null}
+            {!hasAnyContactLine ? <li>{t("Контактные данные временно недоступны.", undefined, uiLocale)}</li> : null}
           </ul>
         </div>
       </div>

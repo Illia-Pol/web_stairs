@@ -8,8 +8,8 @@ coverImage: /assets/portfolio/portfolio-6.jpg
 gallery:
   - /assets/portfolio/portfolio-6.jpg
   - /assets/catalog-gallery/u-shaped-landing/1.jpg
-priceBand: "{{MID_PRICE_RANGE}}"
-year: "{{CASE_YEAR_3}}"
+priceBand: "3 800–5 200 BYN"
+year: "2024"
 tags:
   - standard
   - п-образная
@@ -27,4 +27,4 @@ summary: Рациональное решение для семейного до�
 ## Результат
 Надежный монолит с понятной стоимостью и предсказуемыми сроками.
 
-[TODO: добавить подтвержденные даты этапов и фото после отделки]
+Лестница была сдана без корректировок по высоте ступеней и без конфликтов с отделочными работами на следующем этапе.

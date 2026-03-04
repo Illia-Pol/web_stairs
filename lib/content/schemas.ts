@@ -3,22 +3,22 @@ import { z } from "zod";
 export const FunnelSchema = z.enum(["standard", "signature"]);
 
 export const SiteConfigSchema = z.object({
-  baseUrl: z.string().default("https://{{DOMAIN}}"),
+  baseUrl: z.string().default("https://betostep.by"),
   brand: z.object({
-    name: z.string().default("{{BRAND_NAME}}"),
+    name: z.string().default("BETOSTEP"),
     tagline: z.string().default("Бетонные монолитные лестницы в Беларуси"),
-    founder: z.string().default("{{FOUNDER_NAME}}")
+    founder: z.string().default("Максим Владимирович Соколовский")
   }),
   contacts: z.object({
-    phoneMain: z.string().default("{{PHONE_MAIN}}"),
-    email: z.string().default("{{EMAIL}}"),
-    address: z.string().default("{{LEGAL_ADDRESS}}"),
+    phoneMain: z.string().default("+375296512022"),
+    email: z.string().default("hello@betostep.by"),
+    address: z.string().default("Минск, Беларусь"),
     workingHours: z.string().default("Пн-Сб 09:00-20:00")
   }),
   legal: z.object({
-    unp: z.string().default("{{UNP}}"),
-    legalAddress: z.string().default("{{LEGAL_ADDRESS}}"),
-    contractModel: z.string().default("[TODO: добавить модель договора]")
+    unp: z.string().default("УНП указывается в договоре"),
+    legalAddress: z.string().default("Минск, Беларусь"),
+    contractModel: z.string().default("Договор подряда ИП с фиксацией этапов, сроков и стоимости.")
   }),
   messengers: z.object({
     telegram: z.string().default("#"),
@@ -27,20 +27,20 @@ export const SiteConfigSchema = z.object({
   }),
   localeLinks: z.object({
     ru: z.string().default("/"),
-    en: z.string().default("{{EN_SITE_URL}}")
+    en: z.string().default("/en")
   }),
-  leadEndpoint: z.string().default("{{LEAD_ENDPOINT_URL}}"),
+  leadEndpoint: z.string().default("https://web-stairs.vercel.app/api/lead"),
   telegramFallback: z.object({
-    username: z.string().default("{{TELEGRAM_USERNAME_OR_BOT_LINK}}"),
-    url: z.string().default("https://t.me/{{TELEGRAM_USERNAME_OR_BOT_LINK}}")
+    username: z.string().default("Sokolmaxxx"),
+    url: z.string().default("https://t.me/Sokolmaxxx")
   }),
   telegramFallbackMode: z.enum(["auto_redirect", "button_only"]).default("auto_redirect"),
-  coverageRegions: z.string().default("{{COVERAGE_REGIONS}}"),
-  warrantyTerm: z.string().default("{{WARRANTY_TERM}}"),
+  coverageRegions: z.string().default("Минск и область, Брест, Гродно, Гомель, Витебск, Могилев и другие города Беларуси"),
+  warrantyTerm: z.string().default("5 лет"),
   pricing: z.object({
-    standardFrom: z.string().default("{{STANDARD_PRICE_FROM}}"),
-    midRange: z.string().default("{{MID_PRICE_RANGE}}"),
-    signatureFrom: z.string().default("{{SIGNATURE_PRICE_FROM}}")
+    standardFrom: z.string().default("от 2 700 BYN"),
+    midRange: z.string().default("3 500–5 500 BYN"),
+    signatureFrom: z.string().default("от 6 500 BYN")
   }),
   checklist: z.array(z.string()).default([]),
   processSteps: z.array(z.string()).default([]),
@@ -99,10 +99,10 @@ export const CaseFrontmatterSchema = z.object({
   type: z.string(),
   coverImage: z.string().default("/assets/portfolio/portfolio-1.jpg"),
   gallery: z.array(z.string()).default([]),
-  priceBand: z.string().default("{{MID_PRICE_RANGE}}"),
-  year: z.string().default("{{CASE_YEAR}}"),
+  priceBand: z.string().default("3 500–5 500 BYN"),
+  year: z.string().default("2025"),
   tags: z.array(z.string()).default([]),
-  summary: z.string().default("[TODO: добавить описание кейса]")
+  summary: z.string().default("Реализованный проект бетонной лестницы с контролем геометрии и подготовкой под отделку.")
 });
 
 export const CaseItemSchema = CaseFrontmatterSchema.extend({
@@ -129,7 +129,7 @@ export const GeoItemSchema = z.object({
   description: z.string(),
   seoTitle: z.string(),
   seoDescription: z.string(),
-  transport: z.string().default("[TODO: добавить логистику]"),
+  transport: z.string().default("Выезд выполняется по согласованному графику с предварительным подтверждением логистики."),
   proof: z.array(z.string()).default([])
 });
 

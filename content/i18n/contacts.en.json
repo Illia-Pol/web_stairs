@@ -18,7 +18,7 @@
   "address_label": "Address",
   "hours_label": "Availability",
   "regions_label": "Regions",
-  "contacts_todo": "[TODO: fill contact details in content/site.json]",
+  "contacts_todo": "Contact details are temporarily unavailable.",
 
   "form_title": "Submit request",
   "form_note": "Describe your task in free form. For accurate estimate, attach photos/plan in the form below.",

@@ -88,11 +88,11 @@ function buildFallbackMessage(payload: {
 }) {
   return [
     t("Заявка с сайта"),
-    t("Имя: {{VALUE}}", { VALUE: payload.name || "{{CLIENT_NAME}}" }),
+    t("Имя: {{VALUE}}", { VALUE: payload.name || "Не указано" }),
     t("Телефон: {{VALUE}}", { VALUE: payload.phone }),
-    t("Город: {{VALUE}}", { VALUE: payload.city || "{{CITY}}" }),
+    t("Город: {{VALUE}}", { VALUE: payload.city || "Не указан" }),
     t("Предпочтительный канал: {{VALUE}}", { VALUE: payload.messenger }),
-    t("Сообщение: {{VALUE}}", { VALUE: payload.message || "{{CLIENT_MESSAGE}}" }),
+    t("Сообщение: {{VALUE}}", { VALUE: payload.message || "Без комментария" }),
     t("Страница: {{VALUE}}", { VALUE: payload.pageUrl }),
     t("Источник: {{VALUE}}", { VALUE: payload.source })
   ].join("\n");
@@ -246,7 +246,7 @@ export function LeadForm({
         rows={compact ? 3 : 5}
         value={formState.message}
         onChange={(event) => setFormState((prev) => ({ ...prev, message: event.target.value }))}
-        placeholder={t("Опишите задачу. [TODO: вставьте реальные подсказки по данным для расчета]")}
+        placeholder={t("Опишите задачу: тип лестницы, высота, стадия объекта и желаемые сроки")}
         className="w-full rounded-[12px] border border-slate-300 bg-white/95 px-4 py-3 text-sm text-graphite outline-none transition-colors focus:border-bronze"
       />
 

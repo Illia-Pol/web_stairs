@@ -7,7 +7,7 @@
   "address_label": "Address",
   "regions_label": "Regions",
   "regions_value": "Belarus, Russia, Poland",
-  "contacts_todo": "[TODO: fill contact details in content/site.json]",
+  "contacts_todo": "Contact details are temporarily unavailable.",
 
   "form_kicker": "Request",
   "form_title": "Submit request",

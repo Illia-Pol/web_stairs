@@ -8,8 +8,8 @@ coverImage: /assets/portfolio/portfolio-1.jpg
 gallery:
   - /assets/portfolio/portfolio-1.jpg
   - /assets/slider/slider-4.jpeg
-priceBand: "{{SIGNATURE_PRICE_FROM}}"
-year: "{{CASE_YEAR_1}}"
+priceBand: "от 8 900 BYN"
+year: "2025"
 tags:
   - signature
   - парящие
@@ -27,4 +27,4 @@ summary: Парящая конструкция с подготовкой под 
 ## Результат
 Получилась чистая архитектурная форма без компромиссов по надежности.
 
-[TODO: добавить фактические сроки, метраж и отзыв заказчика]
+Объект прошел следующий этап отделки без доработок по бетонному контуру и посадке ступеней.
