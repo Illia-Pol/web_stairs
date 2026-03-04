@@ -82,6 +82,20 @@ export default function GeoPage({ params }: PageProps) {
             ]}
           />
 
+          <div className="portfolio-story">
+            <p>
+              {t("Для первичного ориентира можно сначала открыть")}{" "}
+              <Link href="/prices/calculator" className="inline-link">
+                {t("калькулятор Classic")}
+              </Link>{" "}
+              {t("и материал")}{" "}
+              <Link href="/vlog/articles/kak-podgotovit-proem" className="inline-link">
+                {t("как подготовить проем")}
+              </Link>
+              .
+            </p>
+          </div>
+
           <div className="info-grid md:grid-cols-2">
             <article className="guarantee-card">
               <h2>{t("Локальные условия")}</h2>

@@ -67,7 +67,8 @@ function getPrimaryNav(locale: "ru" | "en"): NavItem[] {
 
 export function Header({ site, currentLocale }: { site: SiteConfig; currentLocale: "ru" | "en" }) {
   const pathname = usePathname();
-  const [uiLocale, setUiLocale] = useState<Locale>(currentLocale);
+  const localeByPath = localeFromPathname(pathname);
+  const [uiLocale, setUiLocale] = useState<Locale>(localeByPath ?? currentLocale);
   const [isCompact, setIsCompact] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const primaryNav = getPrimaryNav(uiLocale);
@@ -96,9 +97,8 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
   }, [pathname]);
 
   useEffect(() => {
-    if (!pathname) return;
-    setUiLocale(localeFromPathname(pathname));
-  }, [pathname]);
+    setUiLocale(localeByPath ?? currentLocale);
+  }, [currentLocale, localeByPath]);
 
   useEffect(() => {
     const onResize = () => {

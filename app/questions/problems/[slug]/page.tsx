@@ -49,6 +49,7 @@ export default function FeatureDetailPage({ params }: PageProps) {
   const feature = getFeatureBySlug(params.slug);
   if (!feature) notFound();
 
+  const relatedFeatures = getFeatures().filter((item) => item.slug !== feature.slug).slice(0, 3);
   const relatedTypes = feature.relatedTypes
     .map((slug) => getTypeBySlug(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -107,6 +108,20 @@ export default function FeatureDetailPage({ params }: PageProps) {
 
           <div className="portfolio-story">
             <p>{t("Ниже собрали практический разбор: что обычно вызывает риск на объекте, каким способом закрываем этот риск и какой результат получает заказчик.")}</p>
+            {relatedFeatures.length ? (
+              <p>
+                {t("Смотрите также разборы")}{" "}
+                {relatedFeatures.map((item, index) => (
+                  <span key={item.slug}>
+                    {index > 0 ? t(", ") : null}
+                    <Link href={`/questions/problems/${item.slug}`} className="inline-link">
+                      {t(item.title)}
+                    </Link>
+                  </span>
+                ))}
+                .
+              </p>
+            ) : null}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

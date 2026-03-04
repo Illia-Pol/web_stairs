@@ -68,6 +68,17 @@ export default function GuaranteePage() {
           <div className="portfolio-story">
             <p>{t("Мы отвечаем за бетонный конструктив лестницы и корректную подготовку под отделку. Такой подход снижает риски спорных ситуаций и помогает держать проект в управляемых рамках.")}</p>
             <p>{t("Ниже — базовые принципы оформления. Финальные условия всегда привязываем к конкретному объекту и техническому заданию.")}</p>
+            <p>
+              {t("Чтобы корректно подготовить вводные к договору, посмотрите")}{" "}
+              <Link href="/vlog/articles/kak-podgotovit-proem" className="inline-link">
+                {t("чек-лист подготовки проема")}
+              </Link>{" "}
+              {t("и раздел")}{" "}
+              <Link href="/questions/faq" className="inline-link">
+                FAQ
+              </Link>
+              .
+            </p>
           </div>
 
           <div className="guarantee-wrap">

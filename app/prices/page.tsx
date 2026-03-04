@@ -7,7 +7,7 @@ import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -52,11 +52,28 @@ export default function PricesHubPage() {
     areaServed: site.coverageRegions,
     offers: `Classic: ${site.pricing.standardFrom}, Signature: ${site.pricing.signatureFrom}`
   });
+  const pricingCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("Цены"),
+    description: t("Раздел по стоимости, форматам работ, договору и гарантиям."),
+    url: absoluteUrl(site.baseUrl, "/prices"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: cards.map((card, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: card.title,
+        url: absoluteUrl(site.baseUrl, card.href)
+      }))
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={pricingCollectionSchema} />
 
       <Section className="section-dark">
         <Container>
@@ -73,6 +90,20 @@ export default function PricesHubPage() {
               t("Раздел построен так, чтобы вы могли быстро выбрать нужный маршрут: посчитать ориентир, сравнить тарифы или проверить условия гарантии и договора.")
             ]}
           />
+
+          <div className="portfolio-story">
+            <p>
+              {t("Перед финальным расчетом рекомендуем прочитать материалы")}{" "}
+              <Link href="/vlog/articles/chto-vliyaet-na-stoimost" className="inline-link">
+                {t("что влияет на стоимость")}
+              </Link>{" "}
+              {t("и")}{" "}
+              <Link href="/vlog/articles/kak-podgotovit-proem" className="inline-link">
+                {t("как подготовить проем")}
+              </Link>
+              .
+            </p>
+          </div>
 
           <PageNavCards items={cards} columns={3} />
 

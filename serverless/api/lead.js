@@ -194,9 +194,7 @@ function buildMessage(data) {
     `Имя: ${normalizeText(data.name) || "—"}`,
     `Телефон: ${normalizeText(data.phone) || "—"}`,
     `Город: ${normalizeText(data.city) || "—"}`,
-    `Сообщение: ${normalizeText(data.message) || "—"}`,
-    `Источник: ${normalizeText(data.source) || "site_form"}`,
-    `Страница: ${normalizeText(data.pageUrl) || "—"}`
+    `Сообщение: ${normalizeText(data.message) || "—"}`
   ].join("\n");
 }
 

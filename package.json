@@ -10,7 +10,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "i18n:extract": "node scripts/extract-i18n.mjs",
+    "seo:crawl": "node scripts/crawl-audit.mjs",
     "generate:seo": "node scripts/generate-static-seo.mjs",
+    "images:optimize": "node scripts/generate-image-variants.mjs",
     "postbuild": "node scripts/generate-static-seo.mjs"
   },
   "dependencies": {

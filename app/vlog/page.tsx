@@ -5,7 +5,7 @@ import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -48,11 +48,28 @@ export default function VlogPage() {
     serviceType: t("Влог"),
     areaServed: site.coverageRegions
   });
+  const vlogCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("Влог о бетонных лестницах"),
+    description: t("Проекты, статьи и процесс работы по бетонным лестницам."),
+    url: absoluteUrl(site.baseUrl, "/vlog"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: cards.map((card, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: card.title,
+        url: absoluteUrl(site.baseUrl, card.href)
+      }))
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={vlogCollectionSchema} />
 
       <Section className="section-dark">
         <Container>

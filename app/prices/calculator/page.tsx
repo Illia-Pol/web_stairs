@@ -67,6 +67,17 @@ export default function PricesCalculatorPage() {
 
           <div className="portfolio-story">
             <p>{t("Калькулятор учитывает тип лестницы, тип исполнения и высоту. Итог дает ориентир для планирования бюджета и обсуждения следующего шага.")}</p>
+            <p>
+              {t("Перед отправкой заявки полезно изучить материалы")}{" "}
+              <Link href="/vlog/articles/chto-vliyaet-na-stoimost" className="inline-link">
+                {t("что влияет на стоимость")}
+              </Link>{" "}
+              {t("и")}{" "}
+              <Link href="/vlog/articles/standart-vs-signature" className="inline-link">
+                {t("Classic vs Signature")}
+              </Link>
+              .
+            </p>
           </div>
 
           <div className="mt-6">

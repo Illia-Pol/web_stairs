@@ -46,3 +46,8 @@ Signature оправдан, если объект требует более гл
 
 Подробные условия можно посмотреть на страницах [Classic](/prices/tariffs/classic) и [Signature](/prices/tariffs/signature).  
 Если нужно сравнение на вашем объекте, отправьте вводные через [форму заявки](/contacts).
+
+Рекомендуем также:
+- [Что влияет на стоимость бетонной лестницы](/vlog/articles/chto-vliyaet-na-stoimost)
+- [Как подготовить проем под бетонную лестницу](/vlog/articles/kak-podgotovit-proem)
+- [Примеры реализованных проектов](/portfolio/projects)

@@ -14,7 +14,8 @@ function hasRealValue(value: string | undefined): value is string {
 
 export function Footer({ site }: { site: SiteConfig }) {
   const pathname = usePathname();
-  const [uiLocale, setUiLocale] = useState<Locale>("ru");
+  const localeByPath = localeFromPathname(pathname);
+  const [uiLocale, setUiLocale] = useState<Locale>(localeByPath);
   const brandName = hasRealValue(site.brand.name) ? site.brand.name : "BETOSTEP";
   const hasFounder = hasRealValue(site.brand.founder);
   const hasPhone = hasRealValue(site.contacts.phoneMain);
@@ -26,8 +27,9 @@ export function Footer({ site }: { site: SiteConfig }) {
   const hasViber = hasRealValue(site.messengers.viber) && site.messengers.viber !== "#";
   const hasAnyContactLine =
     hasPhone || hasEmail || hasUnp || hasAddress || hasTelegram || hasWhatsApp || hasViber;
+  const portfolioHref = uiLocale === "en" ? "/en/portfolio" : "/portfolio";
   const links = [
-    { href: "/portfolio", label: thf("link_portfolio", uiLocale) },
+    { href: portfolioHref, label: thf("link_portfolio", uiLocale) },
     { href: "/prices", label: thf("link_prices", uiLocale) },
     { href: "/questions", label: thf("link_questions", uiLocale) },
     { href: "/vlog", label: thf("link_vlog", uiLocale) },
@@ -36,9 +38,8 @@ export function Footer({ site }: { site: SiteConfig }) {
   ];
 
   useEffect(() => {
-    if (!pathname) return;
-    setUiLocale(localeFromPathname(pathname));
-  }, [pathname]);
+    setUiLocale(localeByPath);
+  }, [localeByPath]);
 
   return (
     <footer className="border-t border-white/10 bg-[#0b0d10] pb-20 pt-10 text-[#dddbd6] sm:pb-12">

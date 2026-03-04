@@ -92,9 +92,7 @@ function buildFallbackMessage(payload: {
     t("Телефон: {{VALUE}}", { VALUE: payload.phone }),
     t("Город: {{VALUE}}", { VALUE: payload.city || "Не указан" }),
     t("Предпочтительный канал: {{VALUE}}", { VALUE: payload.messenger }),
-    t("Сообщение: {{VALUE}}", { VALUE: payload.message || "Без комментария" }),
-    t("Страница: {{VALUE}}", { VALUE: payload.pageUrl }),
-    t("Источник: {{VALUE}}", { VALUE: payload.source })
+    t("Сообщение: {{VALUE}}", { VALUE: payload.message || "Без комментария" })
   ].join("\n");
 }
 

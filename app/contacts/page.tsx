@@ -66,7 +66,9 @@ export default function ContactsPage() {
             <ul className="contacts-city-list">
               {cities.map((city) => (
                 <li key={city.slug}>
-                  {t(city.city, undefined, LOCALE)}
+                  <Link href={`/geo/${city.slug}`} className="inline-link">
+                    {t(city.city, undefined, LOCALE)}
+                  </Link>
                 </li>
               ))}
             </ul>

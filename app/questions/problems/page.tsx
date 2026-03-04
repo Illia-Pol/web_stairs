@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Container, Section } from "@/components/ui/Section";
 import { getFeatures, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -30,11 +30,28 @@ export default function FeaturesPage() {
     serviceType: t("Решения по бетонным лестницам"),
     areaServed: site.coverageRegions
   });
+  const problemsCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("Проблемы и решения"),
+    description: t("Практические разборы рисков и решений до старта работ по бетонной лестнице."),
+    url: absoluteUrl(site.baseUrl, "/questions/problems"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: features.map((feature, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: t(feature.title),
+        url: absoluteUrl(site.baseUrl, `/questions/problems/${feature.slug}`)
+      }))
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={problemsCollectionSchema} />
 
       <Section className="section-dark">
         <Container>

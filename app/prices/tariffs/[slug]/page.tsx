@@ -108,6 +108,20 @@ export default function TariffDetailPage({ params }: PageProps) {
             ]}
           />
 
+          <div className="portfolio-story">
+            <p>
+              {t("Для выбора формата на реальных примерах откройте")}{" "}
+              <Link href="/portfolio/projects" className="inline-link">
+                {t("раздел проектов")}
+              </Link>{" "}
+              {t("и материал")}{" "}
+              <Link href="/vlog/articles/standart-vs-signature" className="inline-link">
+                {t("Classic vs Signature")}
+              </Link>
+              .
+            </p>
+          </div>
+
           <div className="info-grid">
             <article className="info-card">
               <h3>{t("Подход")}</h3>

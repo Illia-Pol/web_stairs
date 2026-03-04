@@ -22,6 +22,7 @@
 - `content/` — контент-модель (`site.json`, `types`, `features`, `cases`, `knowledge`, `faq`, `geo`, `i18n`).
 - `lib/` — загрузчики контента, i18n, SEO, утилиты.
 - `public/assets/` — единый источник статических ассетов (изображения, клиентские скрипты, иконки).
+- `public/_headers` — CDN cache policy для хостингов, которые поддерживают headers-файл.
 - `scripts/` — утилиты для SEO и локального pre-commit прогона.
 - `serverless/` — отдельный Vercel endpoint для лидов.
 
@@ -45,6 +46,7 @@ npm run build
 
 - `out/` — готовый статический сайт.
 - `public/sitemap.xml`, `public/robots.txt` и копии в `out/` генерируются скриптом `postbuild`.
+- grouped sitemap-файлы (`sitemap-pages.xml`, `sitemap-portfolio.xml`, `sitemap-blog.xml`, `sitemap-cases.xml`) тоже генерируются автоматически.
 
 ## Локализация (RU/EN)
 
@@ -122,6 +124,8 @@ NEXT_PUBLIC_BASE_PATH: ""
 npm run typecheck
 npm run lint
 npm run generate:seo
+npm run seo:crawl
+npm run images:optimize
 npm run i18n:extract
 npm run precommit:manual
 ```

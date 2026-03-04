@@ -9,7 +9,7 @@ import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig, getTypeBySlug, getTypes } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 type PageProps = {
   params: {
@@ -64,11 +64,31 @@ export default function TypeDetailPage({ params }: PageProps) {
     areaServed: site.coverageRegions,
     offers: type.priceHint
   });
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: t(type.title),
+    description: t(type.shortDescription),
+    category: t("Бетонные лестницы"),
+    image: absoluteUrl(site.baseUrl, type.heroImage),
+    brand: {
+      "@type": "Brand",
+      name: site.brand.name
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "BYN",
+      availability: "https://schema.org/InStock",
+      url: absoluteUrl(site.baseUrl, `/portfolio/types/${type.slug}`),
+      description: type.priceHint
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={productSchema} />
 
       <Section className="section-dark">
         <Container>

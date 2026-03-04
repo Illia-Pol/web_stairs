@@ -52,3 +52,8 @@ tags:
 
 Полезно дополнительно посмотреть [калькулятор Classic](/prices/calculator), а для сравнения форматов открыть страницу [тарифов Classic и Signature](/prices/tariffs).  
 Если хотите расчет под ваш объект без ожидания, можно сразу [отправить заявку](/contacts).
+
+Чтобы глубже разобраться в теме, откройте материалы:
+- [Как подготовить проем под бетонную лестницу](/vlog/articles/kak-podgotovit-proem)
+- [Classic vs Signature: как выбрать формат проекта](/vlog/articles/standart-vs-signature)
+- [Реализованные проекты в портфолио](/portfolio/projects)

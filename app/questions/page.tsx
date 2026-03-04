@@ -5,7 +5,7 @@ import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -48,11 +48,28 @@ export default function QuestionsHubPage() {
     serviceType: t("Вопросы и решения"),
     areaServed: site.coverageRegions
   });
+  const questionsCollectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("Вопросы и решения"),
+    description: t("FAQ и разборы проблемных кейсов по бетонным лестницам."),
+    url: absoluteUrl(site.baseUrl, "/questions"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: cards.map((card, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: card.title,
+        url: absoluteUrl(site.baseUrl, card.href)
+      }))
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={questionsCollectionSchema} />
 
       <Section className="section-dark">
         <Container>

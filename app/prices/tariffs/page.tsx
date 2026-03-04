@@ -103,6 +103,17 @@ export default function TariffsPage() {
           <div className="portfolio-story">
             <p>{t("Classic выбирают для рациональных проектов, где геометрия и условия позволяют работать по проверенному процессу с предсказуемой сметой.")}</p>
             <p>{t("Signature нужен для объектов с повышенной сложностью: нестандартные узлы, более высокий класс архитектурных требований, расширенное проектирование и сопровождение.")}</p>
+            <p>
+              {t("Если вы сравниваете форматы, начните со статьи")}{" "}
+              <Link href="/vlog/articles/standart-vs-signature" className="inline-link">
+                {t("Classic vs Signature")}
+              </Link>{" "}
+              {t("и затем посмотрите")}{" "}
+              <Link href="/portfolio/projects" className="inline-link">
+                {t("реализованные проекты")}
+              </Link>
+              .
+            </p>
           </div>
 
           <div className="segment-grid">

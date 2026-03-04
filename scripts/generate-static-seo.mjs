@@ -55,18 +55,13 @@ function joinPath(basePath, route) {
 const site = readJson(path.join(CONTENT_DIR, "site.json"), { baseUrl: "https://example.com" });
 const baseUrl = normalizeBaseUrl(site.baseUrl);
 const basePath = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH ?? "");
+const generatedAt = new Date().toISOString();
 
-const staticRoutes = [
+const pagesRoutes = [
   "/",
   "/en",
-  "/portfolio",
-  "/en/portfolio",
-  "/portfolio/types",
-  "/en/portfolio/types",
-  "/portfolio/projects",
-  "/en/portfolio/projects",
-  "/portfolio/master",
-  "/en/portfolio/master",
+  "/contacts",
+  "/privacy",
   "/prices",
   "/prices/calculator",
   "/prices/tariffs",
@@ -76,12 +71,6 @@ const staticRoutes = [
   "/questions",
   "/questions/faq",
   "/questions/problems",
-  "/vlog",
-  "/vlog/projects",
-  "/vlog/articles",
-  "/vlog/process",
-  "/contacts",
-  "/privacy"
 ];
 
 const typeRoutes = listSlugsByExt("types", ".json").map((slug) => `/portfolio/types/${slug}`);
@@ -89,28 +78,72 @@ const featureRoutes = listSlugsByExt("features", ".json").map((slug) => `/questi
 const geoRoutes = listSlugsByExt("geo", ".json").map((slug) => `/geo/${slug}`);
 const knowledgeRoutes = listSlugsByExt("knowledge", ".md").map((slug) => `/vlog/articles/${slug}`);
 
-const allRoutes = [
-  ...new Set([
-    ...staticRoutes,
-    ...typeRoutes,
-    ...featureRoutes,
-    ...geoRoutes,
-    ...knowledgeRoutes
-  ])
+const portfolioRoutes = [
+  "/portfolio",
+  "/en/portfolio",
+  "/portfolio/types",
+  "/en/portfolio/types",
+  "/portfolio/master",
+  "/en/portfolio/master",
+  ...typeRoutes
 ];
 
-const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${allRoutes
-  .map((route) => {
-    const fullPath = joinPath(basePath, route);
-    return `  <url>\n    <loc>${baseUrl}${fullPath}</loc>\n  </url>`;
+const blogRoutes = [
+  "/vlog",
+  "/vlog/articles",
+  "/vlog/process",
+  ...knowledgeRoutes
+];
+
+const casesRoutes = [
+  "/portfolio/projects",
+  "/en/portfolio/projects",
+  "/vlog/projects"
+];
+
+const seoPagesRoutes = [...pagesRoutes, ...featureRoutes, ...geoRoutes];
+
+const rawSitemapGroups = [
+  { file: "sitemap-pages.xml", routes: seoPagesRoutes },
+  { file: "sitemap-portfolio.xml", routes: portfolioRoutes },
+  { file: "sitemap-blog.xml", routes: blogRoutes },
+  { file: "sitemap-cases.xml", routes: casesRoutes }
+];
+const usedRoutes = new Set();
+const sitemapGroups = rawSitemapGroups.map((group) => ({
+  ...group,
+  routes: group.routes.filter((route) => {
+    if (usedRoutes.has(route)) return false;
+    usedRoutes.add(route);
+    return true;
   })
-  .join("\n")}\n</urlset>\n`;
+}));
+
+function buildUrlSetXml(routes) {
+  const uniqueRoutes = [...new Set(routes)];
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${uniqueRoutes
+    .map((route) => {
+      const fullPath = joinPath(basePath, route);
+      return `  <url>\n    <loc>${baseUrl}${fullPath}</loc>\n    <lastmod>${generatedAt}</lastmod>\n  </url>`;
+    })
+    .join("\n")}\n</urlset>\n`;
+}
+
+const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapGroups
+  .map((route) => {
+    const fullPath = joinPath(basePath, `/${route.file}`);
+    return `  <sitemap>\n    <loc>${baseUrl}${fullPath}</loc>\n    <lastmod>${generatedAt}</lastmod>\n  </sitemap>`;
+  })
+  .join("\n")}\n</sitemapindex>\n`;
 
 const robotsTxt = `User-agent: *\nAllow: /\nHost: ${baseUrl}\nSitemap: ${baseUrl}${joinPath(basePath, "/sitemap.xml")}\n`;
 
 function writeSeoFiles(targetDir) {
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(path.join(targetDir, "sitemap.xml"), sitemapXml, "utf8");
+  for (const group of sitemapGroups) {
+    fs.writeFileSync(path.join(targetDir, group.file), buildUrlSetXml(group.routes), "utf8");
+  }
+  fs.writeFileSync(path.join(targetDir, "sitemap.xml"), sitemapIndexXml, "utf8");
   fs.writeFileSync(path.join(targetDir, "robots.txt"), robotsTxt, "utf8");
 }
 

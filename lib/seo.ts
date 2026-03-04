@@ -4,6 +4,13 @@ import type { FaqItem } from "@/lib/content/schemas";
 import { withBasePath } from "@/lib/paths";
 
 const FALLBACK_BASE_URL = "https://example.com";
+const BILINGUAL_PATHS = new Set([
+  "/",
+  "/portfolio",
+  "/portfolio/types",
+  "/portfolio/projects",
+  "/portfolio/master"
+]);
 
 function normalizeBaseUrl(baseUrl: string): string {
   if (!baseUrl || baseUrl.includes("{{")) {
@@ -47,6 +54,50 @@ function normalizePathname(pathname: string): string {
   return `${normalizedPath}${querySuffix}${hashSuffix}`;
 }
 
+function cleanPath(pathname: string): string {
+  if (!pathname) return "/";
+  const [beforeHash] = pathname.split("#");
+  const [beforeQuery] = beforeHash.split("?");
+  if (!beforeQuery || beforeQuery === "/") return "/";
+  return beforeQuery.replace(/\/+$/g, "") || "/";
+}
+
+function toEnPath(ruPath: string): string {
+  if (ruPath === "/") return "/en";
+  return `/en${ruPath}`;
+}
+
+function toRuPath(enPath: string): string {
+  if (enPath === "/en") return "/";
+  return enPath.replace(/^\/en/, "") || "/";
+}
+
+function buildHreflangAlternates(baseUrl: string, pathname: string): Record<string, string> | undefined {
+  const clean = cleanPath(pathname);
+  const isEn = clean === "/en" || clean.startsWith("/en/");
+  const ruCandidate = isEn ? toRuPath(clean) : clean;
+  const enCandidate = isEn ? clean : toEnPath(clean);
+
+  if (!BILINGUAL_PATHS.has(ruCandidate)) return undefined;
+
+  const ruUrl = absoluteUrl(baseUrl, ruCandidate);
+  const enUrl = absoluteUrl(baseUrl, enCandidate);
+
+  return {
+    ru: ruUrl,
+    en: enUrl,
+    "x-default": ruUrl
+  };
+}
+
+function organizationNodeId(baseUrl: string): string {
+  return `${normalizeBaseUrl(baseUrl)}#organization`;
+}
+
+function websiteNodeId(baseUrl: string): string {
+  return `${normalizeBaseUrl(baseUrl)}#website`;
+}
+
 function trimToLength(value: string, maxLength: number): string {
   if (value.length <= maxLength) return value;
 
@@ -62,7 +113,14 @@ function trimToLength(value: string, maxLength: number): string {
 function normalizeMetaTitle(value: string, isEnglish: boolean): string {
   const base = value.trim();
   const suffix = isEnglish ? " | Custom concrete staircases" : " | Бетонные лестницы под заказ";
-  const enriched = base.length < 50 && !base.includes(suffix) ? `${base}${suffix}` : base;
+  const lower = base.toLowerCase();
+  const hasBrandOrTopic =
+    lower.includes("betostep") ||
+    lower.includes("бетон") ||
+    lower.includes("concrete") ||
+    lower.includes("stair");
+  const shouldAppend = base.length < 42 && !hasBrandOrTopic && !base.includes(suffix);
+  const enriched = shouldAppend ? `${base}${suffix}` : base;
   return trimToLength(enriched, 60);
 }
 
@@ -101,12 +159,14 @@ export function createPageMetadata({
   const canonical = absoluteUrl(baseUrl, pathname);
   const ogImage = absoluteUrl(baseUrl, image);
   const ogLocale = isEnglish ? "en_US" : "ru_BY";
+  const languageAlternates = buildHreflangAlternates(baseUrl, pathname);
 
   return {
     title: normalizedTitle,
     description: normalizedDescription,
     alternates: {
-      canonical
+      canonical,
+      languages: languageAlternates
     },
     robots: {
       index: true,
@@ -133,11 +193,16 @@ export function websiteJsonLd(params: {
   name: string;
   baseUrl: string;
 }) {
+  const url = normalizeBaseUrl(params.baseUrl);
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteNodeId(params.baseUrl),
     name: params.name,
-    url: normalizeBaseUrl(params.baseUrl),
+    url,
+    publisher: {
+      "@id": organizationNodeId(params.baseUrl)
+    },
     inLanguage: ["ru", "en"]
   };
 }
@@ -160,6 +225,7 @@ export function organizationJsonLd(params: {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": organizationNodeId(params.baseUrl),
     name: params.name,
     url: normalizeBaseUrl(params.baseUrl),
     logo: params.logo ? absoluteUrl(params.baseUrl, params.logo) : undefined,
@@ -197,6 +263,7 @@ export function localBusinessJsonLd(params: {
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": `${normalizeBaseUrl(params.baseUrl)}#local-business`,
     name: params.name,
     url: normalizeBaseUrl(params.baseUrl),
     telephone: params.phone,
@@ -207,7 +274,10 @@ export function localBusinessJsonLd(params: {
       addressCountry: "BY"
     },
     areaServed: params.coverageRegions,
-    sameAs
+    sameAs,
+    parentOrganization: {
+      "@id": organizationNodeId(params.baseUrl)
+    }
   };
 }
 
@@ -255,9 +325,7 @@ export function serviceJsonLd(params: {
     description: params.description,
     areaServed: params.areaServed,
     provider: {
-      "@type": "ProfessionalService",
-      name: params.name,
-      url: normalizeBaseUrl(params.baseUrl)
+      "@id": `${normalizeBaseUrl(params.baseUrl)}#local-business`
     },
     offers: params.offers
       ? {
@@ -295,6 +363,7 @@ export function articleJsonLd(params: {
     },
     publisher: {
       "@type": "Organization",
+      "@id": organizationNodeId(params.baseUrl),
       name: params.publisherName,
       logo: params.publisherLogo
         ? {
