@@ -1,0 +1,28 @@
+{
+  "meta_title": "Contacts and Request",
+  "meta_description": "Contact details for concrete staircase estimate: phone, messengers, and request form.",
+
+  "breadcrumb_home": "Home",
+  "breadcrumb_current": "Contacts",
+
+  "hero_kicker": "Contacts",
+  "hero_title": "Get in touch and request an estimate",
+  "hero_description": "For a fast estimate, send a plan or opening photos. We respond via messengers and the request form.",
+
+  "story_p_1": "This page contains direct contact channels and the request form. If you already have object photos, attach them right away for a more accurate response.",
+  "story_p_2": "We first provide a realistic estimate for cost and timeline, then refine geometry, stages, and on-site constraints.",
+
+  "data_title": "Contact details",
+  "data_note": "Choose any channel you prefer. Fastest replies are in Telegram and WhatsApp.",
+  "phone_label": "Phone",
+  "address_label": "Address",
+  "hours_label": "Availability",
+  "regions_label": "Regions",
+  "contacts_todo": "[TODO: fill contact details in content/site.json]",
+
+  "form_title": "Submit request",
+  "form_note": "Describe your task in free form. For accurate estimate, attach photos/plan in the form below.",
+
+  "geo_title": "Coverage areas",
+  "geo_note": "City pages are published for SEO queries and are not part of the main navigation."
+}

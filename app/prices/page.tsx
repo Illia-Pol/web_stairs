@@ -1,9 +1,6 @@
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -23,6 +20,26 @@ export default function PricesHubPage() {
     { name: t("Главная"), href: "/" },
     { name: t("Цены"), href: "/prices" }
   ];
+  const cards = [
+    {
+      href: "/prices/calculator",
+      title: t("Калькулятор"),
+      text: t("Быстрый ориентир стоимости в формате Classic по ключевым параметрам объекта."),
+      cta: t("Открыть калькулятор")
+    },
+    {
+      href: "/prices/tariffs",
+      title: t("Тарифы"),
+      text: t("Разница между Classic и Signature: глубина проработки, уровень сопровождения и формат коммуникации."),
+      cta: t("Перейти к тарифам")
+    },
+    {
+      href: "/prices/guarantee",
+      title: t("Гарантия и договор"),
+      text: t("Что фиксируем в договоре, как формируется ответственность и где границы работ."),
+      cta: t("Смотреть условия")
+    }
+  ];
 
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
@@ -38,45 +55,63 @@ export default function PricesHubPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
 
-      <PageHeader
-        kicker={t("Цены")}
-        title={t("Стоимость и условия")}
-        description={t("В этом разделе собраны ориентиры стоимости, форматы тарифов, договор и гарантийные условия.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Цены"), href: "/prices" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{t("Цены")}</li>
+            </ol>
+          </nav>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Калькулятор")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Страница с примерными вилками стоимости. Интерактивный калькулятор будет добавлен позже.")}</p>
-              <Link href="/prices/calculator" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Открыть калькулятор")}
-              </Link>
-            </Card>
+          <div className="portfolio-page-head">
+            <p className="kicker">{t("Цены")}</p>
+            <h1>{t("Стоимость, формат работ и условия")}</h1>
+            <p>{t("Здесь собраны ориентиры по стоимости, сценарии работы, договорные условия и гарантийные обязательства.")}</p>
+          </div>
 
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Тарифы")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Classic и Signature: разный уровень инженерной проработки и контроля.")}</p>
-              <Link href="/prices/tariffs" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Перейти к тарифам")}
-              </Link>
-            </Card>
+          <div className="portfolio-story">
+            <p>{t("Цена лестницы зависит от геометрии, типа исполнения, условий на объекте и глубины инженерной проработки. Поэтому на старте даем именно реалистичный ориентир, а финальную смету фиксируем после уточнения исходных данных.")}</p>
+            <p>{t("Раздел построен так, чтобы вы могли быстро выбрать нужный маршрут: посчитать ориентир, сравнить тарифы или проверить условия гарантии и договора.")}</p>
+          </div>
 
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Гарантия и договор")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Как оформляется договор ИП, какие гарантии даем и что не входит в зону ответственности.")}</p>
-              <Link href="/prices/guarantee" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Смотреть условия")}
+          <div className="master-side-grid md:grid-cols-3">
+            {cards.map((card) => (
+              <Link key={card.href} href={card.href} className="master-link-card">
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+                <span>{card.cta}</span>
               </Link>
-            </Card>
+            ))}
+          </div>
+
+          <article className="guarantee-card mt-6">
+            <h2>{t("Что влияет на итоговую стоимость")}</h2>
+            <ul className="guarantee-list">
+              <li>{t("Тип лестницы и сложность геометрии маршей/поворотов.")}</li>
+              <li>{t("Высота подъема, параметры проема и ограничения площадки.")}</li>
+              <li>{t("Выбранный формат работы: Classic или Signature.")}</li>
+              <li>{t("Требования к срокам, этапности и координации смежных подрядчиков.")}</li>
+            </ul>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Отправить план/фото для точного ориентира")}
+            </Link>
+          </article>
+        </Container>
+      </Section>
+
+      <Section className="section-accent master-projects-section">
+        <Container>
+          <div className="portfolio-bottom-cta">
+            <p>{t("Если пока неясно, с чего начать, откройте калькулятор и отправьте заявку с фото проема — подскажем рабочий сценарий под ваш объект.")}</p>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Перейти к заявке")}
+            </Link>
           </div>
         </Container>
       </Section>

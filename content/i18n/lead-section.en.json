@@ -1,14 +1,29 @@
 {
-  "contact_kicker": "Request",
-  "contact_title": "Get an estimate and work plan",
-  "contact_text": "Leave your contacts and project parameters. We will get back to you within one business day.",
+  "info_kicker": "Contacts",
+  "info_title": "Get in touch and request an estimate",
+  "info_text": "Fastest response is in messengers. For accurate estimate, attach opening photos or plan right away.",
+  "phone_label": "Phone",
+  "email_label": "Email",
+  "address_label": "Address",
+  "regions_label": "Regions",
+  "regions_value": "Belarus, Russia, Poland",
+  "contacts_todo": "[TODO: fill contact details in content/site.json]",
+
+  "form_kicker": "Request",
+  "form_title": "Submit request",
+  "form_text": "Describe your task and attach photos. We will provide timeline and budget estimate.",
 
   "form_name": "Your name",
   "form_phone": "Phone",
   "form_region": "City / region",
+  "form_messenger": "Preferred contact channel",
+  "form_messenger_telegram": "Telegram",
+  "form_messenger_whatsapp": "WhatsApp",
+  "form_messenger_viber": "Viber",
+  "form_messenger_call": "Phone call",
   "form_message": "What needs to be done",
   "form_message_placeholder": "Stair type, construction stage, deadlines",
-  "form_submit": "Send request",
+  "form_submit": "Submit request",
   "form_add_photo_aria": "Add photo/plan",
   "form_add_photo_hint": "You can add up to 8 photos (JPG/PNG/WebP, up to 10 MB each).",
   "form_policy_prefix": "By clicking the button, you agree with the",
@@ -38,6 +53,7 @@
   "form_msg_lead_name": "Name",
   "form_msg_lead_phone": "Phone",
   "form_msg_lead_region": "Region",
+  "form_msg_lead_messenger": "Preferred channel",
   "form_msg_lead_comment": "Comment",
   "form_msg_lead_files": "Photos/files",
 
@@ -47,5 +63,5 @@
   "form_msg_submit_copy_btn": "Copy request text",
   "form_msg_submit_copy_success": "Request text copied",
   "form_msg_submit_sending": "Sending...",
-  "form_msg_submit_default": "Send request"
+  "form_msg_submit_default": "Submit request"
 }

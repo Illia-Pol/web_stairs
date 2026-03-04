@@ -1,96 +1,81 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import Link from "next/link";
+import Script from "next/script";
+
 import { JsonLd } from "@/components/JsonLd";
-import { LeadForm } from "@/components/LeadForm";
-import { PageHeader } from "@/components/PageHeader";
-import { ButtonLink } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { LeadCaptureSection } from "@/components/sections/LeadCaptureSection";
 import { Container, Section } from "@/components/ui/Section";
 import { getGeoPages, getSiteConfig } from "@/lib/content/loaders";
-import { t } from "@/lib/i18n";
+import { t, type Locale } from "@/lib/i18n";
+import { thc } from "@/lib/i18n-contacts";
+import { assetPath } from "@/lib/paths";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
+const LOCALE: Locale = "ru";
+const tr = (key: Parameters<typeof thc>[0]) => thc(key, LOCALE);
 
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/contacts",
-  title: `${t("Контакты и заявка")} | ${site.brand.name}`,
-  description: t("Контакты для расчета бетонной лестницы: телефон, мессенджеры и форма заявки.")
+  title: `${tr("meta_title")} | ${site.brand.name}`,
+  description: tr("meta_description")
 });
 
 export default function ContactsPage() {
   const cities = getGeoPages();
   const breadcrumbs = [
-    { name: t("Главная"), href: "/" },
-    { name: t("Контакты"), href: "/contacts" }
+    { name: tr("breadcrumb_home"), href: "/" },
+    { name: tr("breadcrumb_current"), href: "/contacts" }
   ];
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
-      <PageHeader
-        kicker={t("Контакты")}
-        title={t("Свяжитесь с нами")}
-        description={t("Быстрее всего ответим в мессенджере. Для точного расчета приложите план или фото проема.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Контакты"), href: "/contacts" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {tr("breadcrumb_home")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{tr("breadcrumb_current")}</li>
+            </ol>
+          </nav>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Контактные данные")}</h2>
-              <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                <li>{t("Телефон")}: <a href={`tel:${site.contacts.phoneMain}`}>{site.contacts.phoneMain}</a></li>
-                <li>Email: <a href={`mailto:${site.contacts.email}`}>{site.contacts.email}</a></li>
-                <li>{t("Адрес")}: {site.contacts.address}</li>
-                <li>{t("Регионы")}: {t(site.coverageRegions)}</li>
-              </ul>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-                  Telegram
-                </ButtonLink>
-                <ButtonLink href={site.messengers.whatsapp} target="_blank" rel="noreferrer" variant="ghost">
-                  WhatsApp
-                </ButtonLink>
-                <ButtonLink href={site.messengers.viber} target="_blank" rel="noreferrer" variant="ghost">
-                  Viber
-                </ButtonLink>
-              </div>
-
-              <p className="mt-4 text-xs text-slate-500">{site.disclaimer}</p>
-            </Card>
-
-            <Card className="bg-white">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Оставить заявку")}</h2>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: добавить SLA по времени ответа]")}</p>
-              <div className="mt-4">
-                <LeadForm source="contacts-page" leadEndpoint={site.leadEndpoint} telegramFallback={site.telegramFallback} telegramFallbackMode={site.telegramFallbackMode} />
-              </div>
-            </Card>
+          <div className="portfolio-page-head">
+            <p className="kicker">{tr("hero_kicker")}</p>
+            <h1>{tr("hero_title")}</h1>
+            <p>{tr("hero_description")}</p>
           </div>
 
-          <Card className="mt-6 bg-[#fffaf1]">
-            <h2 className="font-heading text-3xl uppercase text-coal">{t("География работ")}</h2>
-            <p className="mt-2 text-sm text-slate-600">{t("Городские лендинги публикуются под SEO-запросы и не являются частью основной навигации сайта.")}</p>
-            <ul className="mt-3 flex flex-wrap gap-2 text-sm">
+          <div className="portfolio-story">
+            <p>{tr("story_p_1")}</p>
+            <p>{tr("story_p_2")}</p>
+          </div>
+        </Container>
+      </Section>
+
+      <LeadCaptureSection site={site} locale={LOCALE} source="contacts_page_form" />
+      <Section className="section-dark">
+        <Container>
+          <article className="guarantee-card">
+            <h2>{tr("geo_title")}</h2>
+            <p className="section-note">{tr("geo_note")}</p>
+            <ul className="contacts-city-list">
               {cities.map((city) => (
-                <li key={city.slug} className="rounded-full border border-slate-300 px-3 py-1">
-                  {t(city.city)}
+                <li key={city.slug}>
+                  {t(city.city, undefined, LOCALE)}
                 </li>
               ))}
             </ul>
-          </Card>
+          </article>
         </Container>
       </Section>
+      <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
     </>
   );
 }

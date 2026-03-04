@@ -1,29 +1,3 @@
-const CONTACTS = {
-  phoneDisplay: "+375 (29) 651 20 22",
-  phoneLink: "+375296512022",
-  telegram: "https://t.me/Sokolmaxxx",
-  whatsapp: "https://wa.me/375296512022",
-  viber: "viber://chat?number=%2B375296512022",
-  instagram: "https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv"
-};
-
-function setContactLinks() {
-  const phoneLink = document.getElementById("phone-link");
-  const telegramLink = document.getElementById("telegram-link");
-  const whatsappLink = document.getElementById("whatsapp-link");
-  const viberLink = document.getElementById("viber-link");
-  const instagramLink = document.getElementById("instagram-link");
-
-  if (phoneLink) {
-    phoneLink.textContent = CONTACTS.phoneDisplay;
-    phoneLink.href = `tel:${CONTACTS.phoneLink}`;
-  }
-  if (telegramLink) telegramLink.href = CONTACTS.telegram;
-  if (whatsappLink) whatsappLink.href = CONTACTS.whatsapp;
-  if (viberLink) viberLink.href = CONTACTS.viber;
-  if (instagramLink) instagramLink.href = CONTACTS.instagram;
-}
-
 function initReveal() {
   const targets = document.querySelectorAll(".reveal-up");
   if (!targets.length) return;
@@ -48,6 +22,7 @@ function initLeadForm() {
   if (!form) return;
   const phoneCodeField = document.getElementById("phone-code");
   const phoneField = document.getElementById("phone");
+  const messengerField = document.getElementById("messenger");
   const submitButton = form.querySelector('button[type="submit"]');
   const photoInput = document.getElementById("photo-files");
   const photoAddBtn = document.getElementById("photo-add-btn");
@@ -80,6 +55,7 @@ function initLeadForm() {
     leadName: form.dataset.msgLeadName || "Имя",
     leadPhone: form.dataset.msgLeadPhone || "Телефон",
     leadRegion: form.dataset.msgLeadRegion || "Регион",
+    leadMessenger: form.dataset.msgLeadMessenger || "Предпочтительный канал",
     leadComment: form.dataset.msgLeadComment || "Комментарий",
     leadFiles: form.dataset.msgLeadFiles || "Фото/файлы",
     submitSuccess: form.dataset.msgSubmitSuccess || "Заявка отправлена. Спасибо! Мы свяжемся с вами в ближайшее время.",
@@ -90,9 +66,10 @@ function initLeadForm() {
   };
 
   const endpoint = form.dataset.leadEndpoint || "";
+  const formSource = form.dataset.leadSource || "lead_form";
   const fallbackMode = form.dataset.telegramFallbackMode || "auto_redirect";
   const fallbackUsername = form.dataset.telegramFallbackUsername || "";
-  const fallbackUrl = form.dataset.telegramFallbackUrl || CONTACTS.telegram;
+  const fallbackUrl = form.dataset.telegramFallbackUrl || "https://t.me";
 
   const applyTokens = (template, tokens) => {
     if (!tokens) return template;
@@ -119,7 +96,7 @@ function initLeadForm() {
     if (username) {
       return `https://t.me/${username}?text=${encodedText}`;
     }
-    const base = !isPlaceholder(fallbackUrl) && fallbackUrl ? fallbackUrl : CONTACTS.telegram;
+    const base = !isPlaceholder(fallbackUrl) && fallbackUrl ? fallbackUrl : "https://t.me";
     const joinSymbol = base.includes("?") ? "&" : "?";
     return `${base}${joinSymbol}text=${encodedText}`;
   };
@@ -381,6 +358,7 @@ function initLeadForm() {
     const phoneCode = phoneCodeField ? phoneCodeField.value : "";
     const phone = localPhone.startsWith("+") ? localPhone : `${phoneCode} ${localPhone}`.trim();
     const region = document.getElementById("region").value.trim();
+    const messenger = messengerField ? messengerField.value : "-";
     const message = document.getElementById("message").value.trim();
     const honeypot = honeypotField ? honeypotField.value.trim() : "";
     const photoSummary = selectedPhotos.length
@@ -392,6 +370,7 @@ function initLeadForm() {
       `${msg.leadName}: ${name}`,
       `${msg.leadPhone}: ${phone}`,
       `${msg.leadRegion}: ${region}`,
+      `${msg.leadMessenger}: ${messenger}`,
       `${msg.leadComment}: ${message || "-"}`,
       `${msg.leadFiles}: ${photoSummary}`
     ].join("\n");
@@ -401,11 +380,13 @@ function initLeadForm() {
       name,
       phone,
       city: region,
-      message: message
-        ? `${message}\n\n${msg.leadFiles}: ${photoSummary}`
-        : `${msg.leadFiles}: ${photoSummary}`,
+      message: [
+        message || "-",
+        `${msg.leadMessenger}: ${messenger}`,
+        `${msg.leadFiles}: ${photoSummary}`
+      ].join("\n"),
       pageUrl: window.location.href,
-      source: "home_form",
+      source: formSource,
       honeypot
     };
 
@@ -634,7 +615,6 @@ function initCatalogPrefetch() {
   observer.observe(section);
 }
 
-setContactLinks();
 initReveal();
 initLeadForm();
 initFaq();

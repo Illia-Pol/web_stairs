@@ -1,8 +1,6 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import Link from "next/link";
+
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { ButtonLink } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -14,7 +12,7 @@ export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/prices/tariffs",
   title: `${t("Тарифы на бетонные лестницы")} | ${site.brand.name}`,
-  description: t("Главная страница тарифов: чем отличаются Classic и Signature, когда выбирать каждый формат и почему это влияет на бюджет.")
+  description: t("Classic и Signature: чем отличаются форматы работы, для каких задач подходят и как выбрать оптимальный сценарий.")
 });
 
 export default function TariffsPage() {
@@ -27,7 +25,7 @@ export default function TariffsPage() {
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
-    description: t("Сценарии работы по бетонным лестницам: Classic и Signature с разной глубиной инженерной проработки."),
+    description: t("Форматы работы Classic и Signature для бетонных лестниц: разная глубина проработки под разные типы задач."),
     serviceType: t("Тарифы и форматы работ"),
     areaServed: site.coverageRegions
   });
@@ -37,84 +35,92 @@ export default function TariffsPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
 
-      <PageHeader
-        kicker={t("Тарифы")}
-        title={t("Форматы работы: Classic и Signature")}
-        description={t("Тарифы нужны, чтобы заранее синхронизировать ожидания по сложности, срокам, уровню контроля и бюджету проекта.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Цены"), href: "/prices" },
-              { label: t("Тарифы"), href: "/prices/tariffs" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/prices" className="hover:text-ink">
+                  {t("Цены")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{t("Тарифы")}</li>
+            </ol>
+          </nav>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Зачем деление на тарифы")}</h2>
-              <p className="mt-2 text-sm text-slate-700">
-                {t("Чтобы не смешивать типовые задачи и сложные инженерные кейсы в одну цену и один процесс.")}
-              </p>
-            </Card>
-            <Card>
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Что общего")}</h2>
-              <p className="mt-2 text-sm text-slate-700">
-                {t("В обоих форматах вы получаете монолитный конструктив, прозрачную коммуникацию и подготовку под отделку.")}
-              </p>
-            </Card>
-            <Card>
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Что разное")}</h2>
-              <p className="mt-2 text-sm text-slate-700">
-                {t("Разная глубина инженерной проработки, контроль узлов, требования к объекту и уровень риска переделки.")}
-              </p>
-            </Card>
+          <div className="portfolio-page-head">
+            <p className="kicker">{t("Тарифы")}</p>
+            <h1>{t("Classic и Signature: два формата одной качественной работы")}</h1>
+            <p>{t("Оба формата дают надежный бетонный конструктив. Разница в уровне инженерной детализации, глубине сопровождения и классе проектных задач.")}</p>
+          </div>
+
+          <div className="portfolio-story">
+            <p>{t("Classic выбирают для рациональных проектов, где геометрия и условия позволяют работать по проверенному процессу с предсказуемой сметой.")}</p>
+            <p>{t("Signature нужен для объектов с повышенной сложностью: нестандартные узлы, более высокий класс архитектурных требований, расширенное проектирование и сопровождение.")}</p>
+          </div>
+
+          <div className="segment-grid">
+            <article className="segment-card">
+              <h3>Classic</h3>
+              <p className="segment-sub">{t("Оптимальный формат для большинства частных объектов без потери качества.")}</p>
+              <ul className="guarantee-list">
+                <li>{t("Надежная конструкция и строгий контроль геометрии.")}</li>
+                <li>{t("Понятный процесс согласования и реализации.")}</li>
+                <li>{t("Прогнозируемый бюджет при типовых вводных.")}</li>
+                <li>{t("Техническая подготовка под последующую отделку.")}</li>
+              </ul>
+              <Link href="/prices/tariffs/classic" className="btn btn-small">
+                {t("Открыть Classic")}
+              </Link>
+            </article>
+
+            <article className="segment-card featured">
+              <h3>Signature</h3>
+              <p className="segment-sub">{t("Формат для сложных и премиальных проектов с расширенной инженерной частью.")}</p>
+              <ul className="guarantee-list">
+                <li>{t("Сложные геометрии, консольные и парящие решения.")}</li>
+                <li>{t("Более детализированная проектная проработка.")}</li>
+                <li>{t("Расширенное сопровождение и координация по объекту.")}</li>
+                <li>{t("Повышенные требования к точности и визуальному результату.")}</li>
+              </ul>
+              <Link href="/prices/tariffs/signature" className="btn btn-small">
+                {t("Открыть Signature")}
+              </Link>
+            </article>
+          </div>
+
+          <div className="info-grid mt-6">
+            <article className="info-card">
+              <h3>{t("Как выбрать формат")}</h3>
+              <p>{t("Если проект типовой и важна прогнозируемость, начинайте с Classic. Если есть сложные узлы или нестандартные требования, лучше сразу идти в Signature.")}</p>
+            </article>
+            <article className="info-card">
+              <h3>{t("Что всегда остается неизменным")}</h3>
+              <p>{t("Техническая корректность конструктива, прозрачная коммуникация по этапам и ответственность за заявленный результат.")}</p>
+            </article>
+            <article className="info-card">
+              <h3>{t("Следующий шаг")}</h3>
+              <p>{t("Отправьте исходные данные объекта, и мы подскажем, какой формат будет рациональным именно в вашем случае.")}</p>
+            </article>
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <Section className="section-accent master-projects-section">
         <Container>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Classic</p>
-              <h2 className="mt-2 font-heading text-3xl uppercase text-coal">{t("Рациональный формат")}</h2>
-              <p className="mt-2 text-sm text-slate-700">
-                {t("Для частных домов и типовых геометрий, где важны прогнозируемые сроки и понятная смета.")}
-              </p>
-              <div className="mt-4">
-                <ButtonLink href="/prices/tariffs/classic" variant="ghost">
-                  {t("Открыть Classic")}
-                </ButtonLink>
-              </div>
-            </Card>
-
-            <Card className="bg-[#fffaf1]">
-              <p className="text-xs uppercase tracking-[0.16em] text-slate-500">Signature</p>
-              <h2 className="mt-2 font-heading text-3xl uppercase text-coal">{t("Сложные узлы без риска")}</h2>
-              <p className="mt-2 text-sm text-slate-700">
-                {t("Для нестандартных конфигураций, консольных решений и проектов с высокой ценой ошибки.")}
-              </p>
-              <div className="mt-4">
-                <ButtonLink href="/prices/tariffs/signature" variant="secondary">
-                  {t("Открыть Signature")}
-                </ButtonLink>
-              </div>
-            </Card>
+          <div className="portfolio-bottom-cta">
+            <p>{t("Нужна помощь с выбором между Classic и Signature? Отправьте план или фото проема, и мы предложим формат с понятной логикой по срокам и бюджету.")}</p>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Обсудить проект")}
+            </Link>
           </div>
-
-          <Card className="mt-5">
-            <h3 className="font-heading text-2xl uppercase text-coal">{t("С чего начать")}</h3>
-            <p className="mt-2 text-sm text-slate-700">
-              {t("Если пока неясно, какой формат подходит, начните с страницы калькулятора и отправьте исходные данные для первичной оценки.")}
-            </p>
-            <div className="mt-4">
-              <ButtonLink href="/prices/calculator">{t("Перейти в калькулятор")}</ButtonLink>
-            </div>
-          </Card>
         </Container>
       </Section>
     </>

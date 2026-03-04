@@ -3,10 +3,10 @@ import Script from "next/script";
 
 import { HomePricesSection } from "@/components/home/HomePricesSection";
 import { JsonLd } from "@/components/JsonLd";
+import { LeadCaptureSection } from "@/components/sections/LeadCaptureSection";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { thg } from "@/lib/i18n-home-guarantee";
 import { thh } from "@/lib/i18n-home-hero";
-import { thm } from "@/lib/i18n-home-main";
 import { thmi } from "@/lib/i18n-home-more-info";
 import { thst } from "@/lib/i18n-home-stair-types";
 import { thp } from "@/lib/i18n-home-portfolio";
@@ -18,7 +18,6 @@ const site = getSiteConfig();
 const LOCALE: Locale = "en";
 
 const trh = (key: Parameters<typeof thh>[0]) => thh(key, LOCALE);
-const trm = (key: Parameters<typeof thm>[0], tokens?: Record<string, string | number>) => thm(key, tokens, LOCALE);
 const trmi = (key: Parameters<typeof thmi>[0], tokens?: Record<string, string | number>) => thmi(key, tokens, LOCALE);
 const trst = (key: Parameters<typeof thst>[0], tokens?: Record<string, string | number>) => thst(key, tokens, LOCALE);
 const trp = (key: Parameters<typeof thp>[0]) => thp(key, LOCALE);
@@ -353,99 +352,7 @@ export default function HomePageEn() {
           </div>
         </div>
       </section>
-
-      <section className="section section-accent" id="contact">
-        <div className="container contact-grid">
-          <div className="reveal-up">
-            <p className="kicker">{trm("contact_kicker")}</p>
-            <h2 className="contact-title">{trm("contact_title")}</h2>
-            <p>{trm("contact_text")}</p>
-            <div className="contact-links">
-              <a id="phone-link" className="btn btn-small contact-link-btn" href="tel:+375296512022">+375 (29) 651 20 22</a>
-              <a id="telegram-link" className="btn btn-small contact-link-btn" href="https://t.me/Sokolmaxxx" target="_blank" rel="noreferrer">Telegram</a>
-              <a id="whatsapp-link" className="btn btn-small contact-link-btn" href="https://wa.me/375296512022" target="_blank" rel="noreferrer">WhatsApp</a>
-              <a id="viber-link" className="btn btn-small contact-link-btn" href="viber://chat?number=%2B375296512022">Viber</a>
-              <a id="instagram-link" className="btn btn-small contact-link-btn" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">Instagram</a>
-            </div>
-          </div>
-
-          <form
-            className="lead-form reveal-up delay-1"
-            id="lead-form"
-            noValidate
-            data-lead-endpoint={site.leadEndpoint}
-            data-telegram-fallback-username={site.telegramFallback.username}
-            data-telegram-fallback-url={site.telegramFallback.url}
-            data-telegram-fallback-mode={site.telegramFallbackMode}
-            data-msg-remove-photo-aria={trm("form_msg_remove_photo_aria")}
-            data-msg-photo-added={trm("form_msg_photo_added")}
-            data-msg-photo-invalid-type={trm("form_msg_photo_invalid_type")}
-            data-msg-photo-too-large={trm("form_msg_photo_too_large")}
-            data-msg-photo-max-count={trm("form_msg_photo_max_count")}
-            data-msg-name-required={trm("form_msg_name_required")}
-            data-msg-phone-required={trm("form_msg_phone_required")}
-            data-msg-phone-invalid={trm("form_msg_phone_invalid")}
-            data-msg-region-required={trm("form_msg_region_required")}
-            data-msg-lead-title={trm("form_msg_lead_title")}
-            data-msg-lead-name={trm("form_msg_lead_name")}
-            data-msg-lead-phone={trm("form_msg_lead_phone")}
-            data-msg-lead-region={trm("form_msg_lead_region")}
-            data-msg-lead-comment={trm("form_msg_lead_comment")}
-            data-msg-lead-files={trm("form_msg_lead_files")}
-            data-msg-submit-success={trm("form_msg_submit_success")}
-            data-msg-submit-error={trm("form_msg_submit_error")}
-            data-msg-submit-fallback-btn={trm("form_msg_submit_fallback_btn")}
-            data-msg-submit-copy-btn={trm("form_msg_submit_copy_btn")}
-            data-msg-submit-copy-success={trm("form_msg_submit_copy_success")}
-            data-msg-submit-sending={trm("form_msg_submit_sending")}
-            data-msg-submit-default={trm("form_msg_submit_default")}
-          >
-            <label className="field">
-              <span className="field-label">{trm("form_name")}</span>
-              <input type="text" id="name" required />
-              <span className="field-error" aria-live="polite" />
-            </label>
-            <label className="field">
-              <span className="field-label">{trm("form_phone")}</span>
-              <div className="phone-input-row">
-                <select id="phone-code" aria-label="Код страны">
-                  <option value="+375" defaultValue="+375">{trm("form_country_by")}</option>
-                  <option value="+7">{trm("form_country_ru")}</option>
-                  <option value="+48">{trm("form_country_pl")}</option>
-                  <option value="+370">{trm("form_country_lt")}</option>
-                  <option value="+371">{trm("form_country_lv")}</option>
-                </select>
-                <input type="tel" id="phone" required inputMode="tel" autoComplete="tel-national" placeholder={trm("form_phone_placeholder")} pattern="[\d\s()\-]{6,20}" title={trm("form_phone_title")} />
-              </div>
-              <span className="field-error" aria-live="polite" />
-            </label>
-            <label className="field">
-              <span className="field-label">{trm("form_region")}</span>
-              <input type="text" id="region" required />
-              <span className="field-error" aria-live="polite" />
-            </label>
-            <label>
-              {trm("form_message")}
-              <textarea id="message" rows={4} placeholder={trm("form_message_placeholder")} />
-            </label>
-            <input id="honeypot" className="honeypot-field" type="text" autoComplete="off" tabIndex={-1} aria-hidden="true" />
-            <div className="photo-picker-row">
-              <input id="photo-files" className="photo-input" type="file" accept="image/*" multiple />
-              <button type="button" className="photo-add-tile" id="photo-add-btn" aria-label={trm("form_add_photo_aria")}>
-                +
-              </button>
-              <div className="photo-preview-strip" id="photo-preview-strip" aria-live="polite" />
-            </div>
-            <p className="photo-picker-note">{trm("form_add_photo_hint")}</p>
-            <p className="photo-picker-status" id="photo-picker-status" aria-live="polite" />
-            <div className="lead-form-actions">
-              <button type="submit" className="btn full">{trm("form_submit")}</button>
-            </div>
-            <div className="lead-submit-status" id="lead-submit-status" aria-live="polite" />
-            <p className="form-note">{trm("form_policy_prefix")} <a className="inline-link" href="/privacy">{trm("form_policy_link")}</a>.</p>
-          </form>
-        </div>
-      </section>
+      <LeadCaptureSection site={site} locale="en" source="home_form_en" />
 
       <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
     </>

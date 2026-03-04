@@ -131,7 +131,7 @@ function parseHeightCm(raw: string): number {
   return value;
 }
 
-export function PriceEstimator({ locale }: { locale: Locale }) {
+export function PriceEstimator({ locale, reveal = true }: { locale: Locale; reveal?: boolean }) {
   const [stairType, setStairType] = useState<StairType | null>(null);
   const [bottomType, setBottomType] = useState<BottomType | null>(null);
   const [heightCm, setHeightCm] = useState("");
@@ -201,7 +201,7 @@ export function PriceEstimator({ locale }: { locale: Locale }) {
   }, [heightCm, locale, selectedBottom, selectedStair]);
 
   return (
-    <article className="calculator-card reveal-up">
+    <article className={`calculator-card${reveal ? " reveal-up" : ""}`}>
       <p className="kicker">{tp("calculator_kicker")}</p>
       <h3>{tp("calculator_title")}</h3>
       <p>{tp("calculator_note")}</p>

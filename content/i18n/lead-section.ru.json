@@ -1,14 +1,29 @@
 {
-  "contact_kicker": "Заявка",
-  "contact_title": "Получить расчет и план работ",
-  "contact_text": "Оставьте контакты и параметры объекта. Мы свяжемся с вами в течение рабочего дня.",
+  "info_kicker": "Контакты",
+  "info_title": "Связаться и получить расчет",
+  "info_text": "Быстрее всего отвечаем в мессенджерах. Для точного расчета сразу приложите фото или план проема.",
+  "phone_label": "Телефон",
+  "email_label": "Email",
+  "address_label": "Адрес",
+  "regions_label": "Регионы",
+  "regions_value": "Беларусь, Россия, Польша",
+  "contacts_todo": "[TODO: заполните контактные данные в content/site.json]",
+
+  "form_kicker": "Заявка",
+  "form_title": "Оставить заявку",
+  "form_text": "Опишите задачу и прикрепите фото. Дадим ориентир по срокам и бюджету.",
 
   "form_name": "Ваше имя",
   "form_phone": "Телефон",
   "form_region": "Город / регион",
+  "form_messenger": "Предпочтительный канал связи",
+  "form_messenger_telegram": "Telegram",
+  "form_messenger_whatsapp": "WhatsApp",
+  "form_messenger_viber": "Viber",
+  "form_messenger_call": "Звонок",
   "form_message": "Что нужно сделать",
   "form_message_placeholder": "Тип лестницы, этап строительства, сроки",
-  "form_submit": "Отправить заявку",
+  "form_submit": "Оставить заявку",
   "form_add_photo_aria": "Добавить фото/план",
   "form_add_photo_hint": "Можно добавить до 8 фото (JPG/PNG/WebP, до 10 МБ каждое).",
   "form_policy_prefix": "Нажимая кнопку, вы соглашаетесь с",
@@ -38,6 +53,7 @@
   "form_msg_lead_name": "Имя",
   "form_msg_lead_phone": "Телефон",
   "form_msg_lead_region": "Регион",
+  "form_msg_lead_messenger": "Предпочтительный канал",
   "form_msg_lead_comment": "Комментарий",
   "form_msg_lead_files": "Фото/файлы",
 
@@ -47,5 +63,5 @@
   "form_msg_submit_copy_btn": "Скопировать текст заявки",
   "form_msg_submit_copy_success": "Текст заявки скопирован",
   "form_msg_submit_sending": "Отправка...",
-  "form_msg_submit_default": "Отправить заявку"
+  "form_msg_submit_default": "Оставить заявку"
 }

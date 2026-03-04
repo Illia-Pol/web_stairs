@@ -1,7 +1,7 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import Link from "next/link";
+
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
 import { Container, Section } from "@/components/ui/Section";
 import { getFaqItems, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -29,22 +29,60 @@ export default function FaqPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={faqJsonLd(faqItems)} />
 
-      <PageHeader
-        kicker="FAQ"
-        title={t("Частые вопросы")}
-        description={t("Собрали вопросы, которые чаще всего задают перед стартом проекта.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Вопросы"), href: "/questions" },
-              { label: "FAQ", href: "/questions/faq" }
-            ]}
-          />
-          <FAQAccordion items={faqItems} />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/questions" className="hover:text-ink">
+                  {t("Вопросы")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">FAQ</li>
+            </ol>
+          </nav>
+
+          <div className="portfolio-page-head">
+            <p className="kicker">FAQ</p>
+            <h1>{t("Частые вопросы перед стартом проекта")}</h1>
+            <p>{t("Собрали базовые вопросы по срокам, смете, договору и подготовке объекта, чтобы вы быстрее приняли решение.")}</p>
+          </div>
+
+          <div className="portfolio-story">
+            <p>{t("Ответы в этом разделе дают общий ориентир. Финальные параметры всегда уточняем по фото/плану и фактическим размерам на объекте.")}</p>
+          </div>
+
+          <div className="mt-6">
+            <FAQAccordion items={faqItems} />
+          </div>
+
+          <div className="info-grid mt-6">
+            <article className="info-card">
+              <h3>{t("Нужен детальный разбор")}</h3>
+              <p>{t("Откройте раздел «Проблемы и решения» для нетипичных сценариев и инженерных нюансов.")}</p>
+              <Link href="/questions/problems" className="btn btn-small mt-3">
+                {t("Перейти к разборам")}
+              </Link>
+            </article>
+            <article className="info-card">
+              <h3>{t("Остался вопрос по вашему объекту")}</h3>
+              <p>{t("Отправьте заявку с планом или фото проема, и мы дадим комментарий именно по вашей ситуации.")}</p>
+              <Link href="/contacts" className="btn btn-small mt-3">
+                {t("Оставить заявку")}
+              </Link>
+            </article>
+            <article className="info-card">
+              <h3>{t("Что подготовить заранее")}</h3>
+              <p>{t("Высоту, габариты проема, фото с нескольких ракурсов и ваши пожелания по типу лестницы.")}</p>
+            </article>
+          </div>
         </Container>
       </Section>
     </>

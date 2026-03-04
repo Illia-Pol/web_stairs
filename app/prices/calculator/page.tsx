@@ -1,24 +1,24 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import Link from "next/link";
+
+import { PriceEstimator } from "@/components/home/PriceEstimator";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { PriceCards } from "@/components/PriceCards";
-import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
-import { getSiteConfig, getTypes } from "@/lib/content/loaders";
+import { getSiteConfig } from "@/lib/content/loaders";
+import type { Locale } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
 import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
+const LOCALE: Locale = "ru";
 
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/prices/calculator",
   title: `${t("Калькулятор стоимости лестницы")} | ${site.brand.name}`,
-  description: t("Страница калькулятора-ориентира: примерные диапазоны цены, факторы стоимости и примеры смет. Полноценный калькулятор будет добавлен.")
+  description: t("Калькулятор Classic: ориентир по стоимости типовых конфигураций и объяснение, когда нужен формат Signature.")
 });
 
-export default function PricesPage() {
-  const types = getTypes();
+export default function PricesCalculatorPage() {
   const breadcrumbs = [
     { name: t("Главная"), href: "/" },
     { name: t("Цены"), href: "/prices" },
@@ -28,10 +28,10 @@ export default function PricesPage() {
   const serviceSchema = serviceJsonLd({
     name: site.brand.name,
     baseUrl: site.baseUrl,
-    description: t("Расчет стоимости бетонной лестницы с учетом типа, геометрии и условий площадки."),
-    serviceType: t("Расчет стоимости бетонной лестницы"),
+    description: t("Расчет ориентировочной стоимости бетонной лестницы в формате Classic по типовым конфигурациям."),
+    serviceType: t("Калькулятор стоимости бетонной лестницы"),
     areaServed: site.coverageRegions,
-    offers: `Classic: ${site.pricing.standardFrom}, Mid: ${site.pricing.midRange}, Signature: ${site.pricing.signatureFrom}`
+    offers: `Classic: ${site.pricing.standardFrom}, Signature: ${site.pricing.signatureFrom}`
   });
 
   return (
@@ -39,96 +39,61 @@ export default function PricesPage() {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
 
-      <PageHeader
-        kicker={t("Калькулятор")}
-        title={t("Калькулятор стоимости (в разработке)")}
-        description={t("Пока здесь ориентиры цены и примеры смет. Полноценный интерактивный калькулятор добавим в следующих итерациях.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Цены"), href: "/prices" },
-              { label: t("Калькулятор"), href: "/prices/calculator" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/prices" className="hover:text-ink">
+                  {t("Цены")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{t("Калькулятор")}</li>
+            </ol>
+          </nav>
 
-          <PriceCards site={site} />
+          <div className="portfolio-page-head">
+            <p className="kicker">{t("Калькулятор")}</p>
+            <h1>{t("Ориентир стоимости для формата Classic")}</h1>
+            <p>{t("Здесь можно быстро оценить типовые конфигурации. Для нестандартных объектов делаем индивидуальный расчет после заявки.")}</p>
+          </div>
+
+          <div className="portfolio-story">
+            <p>{t("Калькулятор учитывает тип лестницы, тип исполнения и высоту. Итог дает ориентир для планирования бюджета и обсуждения следующего шага.")}</p>
+          </div>
+
+          <div className="mt-6">
+            <PriceEstimator locale={LOCALE} reveal={false} />
+          </div>
+
+          <article className="guarantee-card mt-6">
+            <h2>{t("Как читать результат калькулятора")}</h2>
+            <ul className="guarantee-list">
+              <li>{t("Это предварительный ориентир по исходным параметрам, а не финальная смета.")}</li>
+              <li>{t("Точный расчет зависит от замеров, состояния проема и требований к узлам.")}</li>
+              <li>{t("Если проект сложный или нестандартный, отправьте заявку для индивидуального расчета.")}</li>
+            </ul>
+          </article>
         </Container>
       </Section>
 
-      <Section className="bg-white">
+      <section className="section section-accent master-projects-section" id="contact">
         <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{t("Вилки по типам")}</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {types.map((type) => (
-              <Card key={type.slug}>
-                <h3 className="font-heading text-2xl uppercase text-coal">{t(type.title)}</h3>
-                <p className="mt-2 text-sm text-slate-700">{t("Ориентир")}: {type.priceHint}</p>
-                <p className="mt-2 text-sm text-slate-600">{t(type.shortDescription)}</p>
-              </Card>
-            ))}
+          <div className="portfolio-bottom-cta">
+            <p>{t("Нужен точный расчет под ваш объект? Отправьте план или фото проема, и мы предложим реалистичный сценарий по срокам и бюджету.")}</p>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Оставить заявку")}
+            </Link>
           </div>
         </Container>
-      </Section>
-
-      <Section>
-        <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{t("3 примера смет")}</h2>
-          <p className="mt-3 text-sm text-slate-600">
-            {t("Это ориентиры для предварительной оценки. Точный расчет делаем после анализа исходных данных по объекту.")}
-          </p>
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
-            <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 1")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Classic</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_1}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-            <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 2")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Mid</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_2}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-            <Card>
-              <h3 className="font-heading text-2xl uppercase text-coal">{t("Пример 3")}</h3>
-              <p className="mt-2 text-sm text-slate-700">{t("Тип")}: Signature</p>
-              <p className="text-sm text-slate-700">{t("Итог")}: {"{{EXAMPLE_ESTIMATE_3}}"}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("[TODO: заполнить реальными данными сметы]")}</p>
-            </Card>
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="bg-white">
-        <Container>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что влияет на цену")}</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                <li>{t("Сложность геометрии и тип лестницы.")}</li>
-                <li>{t("Готовность проема и условия на объекте.")}</li>
-                <li>{t("Требования к точности под финишную отделку.")}</li>
-                <li>{t("Срочность и график смежных работ.")}</li>
-              </ul>
-            </Card>
-
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что прислать для расчета")}</h2>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                {site.checklist.map((item) => (
-                  <li key={item} className="rounded-lg bg-white px-3 py-2">
-                    {t(item)}
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          </div>
-        </Container>
-      </Section>
+      </section>
     </>
   );
 }
