@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { ButtonLink } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { PageBottomCta } from "@/components/page/PageBottomCta";
+import { PageNavCards } from "@/components/page/PageNavCards";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig, getTypeBySlug, getTypes } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -71,71 +70,70 @@ export default function TypeDetailPage({ params }: PageProps) {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
 
-      <PageHeader
-        kicker={type.funnel === "signature" ? "Signature" : "Classic"}
-        title={t(type.title)}
-        description={t(type.fullDescription)}
-        actions={
-          <>
-            <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-              {t("Отправить план/фото")}
-            </ButtonLink>
-            <ButtonLink href="/prices/calculator" variant="ghost" className="border-white/25 text-white hover:bg-white/10">
-              {t("Смотреть цены")}
-            </ButtonLink>
-          </>
-        }
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
+          <PageTop
+            breadcrumbs={[
               { label: t("Главная"), href: "/" },
               { label: t("Портфолио"), href: "/portfolio" },
               { label: t("Типы"), href: "/portfolio/types" },
               { label: type.title, href: `/portfolio/types/${type.slug}` }
             ]}
+            kicker={type.funnel === "signature" ? "Signature" : "Classic"}
+            title={t(type.title)}
+            description={t(type.fullDescription)}
+            story={[
+              t("Ниже собрали ключевые особенности этого типа лестницы и практические кейсы, где такой формат работает лучше всего."),
+              t("Для точного расчета под ваш объект отправьте план или фото проема через форму заявки.")
+            ]}
           />
 
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Что входит")}</h2>
-              <ul className="mt-4 space-y-2 text-sm text-slate-700">
+          <div className="info-grid md:grid-cols-2">
+            <article className="guarantee-card">
+              <h2>{t("Что входит")}</h2>
+              <ul className="guarantee-list">
               {type.benefits.map((benefit) => (
-                <li key={benefit} className="rounded-lg bg-slate-50 px-3 py-2">
-                    {t(benefit)}
-                </li>
+                <li key={benefit}>{t(benefit)}</li>
               ))}
             </ul>
-            </Card>
+            </article>
 
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Ориентир стоимости")}</h2>
-              <p className="mt-3 text-2xl font-semibold text-coal">{type.priceHint}</p>
-              <p className="mt-3 text-sm text-slate-700">{t("Точная цена после анализа проема и требований к отделке.")}</p>
-            </Card>
+            <article className="guarantee-card">
+              <h2>{t("Ориентир стоимости")}</h2>
+              <p>{type.priceHint}</p>
+              <p>{t("Точная цена после анализа проема и требований к отделке.")}</p>
+              <Link href="/prices/calculator" className="btn btn-small mt-4">
+                {t("Смотреть цены")}
+              </Link>
+            </article>
           </div>
+
+          {relatedCases.length ? (
+            <>
+              <div className="section-head mt-8">
+                <h2>{t("Связанные кейсы")}</h2>
+              </div>
+              <PageNavCards
+                items={relatedCases.map((item) => ({
+                  href: `/portfolio/projects#${item.slug}`,
+                  title: t(item.title),
+                  text: t(item.summary),
+                  cta: t("Открыть проект")
+                }))}
+                columns={3}
+              />
+            </>
+          ) : null}
         </Container>
       </Section>
 
-      <Section className="bg-white">
-        <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{t("Связанные кейсы")}</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
-            {relatedCases.map((item) => (
-              <Card key={item.slug}>
-                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{t(item.city)}</p>
-                <h3 className="mt-2 font-heading text-2xl uppercase text-coal">{t(item.title)}</h3>
-                <p className="mt-2 text-sm text-slate-700">{t(item.summary)}</p>
-                <Link href={`/portfolio/projects#${item.slug}`} className="mt-3 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                  {t("Открыть проект")}
-                </Link>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </Section>
+      <PageBottomCta
+        text={t("Нужен точный ориентир по типу «{{TYPE}}»? Отправьте план или фото проема и получите комментарий по реализации.", {
+          TYPE: t(type.title)
+        })}
+        href="/contacts"
+        label={t("Отправить заявку")}
+      />
     </>
   );
 }

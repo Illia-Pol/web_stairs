@@ -2,6 +2,8 @@
 import Link from "next/link";
 
 import { JsonLd } from "@/components/JsonLd";
+import { PageNavCards } from "@/components/page/PageNavCards";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import type { Locale } from "@/lib/i18n";
@@ -73,29 +75,16 @@ export default function PortfolioHubPageEn() {
 
       <Section className="section-dark">
         <Container>
-          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href="/en" className="hover:text-ink">
-                  {tr("breadcrumb_home")}
-                </Link>
-              </li>
-              <li>/</li>
-              <li className="text-ink">{tr("breadcrumb_current")}</li>
-            </ol>
-          </nav>
-
-          <div className="portfolio-page-head">
-            <p className="kicker">{tr("hero_kicker")}</p>
-            <h1>{tr("hero_title")}</h1>
-            <p>{tr("hero_description")}</p>
-          </div>
-
-          <div className="portfolio-story">
-            <p>{tr("story_p_1")}</p>
-            <p>{tr("story_p_2")}</p>
-            <p>{tr("story_p_3")}</p>
-          </div>
+          <PageTop
+            breadcrumbs={[
+              { label: tr("breadcrumb_home"), href: "/en" },
+              { label: tr("breadcrumb_current"), href: "/en/portfolio" }
+            ]}
+            kicker={tr("hero_kicker")}
+            title={tr("hero_title")}
+            description={tr("hero_description")}
+            story={[tr("story_p_1"), tr("story_p_2"), tr("story_p_3")]}
+          />
 
           <div className="portfolio-photo-grid">
             {gallery.map((item, index) => (
@@ -115,15 +104,7 @@ export default function PortfolioHubPageEn() {
             <h2>{tr("next_title")}</h2>
           </div>
 
-          <div className="master-side-grid md:grid-cols-3">
-            {navCards.map((card) => (
-              <Link key={card.href} href={card.href} className="master-link-card">
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <span>{card.cta}</span>
-              </Link>
-            ))}
-          </div>
+          <PageNavCards items={navCards} columns={3} />
         </Container>
       </Section>
     </>

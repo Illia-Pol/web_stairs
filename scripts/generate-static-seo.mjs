@@ -94,12 +94,10 @@ const allRoutes = [
   ])
 ];
 
-const now = new Date().toISOString();
-
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${allRoutes
   .map((route) => {
     const fullPath = joinPath(basePath, route);
-    return `  <url>\n    <loc>${baseUrl}${fullPath}</loc>\n    <lastmod>${now}</lastmod>\n  </url>`;
+    return `  <url>\n    <loc>${baseUrl}${fullPath}</loc>\n  </url>`;
   })
   .join("\n")}\n</urlset>\n`;
 

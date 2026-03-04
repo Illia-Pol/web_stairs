@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { ButtonLink } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { PageBottomCta } from "@/components/page/PageBottomCta";
+import { PageNavCards } from "@/components/page/PageNavCards";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -91,73 +90,69 @@ export default function TariffDetailPage({ params }: PageProps) {
       <JsonLd data={serviceSchema} />
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
-      <PageHeader
-        kicker={t("Тариф")}
-        title={tariff.label}
-        description={tariff.description}
-        actions={
-          <>
-            <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-              {tariff.cta}
-            </ButtonLink>
-            <ButtonLink href="/portfolio/projects" variant="ghost" className="border-white/25 text-white hover:bg-white/10">
-              {t("Смотреть проекты")}
-            </ButtonLink>
-          </>
-        }
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
+          <PageTop
+            breadcrumbs={[
               { label: t("Главная"), href: "/" },
               { label: t("Цены"), href: "/prices" },
               { label: t("Тарифы"), href: "/prices/tariffs" },
               { label: tariff.label, href: `/prices/tariffs/${params.slug}` }
             ]}
+            kicker={t("Тариф")}
+            title={tariff.label}
+            description={tariff.description}
+            story={[
+              t("Оба формата ориентированы на качественный результат. Разница в глубине инженерной проработки, уровне сопровождения и сложности задач."),
+              t("Если сомневаетесь в выборе, отправьте исходные данные объекта и мы подскажем рациональный сценарий.")
+            ]}
           />
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Подход")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Четкий регламент работ, прозрачная смета и контроль этапов на объекте.")}</p>
-            </Card>
-            <Card>
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Ориентир стоимости")}</h2>
-              <p className="mt-2 text-2xl font-semibold text-coal">{tariff.price}</p>
-              <p className="mt-2 text-sm text-slate-600">{t("Точную смету формируем после анализа исходных данных.")}</p>
-            </Card>
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-2xl uppercase text-coal">{t("Следующий шаг")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Отправьте план/фото для первичной оценки и подтверждения подходящего тарифа.")}</p>
-              <div className="mt-4">
-                <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-                  {t("Отправить план/фото")}
-                </ButtonLink>
-              </div>
-            </Card>
+          <div className="info-grid">
+            <article className="info-card">
+              <h3>{t("Подход")}</h3>
+              <p>{t("Четкий регламент работ, прозрачная смета и контроль этапов на объекте.")}</p>
+            </article>
+            <article className="info-card">
+              <h3>{t("Ориентир стоимости")}</h3>
+              <p>{tariff.price}</p>
+              <p>{t("Точную смету формируем после анализа исходных данных.")}</p>
+            </article>
+            <article className="info-card">
+              <h3>{t("Следующий шаг")}</h3>
+              <p>{t("Отправьте план/фото для первичной оценки и подтверждения подходящего тарифа.")}</p>
+              <Link href="/contacts" className="btn btn-small mt-3">
+                {tariff.cta}
+              </Link>
+            </article>
           </div>
+
+          {cases.length ? (
+            <>
+              <div className="section-head mt-8">
+                <h2>{tariff.ctaHint}</h2>
+              </div>
+              <PageNavCards
+                items={cases.map((item) => ({
+                  href: `/portfolio/projects#${item.slug}`,
+                  title: t(item.title),
+                  text: t(item.summary),
+                  cta: t("Открыть проект")
+                }))}
+                columns={3}
+              />
+            </>
+          ) : null}
         </Container>
       </Section>
 
-      <Section className="bg-white">
-        <Container>
-          <h2 className="font-heading text-4xl uppercase text-coal">{tariff.ctaHint}</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
-            {cases.map((item) => (
-              <Card key={item.slug}>
-                <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{t(item.city)}</p>
-                <h3 className="mt-2 font-heading text-2xl uppercase text-coal">{t(item.title)}</h3>
-                <p className="mt-2 text-sm text-slate-700">{t(item.summary)}</p>
-                <Link href={`/portfolio/projects#${item.slug}`} className="mt-3 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                  {t("Открыть проект")}
-                </Link>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </Section>
+      <PageBottomCta
+        text={t("Остались вопросы по тарифу {{TARIFF}}? Отправьте исходные данные, и мы подскажем оптимальный формат под ваш объект.", {
+          TARIFF: tariff.label
+        })}
+        href="/contacts"
+        label={t("Перейти к заявке")}
+      />
     </>
   );
 }

@@ -1,21 +1,32 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 
+import { ClientEnhancements } from "@/components/ClientEnhancements";
 import { JsonLd } from "@/components/JsonLd";
 import { Layout } from "@/components/layout/Layout";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { getLocale, t } from "@/lib/i18n";
-import { withBasePath } from "@/lib/paths";
+import { assetPath, withBasePath } from "@/lib/paths";
 import { localBusinessJsonLd } from "@/lib/seo";
 
 import "./globals.css";
 
+const site = getSiteConfig();
+const brandName = site.brand.name.includes("{{") ? "BETOSTEP" : site.brand.name;
+const metadataBaseUrl =
+  site.baseUrl.includes("{{") || !site.baseUrl
+    ? "https://example.com"
+    : site.baseUrl.startsWith("http://") || site.baseUrl.startsWith("https://")
+      ? site.baseUrl
+      : `https://${site.baseUrl}`;
+
 export const metadata: Metadata = {
-  title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
+  title: `${brandName} | ${t("Бетонные монолитные лестницы")}`,
   description: t(
     "Проектирование и изготовление бетонных лестниц в Беларуси: Classic и Signature решения под частные и коммерческие объекты."
   ),
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL(metadataBaseUrl),
   icons: {
     icon: [
       { url: withBasePath("/assets/logo.png"), type: "image/png" }
@@ -24,7 +35,7 @@ export const metadata: Metadata = {
     apple: [{ url: withBasePath("/assets/logo.png") }]
   },
   openGraph: {
-    title: `{{BRAND_NAME}} | ${t("Бетонные монолитные лестницы")}`,
+    title: `${brandName} | ${t("Бетонные монолитные лестницы")}`,
     description: t(
       "Отправьте план/фото и получите ориентир стоимости по проекту. Монолитные, парящие и консольные лестницы."
     ),
@@ -38,7 +49,6 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const site = getSiteConfig();
   const locale = getLocale();
   const localBusinessSchema = localBusinessJsonLd({
     name: site.brand.name,
@@ -53,6 +63,8 @@ export default function RootLayout({
   return (
     <html lang={locale}>
       <body className="font-body">
+        <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
+        <ClientEnhancements />
         <JsonLd data={localBusinessSchema} />
         <Layout site={site} currentLocale={locale}>
           {children}

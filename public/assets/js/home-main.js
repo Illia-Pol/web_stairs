@@ -20,6 +20,8 @@ function initReveal() {
 function initLeadForm() {
   const form = document.getElementById("lead-form");
   if (!form) return;
+  if (form.dataset.hmBound === "1") return;
+  form.dataset.hmBound = "1";
   const phoneCodeField = document.getElementById("phone-code");
   const phoneField = document.getElementById("phone");
   const messengerField = document.getElementById("messenger");
@@ -504,6 +506,8 @@ function initCatalogGallery() {
   const prevBtn = document.getElementById("catalog-prev");
   const nextBtn = document.getElementById("catalog-next");
   if (!modal || !modalImg || !caption || !prevBtn || !nextBtn) return;
+  if (modal.dataset.hmGalleryBound === "1") return;
+  modal.dataset.hmGalleryBound = "1";
 
   const allSlides = [];
   const cardEntries = [];
@@ -588,6 +592,8 @@ function initCatalogGallery() {
 function initCatalogPrefetch() {
   const section = document.getElementById("types");
   if (!section) return;
+  if (section.dataset.hmPrefetchBound === "1") return;
+  section.dataset.hmPrefetchBound = "1";
   const cards = section.querySelectorAll(".type-card[data-gallery]");
   if (!cards.length) return;
 
@@ -615,9 +621,20 @@ function initCatalogPrefetch() {
   observer.observe(section);
 }
 
-initReveal();
-initLeadForm();
-initFaq();
-initCatalogGallery();
-initCatalogPrefetch();
-initYear();
+function runHomeMainInits() {
+  initReveal();
+  initLeadForm();
+  initFaq();
+  initCatalogGallery();
+  initCatalogPrefetch();
+  initYear();
+}
+
+window.__homeMainInitAll = runHomeMainInits;
+
+if (!window.__homeMainRouteListenerBound) {
+  window.__homeMainRouteListenerBound = true;
+  window.addEventListener("home-main:route-change", runHomeMainInits);
+}
+
+runHomeMainInits();

@@ -1,7 +1,5 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { Card } from "@/components/ui/Card";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -26,36 +24,33 @@ export default function PrivacyPage() {
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
-      <PageHeader
-        kicker="Privacy"
-        title={t("Политика конфиденциальности")}
-        description={t("Шаблон документа. Замените на юридически корректный текст для вашего бизнеса.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
+          <PageTop
+            breadcrumbs={[
               { label: t("Главная"), href: "/" },
               { label: "Privacy", href: "/privacy" }
             ]}
+            kicker="Privacy"
+            title={t("Политика конфиденциальности")}
+            description={t("Ниже размещен базовый шаблон. Перед публикацией замените его на юридически корректный текст для вашей деятельности.")}
           />
 
-          <Card>
-            <h2 className="font-heading text-3xl uppercase text-coal">{t("1. Общие положения")}</h2>
-            <p className="mt-2 text-sm text-slate-700">{t("[TODO: вставить юридически выверенную политику обработки персональных данных]")}</p>
+          <article className="guarantee-card">
+            <h2>{t("1. Общие положения")}</h2>
+            <p>{t("[TODO: вставить юридически выверенную политику обработки персональных данных]")}</p>
 
-            <h2 className="mt-5 font-heading text-3xl uppercase text-coal">{t("2. Какие данные собираем")}</h2>
-            <p className="mt-2 text-sm text-slate-700">{t("Имя, контакт, содержание заявки и технические данные обращения.")}</p>
+            <h2 className="mt-5">{t("2. Какие данные собираем")}</h2>
+            <p>{t("Имя, контактные данные, содержание заявки и технические данные обращения.")}</p>
 
-            <h2 className="mt-5 font-heading text-3xl uppercase text-coal">{t("3. Цель обработки")}</h2>
-            <p className="mt-2 text-sm text-slate-700">{t("Подготовка расчета, коммуникация по проекту и исполнение договорных обязательств.")}</p>
+            <h2 className="mt-5">{t("3. Цель обработки")}</h2>
+            <p>{t("Подготовка расчета, обратная связь по проекту и исполнение договорных обязательств.")}</p>
 
-            <h2 className="mt-5 font-heading text-3xl uppercase text-coal">{t("4. Реквизиты оператора")}</h2>
-            <p className="mt-2 text-sm text-slate-700">
+            <h2 className="mt-5">{t("4. Реквизиты оператора")}</h2>
+            <p>
               {site.brand.name}, {t("УНП")} {site.legal.unp}, {t("адрес")}: {site.legal.legalAddress}.
             </p>
-          </Card>
+          </article>
         </Container>
       </Section>
     </>

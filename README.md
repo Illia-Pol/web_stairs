@@ -10,6 +10,21 @@
 - Fallback при ошибке отправки: автопереход в Telegram deep link + ручная кнопка.
 - Отдельный backend: `/serverless` (Vercel Function `POST /api/lead`).
 
+## Структура проекта
+
+- `app/` — страницы App Router (только актуальные роуты, без legacy-путей).
+- `components/`
+  - `layout/` — `Header/Footer/Layout`.
+  - `home/` — секции и калькулятор главной.
+  - `sections/` — shared бизнес-секции (например, `LeadCaptureSection`).
+  - `page/` — shared building blocks для внутренних страниц (`PageTop`, `PageNavCards`, `PageBottomCta`).
+  - `ui/` — базовые примитивы (`Button`, `Section`).
+- `content/` — контент-модель (`site.json`, `types`, `features`, `cases`, `knowledge`, `faq`, `geo`, `i18n`).
+- `lib/` — загрузчики контента, i18n, SEO, утилиты.
+- `public/assets/` — единый источник статических ассетов (изображения, клиентские скрипты, иконки).
+- `scripts/` — утилиты для SEO и локального pre-commit прогона.
+- `serverless/` — отдельный Vercel endpoint для лидов.
+
 ## Локальный запуск
 
 ```bash
@@ -65,7 +80,7 @@ npm run i18n:extract
 1. `Settings -> Pages -> Source`: выбрать `GitHub Actions`.
 2. Убедиться, что Actions имеют право деплоя Pages (по умолчанию для owner/repo обычно уже включено).
 
-Локально ничего коммитить из `out/`/`docs/` не нужно — это собирается в CI.
+Локально ничего коммитить из `out/` не нужно — это собирается в CI.
 
 Если проект будет жить в подпапке (`https://user.github.io/repo-name/`), поменяйте в workflow переменную:
 
@@ -108,4 +123,5 @@ npm run typecheck
 npm run lint
 npm run generate:seo
 npm run i18n:extract
+npm run precommit:manual
 ```

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Script from "next/script";
 
 import { JsonLd } from "@/components/JsonLd";
 import { LeadCaptureSection } from "@/components/sections/LeadCaptureSection";
@@ -7,7 +6,6 @@ import { Container, Section } from "@/components/ui/Section";
 import { getGeoPages, getSiteConfig } from "@/lib/content/loaders";
 import { t, type Locale } from "@/lib/i18n";
 import { thc } from "@/lib/i18n-contacts";
-import { assetPath } from "@/lib/paths";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -75,7 +73,6 @@ export default function ContactsPage() {
           </article>
         </Container>
       </Section>
-      <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
     </>
   );
 }

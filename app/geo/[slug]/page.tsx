@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { ButtonLink } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { PageBottomCta } from "@/components/page/PageBottomCta";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getCases, getGeoBySlug, getGeoPages, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -68,66 +66,66 @@ export default function GeoPage({ params }: PageProps) {
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
 
-      <PageHeader
-        kicker={t("Гео")}
-        title={t(geo.title)}
-        description={t(geo.description)}
-        actions={
-          <ButtonLink href={site.messengers.telegram} target="_blank" rel="noreferrer">
-            {t("Отправить план/фото")}
-          </ButtonLink>
-        }
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
+          <PageTop
+            breadcrumbs={[
               { label: t("Главная"), href: "/" },
               { label: t(geo.city), href: `/geo/${geo.slug}` }
             ]}
+            kicker={t("Гео")}
+            title={t(geo.title)}
+            description={t(geo.description)}
+            story={[
+              t("Страница адаптирована под локальные условия и особенности выполнения работ в вашем регионе."),
+              t("Для точного ориентира по срокам и стоимости отправьте фото или план проема через форму заявки.")
+            ]}
           />
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Локальные условия")}</h2>
-              <p className="mt-3 text-sm text-slate-700">{t(geo.transport)}</p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
+          <div className="info-grid md:grid-cols-2">
+            <article className="guarantee-card">
+              <h2>{t("Локальные условия")}</h2>
+              <p>{t(geo.transport)}</p>
+              <ul className="guarantee-list">
                 {geo.proof.map((point) => (
-                  <li key={point} className="rounded-lg bg-slate-50 px-3 py-2">
-                    {t(point)}
-                  </li>
+                  <li key={point}>{t(point)}</li>
                 ))}
               </ul>
-            </Card>
+            </article>
 
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Получить расчет")}</h2>
-              <p className="mt-3 text-sm text-slate-700">{t("Отправьте исходные данные и получите ориентир стоимости по вашему городу.")}</p>
-              <div className="mt-4">
-                <ButtonLink href="/contacts" variant="secondary">
-                  {t("Перейти к заявке")}
-                </ButtonLink>
-              </div>
-            </Card>
+            <article className="guarantee-card">
+              <h2>{t("Получить расчет")}</h2>
+              <p>{t("Отправьте исходные данные и получите ориентир стоимости именно для вашего города.")}</p>
+              <Link href="/contacts" className="btn btn-small mt-4">
+                {t("Перейти к заявке")}
+              </Link>
+            </article>
           </div>
 
-          <Card className="mt-6">
-            <h2 className="font-heading text-3xl uppercase text-coal">{t("Кейсы в городе {{CITY}}", { CITY: geo.city })}</h2>
-            <div className="mt-3 grid gap-3 md:grid-cols-2">
-              {relatedCases.map((item) => (
-                <div key={item.slug} className="rounded-lg border border-slate-200 p-3">
-                  <h3 className="font-heading text-2xl uppercase text-coal">{item.title}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{item.summary}</p>
-                  <Link href={`/portfolio/projects#${item.slug}`} className="mt-2 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                    {t("Смотреть проект")}
+          {relatedCases.length ? (
+            <article className="guarantee-card mt-6">
+              <h2>{t("Кейсы в городе {{CITY}}", { CITY: geo.city })}</h2>
+              <div className="master-side-grid md:grid-cols-2 mt-4">
+                {relatedCases.map((item) => (
+                  <Link key={item.slug} href={`/portfolio/projects#${item.slug}`} className="master-link-card">
+                    <h3>{t(item.title)}</h3>
+                    <p>{t(item.summary)}</p>
+                    <span>{t("Смотреть проект")}</span>
                   </Link>
-                </div>
-              ))}
-            </div>
-          </Card>
+                ))}
+              </div>
+            </article>
+          ) : null}
         </Container>
       </Section>
+
+      <PageBottomCta
+        text={t("Нужен ориентир по вашему объекту в {{CITY}}? Отправьте план или фото проема и получите расчет с учетом локальных условий.", {
+          CITY: geo.city
+        })}
+        href="/contacts"
+        label={t("Оставить заявку")}
+      />
     </>
   );
 }

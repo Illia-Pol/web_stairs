@@ -1093,7 +1093,12 @@ a {
 
 .calc-form {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
+}
+
+.calc-form .calc-field:nth-child(3) {
+  grid-column: 1 / -1;
 }
 
 .calc-signature-hint {
@@ -1178,6 +1183,11 @@ a {
 }
 
 .calc-choice-card.is-active {
+  border-color: rgba(199, 164, 106, 0.5);
+  background: rgba(199, 164, 106, 0.12);
+}
+
+.calc-choice-card.is-static.is-active:hover {
   border-color: rgba(199, 164, 106, 0.5);
   background: rgba(199, 164, 106, 0.12);
 }
@@ -1430,10 +1440,6 @@ a {
   margin: 0.65rem 0 0;
   font-size: 0.9rem;
   color: var(--ink-soft);
-}
-
-.faq-compact-head {
-  margin-top: 2.4rem;
 }
 
 .master-wrap {
@@ -1703,6 +1709,34 @@ textarea {
   color: var(--ink);
 }
 
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(244, 242, 238, 0.72) 50%),
+    linear-gradient(135deg, rgba(244, 242, 238, 0.72) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) calc(50% - 2px),
+    calc(100% - 9px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2rem;
+}
+
+select option {
+  background: #171b1f;
+  color: var(--ink);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(199, 164, 106, 0.55);
+  box-shadow: 0 0 0 3px rgba(199, 164, 106, 0.18);
+}
+
 .phone-input-row {
   margin-top: 0.32rem;
   display: grid;
@@ -1711,6 +1745,12 @@ textarea {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.phone-input-row:focus-within {
+  border-color: rgba(199, 164, 106, 0.55);
+  box-shadow: 0 0 0 3px rgba(199, 164, 106, 0.18);
 }
 
 .phone-input-row select,
@@ -1720,6 +1760,11 @@ textarea {
   border-radius: 0;
   background: transparent;
   padding: 0.78rem 0.8rem;
+}
+
+.phone-input-row select:focus,
+.phone-input-row input:focus {
+  box-shadow: none;
 }
 
 .phone-input-row select {
@@ -1734,13 +1779,6 @@ textarea {
 .phone-input-row select option {
   background: #1b1f23;
   color: var(--ink);
-}
-
-.faq-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
-  align-items: start;
 }
 
 .faq-accordion {
@@ -1822,67 +1860,6 @@ textarea {
   font-size: 0.93rem;
   line-height: 1.6;
   color: var(--ink-soft);
-}
-
-.faq-item {
-  border: 1px solid var(--stroke);
-  border-radius: 12px;
-  padding: 0.9rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.faq-item summary {
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  list-style: none;
-  position: relative;
-  padding-right: 1.8rem;
-  line-height: 1.3;
-}
-
-.faq-item summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq-item summary::after {
-  content: "+";
-  font-weight: 600;
-  color: var(--accent);
-  position: absolute;
-  right: 0;
-  top: 50%;
-  width: 1.2rem;
-  height: 1.2rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-50%);
-}
-
-.faq-item[open] summary::after {
-  content: "−";
-}
-
-.faq-answer {
-  height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: height 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
-}
-
-.faq-item[open] .faq-answer {
-  height: auto;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.faq-answer p {
-  overflow: hidden;
-  margin: 0.6rem 0 0;
-  color: var(--ink-soft);
-  font-size: 0.9rem;
 }
 
 .contact-grid {
@@ -2273,13 +2250,20 @@ textarea {
   .portfolio-types-hero-grid,
   .portfolio-types-grid,
   .portfolio-projects-grid,
-  .segment-grid,
-  .faq-grid {
+  .segment-grid {
     grid-template-columns: 1fr;
   }
 
   .types-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .calc-form {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-form .calc-field:nth-child(3) {
+    grid-column: auto;
   }
 
   .lead-capture-grid {

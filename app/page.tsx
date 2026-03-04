@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Script from "next/script";
 
 import { HomePricesSection } from "@/components/home/HomePricesSection";
 import { JsonLd } from "@/components/JsonLd";
@@ -346,7 +345,6 @@ export default function HomePage() {
       </section>
       <LeadCaptureSection site={site} locale="ru" source="home_form" />
 
-      <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
     </>
   );
 }

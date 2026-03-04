@@ -1,5 +1,4 @@
 # OS / Filesystem
-.DS_Store
 Thumbs.db
 
 # Editors / IDE
@@ -39,5 +38,3 @@ coverage/
 .nuxt/
 .svelte-kit/
 *.tsbuildinfo
-
-.DS_Store

@@ -1,6 +1,7 @@
-import Link from "next/link";
-
 import { JsonLd } from "@/components/JsonLd";
+import { PageBottomCta } from "@/components/page/PageBottomCta";
+import { PageNavCards } from "@/components/page/PageNavCards";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -55,38 +56,21 @@ export default function VlogPage() {
 
       <Section className="section-dark">
         <Container>
-          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href="/" className="hover:text-ink">
-                  {t("Главная")}
-                </Link>
-              </li>
-              <li>/</li>
-              <li className="text-ink">{t("Влог")}</li>
-            </ol>
-          </nav>
+          <PageTop
+            breadcrumbs={[
+              { label: t("Главная"), href: "/" },
+              { label: t("Влог"), href: "/vlog" }
+            ]}
+            kicker={t("Влог")}
+            title={t("Проекты, статьи и процесс работы")}
+            description={t("В этом разделе собраны материалы, которые помогают понять подход к проектам и заранее снять ключевые вопросы по объекту.")}
+            story={[
+              t("Если хотите быстро оценить уровень работ, начните с проектов. Если нужно разобраться в деталях до старта, откройте статьи. Для понимания этапов и последовательности — раздел «Процесс»."),
+              t("Материалы построены так, чтобы вы могли принять решение без лишней перегрузки и сразу перейти к следующему шагу.")
+            ]}
+          />
 
-          <div className="portfolio-page-head">
-            <p className="kicker">{t("Влог")}</p>
-            <h1>{t("Проекты, статьи и процесс работы")}</h1>
-            <p>{t("В этом разделе собраны материалы, которые помогают понять подход к проектам и заранее снять ключевые вопросы по объекту.")}</p>
-          </div>
-
-          <div className="portfolio-story">
-            <p>{t("Если хотите быстро оценить уровень работ, начните с проектов. Если нужно разобраться в деталях до старта, откройте статьи. Для понимания этапов и последовательности — раздел «Процесс».")}</p>
-            <p>{t("Материалы построены так, чтобы вы могли принять решение без лишней перегрузки и сразу перейти к следующему шагу.")}</p>
-          </div>
-
-          <div className="master-side-grid md:grid-cols-3">
-            {cards.map((card) => (
-              <Link key={card.href} href={card.href} className="master-link-card">
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <span>{card.cta}</span>
-              </Link>
-            ))}
-          </div>
+          <PageNavCards items={cards} columns={3} />
 
           <article className="guarantee-card mt-6">
             <h2>{t("Как использовать этот раздел")}</h2>
@@ -99,16 +83,11 @@ export default function VlogPage() {
         </Container>
       </Section>
 
-      <Section className="section-accent master-projects-section">
-        <Container>
-          <div className="portfolio-bottom-cta">
-            <p>{t("Если хотите получить комментарий по вашему объекту, отправьте заявку с планом или фото проема.")}</p>
-            <Link href="/contacts" className="btn btn-small">
-              {t("Перейти к заявке")}
-            </Link>
-          </div>
-        </Container>
-      </Section>
+      <PageBottomCta
+        text={t("Если хотите получить комментарий по вашему объекту, отправьте заявку с планом или фото проема.")}
+        href="/contacts"
+        label={t("Перейти к заявке")}
+      />
     </>
   );
 }

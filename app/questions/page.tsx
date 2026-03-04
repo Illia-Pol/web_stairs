@@ -1,6 +1,7 @@
-import Link from "next/link";
-
 import { JsonLd } from "@/components/JsonLd";
+import { PageBottomCta } from "@/components/page/PageBottomCta";
+import { PageNavCards } from "@/components/page/PageNavCards";
+import { PageTop } from "@/components/page/PageTop";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -55,38 +56,21 @@ export default function QuestionsHubPage() {
 
       <Section className="section-dark">
         <Container>
-          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href="/" className="hover:text-ink">
-                  {t("Главная")}
-                </Link>
-              </li>
-              <li>/</li>
-              <li className="text-ink">{t("Вопросы")}</li>
-            </ol>
-          </nav>
+          <PageTop
+            breadcrumbs={[
+              { label: t("Главная"), href: "/" },
+              { label: t("Вопросы"), href: "/questions" }
+            ]}
+            kicker={t("Вопросы")}
+            title={t("FAQ и проблемные кейсы по бетонным лестницам")}
+            description={t("Здесь собраны ответы на частые вопросы и практические разборы ситуаций, где важно принять решение до старта работ.")}
+            story={[
+              t("Раздел помогает быстро понять, какие вводные влияют на стоимость, сроки и технические риски. Сначала можно пройти FAQ, а затем открыть проблемные кейсы по вашей задаче."),
+              t("Если ваш объект нестандартный, лучше сразу отправить фото или план: так мы дадим комментарий по существу, а не общий совет.")
+            ]}
+          />
 
-          <div className="portfolio-page-head">
-            <p className="kicker">{t("Вопросы")}</p>
-            <h1>{t("FAQ и проблемные кейсы по бетонным лестницам")}</h1>
-            <p>{t("Здесь собраны ответы на частые вопросы и практические разборы ситуаций, где важно принять решение до старта работ.")}</p>
-          </div>
-
-          <div className="portfolio-story">
-            <p>{t("Раздел помогает быстро понять, какие вводные влияют на стоимость, сроки и технические риски. Сначала можно пройти FAQ, а затем открыть проблемные кейсы по вашей задаче.")}</p>
-            <p>{t("Если ваш объект нестандартный, лучше сразу отправить фото или план: так мы дадим комментарий по существу, а не общий совет.")}</p>
-          </div>
-
-          <div className="master-side-grid md:grid-cols-3">
-            {cards.map((card) => (
-              <Link key={card.href} href={card.href} className="master-link-card">
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <span>{card.cta}</span>
-              </Link>
-            ))}
-          </div>
+          <PageNavCards items={cards} columns={3} />
 
           <article className="guarantee-card mt-6">
             <h2>{t("Что вы получите в этом разделе")}</h2>
@@ -99,16 +83,11 @@ export default function QuestionsHubPage() {
         </Container>
       </Section>
 
-      <Section className="section-accent master-projects-section">
-        <Container>
-          <div className="portfolio-bottom-cta">
-            <p>{t("Если нужна консультация по вашему объекту, отправьте заявку: поможем выбрать рабочий сценарий без лишних рисков.")}</p>
-            <Link href="/contacts" className="btn btn-small">
-              {t("Оставить заявку")}
-            </Link>
-          </div>
-        </Container>
-      </Section>
+      <PageBottomCta
+        text={t("Если нужна консультация по вашему объекту, отправьте заявку: поможем выбрать рабочий сценарий без лишних рисков.")}
+        href="/contacts"
+        label={t("Оставить заявку")}
+      />
     </>
   );
 }
