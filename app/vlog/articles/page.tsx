@@ -7,7 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Container, Section } from "@/components/ui/Section";
 import { getKnowledgeArticles, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -25,10 +25,29 @@ export default function VlogArticlesPage() {
     { name: t("Влог"), href: "/vlog" },
     { name: t("Статьи"), href: "/vlog/articles" }
   ];
+  const blogIndexSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: `${site.brand.name} Blog`,
+    description: t("Практические материалы по бетонным лестницам."),
+    url: absoluteUrl(site.baseUrl, "/vlog/articles"),
+    blogPost: articles.map((article) => ({
+      "@type": "BlogPosting",
+      headline: t(article.title),
+      description: t(article.excerpt),
+      url: absoluteUrl(site.baseUrl, `/vlog/articles/${article.slug}`),
+      datePublished: article.publishedAt,
+      author: {
+        "@type": "Person",
+        name: site.brand.founder
+      }
+    }))
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
+      <JsonLd data={blogIndexSchema} />
 
       <Section className="section-dark">
         <Container>
@@ -64,7 +83,13 @@ export default function VlogArticlesPage() {
             {articles.map((article) => (
               <article key={article.slug} className="portfolio-project-card">
                 <Link href={`/vlog/articles/${article.slug}`} className="portfolio-project-media relative">
-                  <Image src={assetPath(article.coverImage)} alt={t(article.title)} fill className="object-cover" />
+                  <Image
+                    src={assetPath(article.coverImage)}
+                    alt={t(article.title)}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
                 </Link>
                 <div className="portfolio-project-body">
                   <div className="portfolio-project-meta">

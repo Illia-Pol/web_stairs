@@ -4,16 +4,31 @@
     <loc>https://betostep.by/</loc>
   </url>
   <url>
+    <loc>https://betostep.by/en/</loc>
+  </url>
+  <url>
     <loc>https://betostep.by/portfolio/</loc>
+  </url>
+  <url>
+    <loc>https://betostep.by/en/portfolio/</loc>
   </url>
   <url>
     <loc>https://betostep.by/portfolio/types/</loc>
   </url>
   <url>
+    <loc>https://betostep.by/en/portfolio/types/</loc>
+  </url>
+  <url>
     <loc>https://betostep.by/portfolio/projects/</loc>
   </url>
   <url>
+    <loc>https://betostep.by/en/portfolio/projects/</loc>
+  </url>
+  <url>
     <loc>https://betostep.by/portfolio/master/</loc>
+  </url>
+  <url>
+    <loc>https://betostep.by/en/portfolio/master/</loc>
   </url>
   <url>
     <loc>https://betostep.by/prices/</loc>

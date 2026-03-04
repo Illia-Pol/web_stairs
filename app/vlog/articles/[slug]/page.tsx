@@ -38,7 +38,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
     pathname: `/vlog/articles/${article.slug}`,
     title: `${t(article.title)} | ${site.brand.name}`,
     description: t(article.excerpt),
-    image: article.coverImage
+    image: article.coverImage,
+    type: "article"
   });
 }
 
@@ -61,7 +62,9 @@ export default function VlogArticleDetailPage({ params }: PageProps) {
     description: t(article.excerpt),
     image: article.coverImage,
     publishedAt: article.publishedAt,
-    authorName: site.brand.founder
+    authorName: site.brand.founder,
+    publisherName: site.brand.name,
+    publisherLogo: "/assets/logo.png"
   });
 
   return (

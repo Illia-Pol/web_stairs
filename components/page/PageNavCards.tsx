@@ -17,7 +17,7 @@ export function PageNavCards({ items, columns = 3, className }: PageNavCardsProp
   const columnsClass = columns === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
 
   return (
-    <div className={["master-side-grid", columnsClass, className].filter(Boolean).join(" ")}>
+    <nav aria-label="Section navigation" className={["master-side-grid", columnsClass, className].filter(Boolean).join(" ")}>
       {items.map((card) => (
         <Link key={card.href} href={card.href} className="master-link-card">
           <h3>{card.title}</h3>
@@ -25,6 +25,6 @@ export function PageNavCards({ items, columns = 3, className }: PageNavCardsProp
           <span>{card.cta}</span>
         </Link>
       ))}
-    </div>
+    </nav>
   );
 }

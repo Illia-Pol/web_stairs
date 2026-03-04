@@ -71,6 +71,8 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
   const [isCompact, setIsCompact] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const primaryNav = getPrimaryNav(uiLocale);
+  const primaryNavLabel = uiLocale === "en" ? "Main navigation" : "Основная навигация";
+  const mobileNavId = "mobile-main-nav";
   const localizedBrandTitle = th("brand_title", uiLocale);
   const homeHref = uiLocale === "en" ? "/en" : "/";
   const contactAnchorHref = uiLocale === "en" ? "/en/#contact" : "/#contact";
@@ -153,13 +155,14 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
           </div>
         </Link>
 
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 text-[0.92rem] text-ink-soft lg:flex">
+        <nav aria-label={primaryNavLabel} className="hidden min-w-0 flex-1 items-center justify-center gap-4 text-[0.92rem] text-ink-soft lg:flex">
           {primaryNav.map((item) =>
             item.children ? (
               <div key={item.label} className="group relative -my-2 py-2">
                 <div className="inline-flex items-center gap-1">
                   <Link
                     href={item.href ?? "/"}
+                    aria-haspopup="menu"
                     className="whitespace-nowrap transition-colors hover:text-ink"
                   >
                     {item.label}
@@ -167,17 +170,20 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
                   <span className="text-[10px] text-ink-soft/80">▾</span>
                 </div>
 
-                <div className="pointer-events-none absolute left-0 top-full z-20 min-w-[220px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="pointer-events-none absolute left-0 top-full z-20 min-w-[220px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
                   <div className="rounded-xl border border-white/10 bg-panel/95 p-2 shadow-card">
+                    <div role="menu" aria-label={item.label}>
                     {item.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
+                        role="menuitem"
                         className="block rounded-lg px-3 py-2 text-ink-soft transition-colors hover:bg-white/10 hover:text-ink"
                       >
                         {child.label}
                       </Link>
                     ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -206,6 +212,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
             type="button"
             aria-label={mobileMenuOpen ? th("menu_close", uiLocale) : th("menu_open", uiLocale)}
             aria-expanded={mobileMenuOpen}
+            aria-controls={mobileNavId}
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             className="inline-flex h-9 items-center gap-2 rounded-full border border-white/15 px-3 text-xs font-semibold uppercase tracking-[0.08em] text-ink-soft transition-colors hover:bg-white/5 hover:text-ink"
           >
@@ -235,13 +242,14 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
       </div>
 
       <div
+        id={mobileNavId}
         className={cn(
           "overflow-hidden border-t border-white/10 lg:hidden transition-[max-height,opacity] duration-300",
           mobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         )}
       >
         <div className="mx-auto w-full max-w-[1120px] px-4 pb-4 pt-3 sm:px-6">
-          <div className="grid gap-3">
+          <nav aria-label={primaryNavLabel} className="grid gap-3">
             {primaryNav.map((item) => (
               <Link
                 key={item.label}
@@ -252,7 +260,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
                 {item.label}
               </Link>
             ))}
-          </div>
+          </nav>
 
           <div className="mt-3">
             <ButtonLink

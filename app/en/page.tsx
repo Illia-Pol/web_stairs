@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import Link from "next/link";
+
 import { HomePricesSection } from "@/components/home/HomePricesSection";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadCaptureSection } from "@/components/sections/LeadCaptureSection";
@@ -64,48 +66,64 @@ const projects = [
 const types = [
   {
     icon: "/assets/catalog/catalog-1.png",
+    width: 157,
+    height: 133,
     alt: trst("type_1_alt"),
     title: trst("type_1_title"),
     gallery: ["/assets/catalog-gallery/straight/1.jpg", "/assets/catalog-gallery/straight/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-2.png",
+    width: 157,
+    height: 188,
     alt: trst("type_2_alt"),
     title: trst("type_2_title"),
     gallery: ["/assets/catalog-gallery/g-shaped-landing/1.jpg", "/assets/catalog-gallery/g-shaped-landing/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-3.png",
+    width: 185,
+    height: 152,
     alt: trst("type_3_alt"),
     title: trst("type_3_title"),
     gallery: ["/assets/catalog-gallery/u-shaped-landing/1.jpg", "/assets/catalog-gallery/u-shaped-landing/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-4.png",
+    width: 139,
+    height: 162,
     alt: trst("type_4_alt"),
     title: trst("type_4_title"),
     gallery: ["/assets/catalog-gallery/g-shaped-winder/1.jpg", "/assets/catalog-gallery/g-shaped-winder/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-5.png",
+    width: 181,
+    height: 157,
     alt: trst("type_5_alt"),
     title: trst("type_5_title"),
     gallery: ["/assets/catalog-gallery/u-shaped-winder/1.jpg", "/assets/catalog-gallery/u-shaped-winder/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-6.png",
+    width: 177,
+    height: 171,
     alt: trst("type_6_alt"),
     title: trst("type_6_title"),
     gallery: ["/assets/catalog-gallery/half-spiral/1.jpg", "/assets/catalog-gallery/half-spiral/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-7.png",
+    width: 109,
+    height: 189,
     alt: trst("type_7_alt"),
     title: trst("type_7_title"),
     gallery: ["/assets/catalog-gallery/spiral/1.jpg", "/assets/catalog-gallery/spiral/2.jpg"]
   },
   {
     icon: "/assets/catalog/catalog-8.png",
+    width: 179,
+    height: 102,
     alt: trst("type_8_alt"),
     title: trst("type_8_title"),
     gallery: ["/assets/catalog-gallery/porch/1.jpg", "/assets/catalog-gallery/porch/2.jpg"]
@@ -167,11 +185,11 @@ export default function HomePageEn() {
 
       <section className="hero" id="hero">
         <div className="hero-slider" aria-hidden="true">
-          <img src={assetPath("/assets/slider/slider-1.jpeg")} alt="" />
-          <img src={assetPath("/assets/slider/slider-2.jpeg")} alt="" />
-          <img src={assetPath("/assets/slider/slider-3.jpeg")} alt="" />
-          <img src={assetPath("/assets/slider/slider-4.jpeg")} alt="" />
-          <img src={assetPath("/assets/slider/slider-5.jpeg")} alt="" />
+          <img src={assetPath("/assets/slider/slider-1.jpeg")} alt="" width={1600} height={586} loading="eager" fetchPriority="high" decoding="async" />
+          <img src={assetPath("/assets/slider/slider-2.jpeg")} alt="" width={1600} height={622} loading="lazy" decoding="async" />
+          <img src={assetPath("/assets/slider/slider-3.jpeg")} alt="" width={1600} height={666} loading="lazy" decoding="async" />
+          <img src={assetPath("/assets/slider/slider-4.jpeg")} alt="" width={1600} height={618} loading="lazy" decoding="async" />
+          <img src={assetPath("/assets/slider/slider-5.jpeg")} alt="" width={1600} height={668} loading="lazy" decoding="async" />
         </div>
         <div className="hero-overlay" aria-hidden="true" />
 
@@ -225,7 +243,7 @@ export default function HomePageEn() {
             {projects.map((project, index) => (
               <article key={project.title} className={`project-card reveal-up ${index % 3 === 1 ? "delay-1" : index % 3 === 2 ? "delay-2" : ""}`.trim()}>
                 <div className="project-image">
-                  <img src={assetPath(project.image)} alt={project.alt} loading="lazy" />
+                  <img src={assetPath(project.image)} alt={project.alt} width={1536} height={1024} loading="lazy" decoding="async" />
                 </div>
                 <div className="project-body">
                   <h3>{project.title}</h3>
@@ -237,9 +255,9 @@ export default function HomePageEn() {
           <div className="portfolio-footer reveal-up">
             <p>
               {trp("footer_line_start")}{" "}
-              <a className="inline-link" href="/portfolio/projects">{trp("footer_link_projects")}</a>,{" "}
+              <Link className="inline-link" href="/en/portfolio/projects">{trp("footer_link_projects")}</Link>,{" "}
               {trp("footer_line_middle")}{" "}
-              <a className="inline-link" href="/vlog/projects">{trp("footer_link_vlog")}</a>{" "}
+              <Link className="inline-link" href="/vlog/projects">{trp("footer_link_vlog")}</Link>{" "}
               {trp("footer_line_end")}{" "}
               <a className="inline-link" href="https://www.instagram.com/betostep?igsh=cGQ0MjBzNzJ6cXlv" target="_blank" rel="noreferrer">{trp("footer_link_instagram")}</a>.
             </p>
@@ -268,7 +286,7 @@ export default function HomePageEn() {
                   data-open-label={trst("open_photo_button")}
                 >
                   <div className="type-media">
-                    <img src={assetPath(type.icon)} alt={type.alt} loading="eager" decoding="sync" />
+                    <img src={assetPath(type.icon)} alt={type.alt} width={type.width} height={type.height} loading="lazy" decoding="async" />
                     <div className="type-hotspots" role="group" aria-label={trst("modal_zone_aria")}>
                       <button className="type-zone" type="button" data-index="1" aria-label={trst("modal_photo_1_aria")} />
                       <button className="type-zone" type="button" data-index="2" aria-label={trst("modal_photo_2_aria")} />
@@ -293,7 +311,15 @@ export default function HomePageEn() {
           <button className="catalog-modal__close" type="button" data-close="true" aria-label={trst("modal_close_aria")}>×</button>
           <div className="catalog-modal__media">
             <button className="catalog-modal__nav" type="button" id="catalog-prev" aria-label={trst("modal_prev_aria")}>‹</button>
-            <img id="catalog-modal-image" src="" alt={trst("modal_image_alt")} />
+            <img
+              id="catalog-modal-image"
+              src={assetPath("/assets/portfolio/portfolio-1.jpg")}
+              alt={trst("modal_image_alt")}
+              width={1536}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+            />
             <button className="catalog-modal__nav" type="button" id="catalog-next" aria-label={trst("modal_next_aria")}>›</button>
           </div>
           <p className="catalog-modal__caption" id="catalog-caption" />
@@ -314,12 +340,12 @@ export default function HomePageEn() {
               <li>{trg("guarantee_item_3")}</li>
               <li>{trg("guarantee_item_4")}</li>
             </ul>
-            <a className="btn btn-small" href="/prices/guarantee">{trg("guarantee_button")}</a>
+            <Link className="btn btn-small" href="/prices/guarantee">{trg("guarantee_button")}</Link>
           </article>
 
           <div className="master-photo-card reveal-up delay-1">
             <div className="master-photo">
-              <img src={assetPath("/assets/master.jpg")} alt={trg("master_alt")} />
+              <img src={assetPath("/assets/master.jpg")} alt={trg("master_alt")} width={1536} height={1024} loading="lazy" decoding="async" />
             </div>
             <div className="master-bio">
               <h3>{trg("master_name")}</h3>

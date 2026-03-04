@@ -28,6 +28,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/monolitnaya-lestnitsa",
       icon: "/assets/catalog/catalog-1.png",
+      width: 157,
+      height: 133,
       alt: thst("type_1_alt", undefined, LOCALE),
       title: thst("type_1_title", undefined, LOCALE),
       description: tr("type_1_desc")
@@ -35,6 +37,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/monolitnaya-lestnitsa",
       icon: "/assets/catalog/catalog-2.png",
+      width: 157,
+      height: 188,
       alt: thst("type_2_alt", undefined, LOCALE),
       title: thst("type_2_title", undefined, LOCALE),
       description: tr("type_2_desc")
@@ -42,6 +46,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/p-obraznaya-lestnitsa",
       icon: "/assets/catalog/catalog-3.png",
+      width: 185,
+      height: 152,
       alt: thst("type_3_alt", undefined, LOCALE),
       title: thst("type_3_title", undefined, LOCALE),
       description: tr("type_3_desc")
@@ -49,6 +55,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/monolitnaya-lestnitsa",
       icon: "/assets/catalog/catalog-4.png",
+      width: 139,
+      height: 162,
       alt: thst("type_4_alt", undefined, LOCALE),
       title: thst("type_4_title", undefined, LOCALE),
       description: tr("type_4_desc")
@@ -56,6 +64,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/p-obraznaya-lestnitsa",
       icon: "/assets/catalog/catalog-5.png",
+      width: 181,
+      height: 157,
       alt: thst("type_5_alt", undefined, LOCALE),
       title: thst("type_5_title", undefined, LOCALE),
       description: tr("type_5_desc")
@@ -63,6 +73,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/paryashchaya-lestnitsa",
       icon: "/assets/catalog/catalog-6.png",
+      width: 177,
+      height: 171,
       alt: thst("type_6_alt", undefined, LOCALE),
       title: thst("type_6_title", undefined, LOCALE),
       description: tr("type_6_desc")
@@ -70,6 +82,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/konsolnaya-lestnitsa",
       icon: "/assets/catalog/catalog-7.png",
+      width: 109,
+      height: 189,
       alt: thst("type_7_alt", undefined, LOCALE),
       title: thst("type_7_title", undefined, LOCALE),
       description: tr("type_7_desc")
@@ -77,6 +91,8 @@ export default function TypesPageEn() {
     {
       href: "/portfolio/types/monolitnaya-lestnitsa",
       icon: "/assets/catalog/catalog-8.png",
+      width: 179,
+      height: 102,
       alt: thst("type_8_alt", undefined, LOCALE),
       title: thst("type_8_title", undefined, LOCALE),
       description: tr("type_8_desc")
@@ -155,7 +171,7 @@ export default function TypesPageEn() {
                 style={{ transitionDelay: `${index * 0.08}s` }}
               >
                 <div className="portfolio-type-media">
-                  <img src={assetPath(type.icon)} alt={type.alt} loading="lazy" />
+                  <img src={assetPath(type.icon)} alt={type.alt} width={type.width} height={type.height} loading="lazy" decoding="async" />
                 </div>
                 <div className="portfolio-type-body">
                   <div className="portfolio-type-topline">

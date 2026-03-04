@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Container, Section } from "@/components/ui/Section";
 import { t } from "@/lib/i18n";
+
+export const metadata: Metadata = {
+  title: "404 | BETOSTEP",
+  description: "Страница не найдена.",
+  robots: {
+    index: false,
+    follow: false
+  }
+};
 
 export default function NotFound() {
   return (

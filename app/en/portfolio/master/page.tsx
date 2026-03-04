@@ -106,7 +106,7 @@ export default function PortfolioMasterPageEn() {
           <div className="master-page-grid">
             <article className="master-main-card">
               <div className="master-main-media">
-                <img src={assetPath("/assets/master.jpg")} alt={tr("profile_image_alt")} loading="lazy" />
+                <img src={assetPath("/assets/master.jpg")} alt={tr("profile_image_alt")} width={1536} height={1024} loading="lazy" decoding="async" />
               </div>
               <div className="master-main-body">
                 <h2>{tr("profile_title")}</h2>

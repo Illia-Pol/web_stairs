@@ -90,7 +90,7 @@ export default function PortfolioHubPageEn() {
             {gallery.map((item, index) => (
               <Link key={item.image} href="/en/portfolio/projects" className={`project-card project-card-link ${index % 2 === 1 ? "delay-1" : ""}`.trim()}>
                 <div className="project-image">
-                  <img src={assetPath(item.image)} alt={item.alt} loading="lazy" />
+                  <img src={assetPath(item.image)} alt={item.alt} width={1536} height={1024} loading="lazy" decoding="async" />
                 </div>
               </Link>
             ))}

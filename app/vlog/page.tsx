@@ -12,7 +12,7 @@ const site = getSiteConfig();
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/vlog",
-  title: `${t("Влог")} | ${site.brand.name}`,
+  title: `${t("Влог о бетонных лестницах")} | ${site.brand.name}`,
   description: t("Раздел влога: проекты и статьи по бетонным лестницам.")
 });
 

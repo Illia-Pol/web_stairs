@@ -6,7 +6,7 @@ import { Container, Section } from "@/components/ui/Section";
 import { getCases, getSiteConfig, getTypes } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
 import { assetPath } from "@/lib/paths";
-import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -26,10 +26,27 @@ export default function VlogProjectsPage() {
     { name: t("Влог"), href: "/vlog" },
     { name: t("Проекты"), href: "/vlog/projects" }
   ];
+  const projectsListSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("Реализованные объекты"),
+    description: t("Подборка проектов бетонных лестниц с описанием задач и результата."),
+    url: absoluteUrl(site.baseUrl, "/vlog/projects"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: t(item.title),
+        url: absoluteUrl(site.baseUrl, `/portfolio/projects#${item.slug}`)
+      }))
+    }
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
+      <JsonLd data={projectsListSchema} />
 
       <Section className="section-dark">
         <Container>
@@ -66,7 +83,7 @@ export default function VlogProjectsPage() {
               <article key={item.slug} className="portfolio-project-card">
                 <Link href={`/portfolio/projects#${item.slug}`} className="portfolio-project-media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={assetPath(item.coverImage)} alt={t(item.title)} loading="lazy" />
+                  <img src={assetPath(item.coverImage)} alt={t(item.title)} width={1536} height={1024} loading="lazy" decoding="async" />
                 </Link>
                 <div className="portfolio-project-body">
                   <div className="portfolio-project-meta">

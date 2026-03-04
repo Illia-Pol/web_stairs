@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { thls } from "@/lib/i18n-lead-section";
 import type { Locale } from "@/lib/i18n";
 import type { SiteConfig } from "@/lib/content/schemas";
@@ -18,6 +20,7 @@ function hasRealValue(value: string | undefined): value is string {
 export function LeadCaptureSection({ site, locale, id = "contact", className, source }: LeadCaptureSectionProps) {
   const tr = (key: Parameters<typeof thls>[0], tokens?: Record<string, string | number>) =>
     thls(key, tokens, locale);
+  const countryCodeLabel = locale === "en" ? "Country code" : "Код страны";
   const hasPhone = hasRealValue(site.contacts.phoneMain);
   const hasEmail = hasRealValue(site.contacts.email);
   const hasAddress = hasRealValue(site.contacts.address);
@@ -115,7 +118,7 @@ export function LeadCaptureSection({ site, locale, id = "contact", className, so
               <label className="field">
                 <span className="field-label">{tr("form_phone")}</span>
                 <div className="phone-input-row">
-                  <select id="phone-code" aria-label="Country code">
+                  <select id="phone-code" aria-label={countryCodeLabel}>
                     <option value="+375" defaultValue="+375">{tr("form_country_by")}</option>
                     <option value="+7">{tr("form_country_ru")}</option>
                     <option value="+48">{tr("form_country_pl")}</option>
@@ -166,7 +169,7 @@ export function LeadCaptureSection({ site, locale, id = "contact", className, so
             </div>
             <div className="lead-submit-status" id="lead-submit-status" aria-live="polite" />
             <p className="form-note">
-              {tr("form_policy_prefix")} <a className="inline-link" href="/privacy">{tr("form_policy_link")}</a>.
+              {tr("form_policy_prefix")} <Link className="inline-link" href="/privacy">{tr("form_policy_link")}</Link>.
             </p>
           </form>
         </article>

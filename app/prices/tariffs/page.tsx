@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 const site = getSiteConfig();
 
@@ -29,11 +29,50 @@ export default function TariffsPage() {
     serviceType: t("Тарифы и форматы работ"),
     areaServed: site.coverageRegions
   });
+  const tariffProductsSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: [
+      {
+        "@type": "Product",
+        position: 1,
+        name: "Classic",
+        description: t("Оптимальный формат для большинства частных объектов без потери качества."),
+        brand: {
+          "@type": "Brand",
+          name: site.brand.name
+        },
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "BYN",
+          availability: "https://schema.org/InStock",
+          url: absoluteUrl(site.baseUrl, "/prices/tariffs/classic")
+        }
+      },
+      {
+        "@type": "Product",
+        position: 2,
+        name: "Signature",
+        description: t("Формат для сложных и премиальных проектов с расширенной инженерной частью."),
+        brand: {
+          "@type": "Brand",
+          name: site.brand.name
+        },
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "BYN",
+          availability: "https://schema.org/InStock",
+          url: absoluteUrl(site.baseUrl, "/prices/tariffs/signature")
+        }
+      }
+    ]
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
+      <JsonLd data={tariffProductsSchema} />
 
       <Section className="section-dark">
         <Container>

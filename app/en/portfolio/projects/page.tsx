@@ -90,7 +90,14 @@ export default function PortfolioProjectsPageEn() {
             {featured.map((item, index) => (
               <a key={item.slug} href={`#${item.slug}`} className={`project-card project-card-link ${index % 2 === 1 ? "delay-1" : ""}`.trim()}>
                 <div className="project-image">
-                  <img src={assetPath(item.coverImage)} alt={tr(`gallery_alt_${index + 1}` as Parameters<typeof thpp>[0])} loading="lazy" />
+                  <img
+                    src={assetPath(item.coverImage)}
+                    alt={tr(`gallery_alt_${index + 1}` as Parameters<typeof thpp>[0])}
+                    width={1536}
+                    height={1024}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </a>
             ))}
@@ -105,7 +112,14 @@ export default function PortfolioProjectsPageEn() {
             {cases.map((item) => (
               <article key={item.slug} id={item.slug} className="portfolio-project-card scroll-mt-28">
                 <a href={`#${item.slug}`} className="portfolio-project-media">
-                  <img src={assetPath(item.coverImage)} alt={t(item.title, undefined, LOCALE)} loading="lazy" />
+                  <img
+                    src={assetPath(item.coverImage)}
+                    alt={t(item.title, undefined, LOCALE)}
+                    width={1536}
+                    height={1024}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </a>
                 <div className="portfolio-project-body">
                   <div className="portfolio-project-meta">

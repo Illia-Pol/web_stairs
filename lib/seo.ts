@@ -10,15 +10,74 @@ function normalizeBaseUrl(baseUrl: string): string {
     return FALLBACK_BASE_URL;
   }
 
-  if (baseUrl.startsWith("http://") || baseUrl.startsWith("https://")) {
-    return baseUrl;
+  const trimmed = baseUrl.trim().replace(/\/+$/g, "");
+  if (!trimmed) return FALLBACK_BASE_URL;
+
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(trimmed)) {
+    return `https://${trimmed}`;
   }
 
   return FALLBACK_BASE_URL;
 }
 
+function isWebUrl(value: string): boolean {
+  return /^https?:\/\//i.test(value);
+}
+
+function normalizePathname(pathname: string): string {
+  if (!pathname) return withBasePath("/");
+
+  if (isWebUrl(pathname)) {
+    return pathname;
+  }
+
+  const withPrefix = withBasePath(pathname);
+  if (withPrefix === "/") return withPrefix;
+
+  const [beforeHash, hash = ""] = withPrefix.split("#");
+  const [beforeQuery, query = ""] = beforeHash.split("?");
+  const isFile = /\.[a-z0-9]+$/i.test(beforeQuery);
+  const normalizedPath = isFile || beforeQuery.endsWith("/") ? beforeQuery : `${beforeQuery}/`;
+  const querySuffix = query ? `?${query}` : "";
+  const hashSuffix = hash ? `#${hash}` : "";
+  return `${normalizedPath}${querySuffix}${hashSuffix}`;
+}
+
+function trimToLength(value: string, maxLength: number): string {
+  if (value.length <= maxLength) return value;
+
+  const slice = value.slice(0, maxLength + 1);
+  const lastSpace = slice.lastIndexOf(" ");
+  if (lastSpace > Math.floor(maxLength * 0.6)) {
+    return slice.slice(0, lastSpace).trim();
+  }
+
+  return value.slice(0, maxLength).trim();
+}
+
+function normalizeMetaTitle(value: string, isEnglish: boolean): string {
+  const base = value.trim();
+  const suffix = isEnglish ? " | Custom concrete staircases" : " | Бетонные лестницы под заказ";
+  const enriched = base.length < 50 && !base.includes(suffix) ? `${base}${suffix}` : base;
+  return trimToLength(enriched, 60);
+}
+
+function normalizeMetaDescription(value: string, isEnglish: boolean): string {
+  const base = value.trim();
+  const suffix = isEnglish
+    ? " Send your opening plan or photos and get an estimate with timeline."
+    : " Отправьте план или фото проема и получите ориентир стоимости и сроков.";
+  const enriched = base.length < 120 ? `${base}${suffix}` : base;
+  return trimToLength(enriched, 160);
+}
+
 export function absoluteUrl(baseUrl: string, pathname: string): string {
-  return new URL(withBasePath(pathname), normalizeBaseUrl(baseUrl)).toString();
+  if (isWebUrl(pathname)) return pathname;
+  return new URL(normalizePathname(pathname), normalizeBaseUrl(baseUrl)).toString();
 }
 
 export function createPageMetadata({
@@ -26,36 +85,97 @@ export function createPageMetadata({
   pathname,
   title,
   description,
-  image = "/assets/slider/slider-1.jpeg"
+  image = "/assets/slider/slider-1.jpeg",
+  type = "website"
 }: {
   baseUrl: string;
   pathname: string;
   title: string;
   description: string;
   image?: string;
+  type?: "website" | "article";
 }): Metadata {
+  const isEnglish = pathname.startsWith("/en");
+  const normalizedTitle = normalizeMetaTitle(title, isEnglish);
+  const normalizedDescription = normalizeMetaDescription(description, isEnglish);
   const canonical = absoluteUrl(baseUrl, pathname);
   const ogImage = absoluteUrl(baseUrl, image);
+  const ogLocale = isEnglish ? "en_US" : "ru_BY";
 
   return {
-    title,
-    description,
+    title: normalizedTitle,
+    description: normalizedDescription,
     alternates: {
       canonical
     },
+    robots: {
+      index: true,
+      follow: true
+    },
     openGraph: {
-      title,
-      description,
+      title: normalizedTitle,
+      description: normalizedDescription,
       url: canonical,
-      type: "website",
+      type,
+      locale: ogLocale,
       images: [{ url: ogImage }]
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: normalizedTitle,
+      description: normalizedDescription,
       images: [ogImage]
     }
+  };
+}
+
+export function websiteJsonLd(params: {
+  name: string;
+  baseUrl: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: params.name,
+    url: normalizeBaseUrl(params.baseUrl),
+    inLanguage: ["ru", "en"]
+  };
+}
+
+export function organizationJsonLd(params: {
+  name: string;
+  baseUrl: string;
+  logo?: string;
+  phone: string;
+  email: string;
+  address: string;
+  messengers: {
+    telegram: string;
+    whatsapp: string;
+    viber: string;
+  };
+}) {
+  const sameAs = [params.messengers.telegram, params.messengers.whatsapp, params.messengers.viber].filter(isWebUrl);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: params.name,
+    url: normalizeBaseUrl(params.baseUrl),
+    logo: params.logo ? absoluteUrl(params.baseUrl, params.logo) : undefined,
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: params.phone,
+      email: params.email,
+      contactType: "customer service",
+      areaServed: "BY"
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: params.address,
+      addressCountry: "BY"
+    },
+    sameAs
   };
 }
 
@@ -72,6 +192,8 @@ export function localBusinessJsonLd(params: {
     viber: string;
   };
 }) {
+  const sameAs = [params.messengers.telegram, params.messengers.whatsapp, params.messengers.viber].filter(isWebUrl);
+
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -85,7 +207,7 @@ export function localBusinessJsonLd(params: {
       addressCountry: "BY"
     },
     areaServed: params.coverageRegions,
-    sameAs: [params.messengers.telegram, params.messengers.whatsapp, params.messengers.viber]
+    sameAs
   };
 }
 
@@ -155,17 +277,31 @@ export function articleJsonLd(params: {
   image: string;
   publishedAt: string;
   authorName: string;
+  publisherName: string;
+  publisherLogo?: string;
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: params.title,
     description: params.description,
     image: absoluteUrl(params.baseUrl, params.image),
     datePublished: params.publishedAt,
+    dateModified: params.publishedAt,
+    url: absoluteUrl(params.baseUrl, `/vlog/articles/${params.slug}`),
     author: {
       "@type": "Person",
       name: params.authorName
+    },
+    publisher: {
+      "@type": "Organization",
+      name: params.publisherName,
+      logo: params.publisherLogo
+        ? {
+            "@type": "ImageObject",
+            url: absoluteUrl(params.baseUrl, params.publisherLogo)
+          }
+        : undefined
     },
     mainEntityOfPage: absoluteUrl(params.baseUrl, `/vlog/articles/${params.slug}`)
   };

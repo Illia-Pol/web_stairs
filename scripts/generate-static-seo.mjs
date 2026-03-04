@@ -58,10 +58,15 @@ const basePath = normalizeBasePath(process.env.NEXT_PUBLIC_BASE_PATH ?? "");
 
 const staticRoutes = [
   "/",
+  "/en",
   "/portfolio",
+  "/en/portfolio",
   "/portfolio/types",
+  "/en/portfolio/types",
   "/portfolio/projects",
+  "/en/portfolio/projects",
   "/portfolio/master",
+  "/en/portfolio/master",
   "/prices",
   "/prices/calculator",
   "/prices/tariffs",
@@ -101,7 +106,7 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http:
   })
   .join("\n")}\n</urlset>\n`;
 
-const robotsTxt = `User-agent: *\nAllow: /\nSitemap: ${baseUrl}${joinPath(basePath, "/sitemap.xml")}\n`;
+const robotsTxt = `User-agent: *\nAllow: /\nHost: ${baseUrl}\nSitemap: ${baseUrl}${joinPath(basePath, "/sitemap.xml")}\n`;
 
 function writeSeoFiles(targetDir) {
   fs.mkdirSync(targetDir, { recursive: true });

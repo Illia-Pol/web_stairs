@@ -59,7 +59,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   return createPageMetadata({
     baseUrl: site.baseUrl,
     pathname: `/prices/tariffs/${params.slug}`,
-    title: `${tariff.label} | ${site.brand.name}`,
+    title: `${tariff.label} ${t("тариф бетонных лестниц")} | ${site.brand.name}`,
     description: tariff.description
   });
 }
