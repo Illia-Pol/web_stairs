@@ -99,6 +99,18 @@ export default function RootLayout({
   return (
     <html lang={locale}>
       <body className="font-body">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-PQL2WVYLV2"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PQL2WVYLV2');
+          `}
+        </Script>
         <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
         <ClientEnhancements />
         <JsonLd data={websiteSchema} />
