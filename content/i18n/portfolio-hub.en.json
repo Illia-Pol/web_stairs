@@ -1,0 +1,34 @@
+{
+  "meta_title": "Concrete Stair Portfolio",
+  "meta_description": "Portfolio of monolithic concrete staircases: real project photos, engineering approach, and quick links to stair types, projects, and master profile.",
+
+  "hero_kicker": "Portfolio",
+  "hero_title": "How We Build Staircases",
+  "hero_description": "This page summarizes our working principles and completed objects so you can evaluate our approach before a direct consultation.",
+
+  "breadcrumb_home": "Home",
+  "breadcrumb_current": "Portfolio",
+
+  "story_p_1": "Our portfolio reflects real project constraints: narrow openings, complex turns, finished-floor levels, and clean integration with interior design.",
+  "story_p_2": "Before work starts, we fix geometry, key engineering nodes, and execution stages. This keeps timing more predictable and reduces rework risk.",
+  "story_p_3": "Below are several photos from completed objects. If needed, we can prepare a shortlist of similar cases for your exact scenario.",
+
+  "gallery_alt_1": "Monolithic staircase, completed project",
+  "gallery_alt_2": "Cantilever concrete staircase solution",
+  "gallery_alt_3": "U-shaped concrete staircase on site",
+  "gallery_alt_4": "Stair flight with precise geometry ready for finishing",
+
+  "next_title": "Where to go next",
+  "card_types_title": "Stair Types",
+  "card_types_text": "Choose a base configuration that fits your opening and usage scenario.",
+  "card_types_cta": "Open types",
+  "card_projects_title": "All Projects",
+  "card_projects_text": "Full project collection with additional photos and format-based filtering.",
+  "card_projects_cta": "View projects",
+  "card_master_title": "Master Profile",
+  "card_master_text": "Who leads the project personally and how quality is controlled in practice.",
+  "card_master_cta": "Open profile",
+
+  "schema_name": "Concrete Staircase Portfolio",
+  "schema_description": "Collection of completed concrete staircase projects: monolithic, cantilever, and architecturally complex solutions."
+}

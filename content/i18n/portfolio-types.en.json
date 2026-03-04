@@ -1,0 +1,42 @@
+{
+  "meta_title": "Concrete Stair Types",
+  "meta_description": "Catalog of concrete staircase types: monolithic, floating, cantilever, and U-shaped solutions for private and commercial objects.",
+
+  "hero_kicker": "Portfolio",
+  "hero_title": "Stair Types and Where They Fit",
+  "hero_description": "Not just a list of shapes. This page helps you quickly understand which configuration matches your opening, budget, and interior style.",
+
+  "breadcrumb_home": "Home",
+  "breadcrumb_portfolio": "Portfolio",
+  "breadcrumb_current": "Stair Types",
+
+  "story_p_1": "The staircase type affects not only appearance, but also comfort, opening requirements, reinforcement scheme, and final budget.",
+  "story_p_2": "We start from real geometry on site and only then confirm the final configuration. This keeps the project reliable and avoids unnecessary costs.",
+  "story_p_3": "Below are the key staircase types we work with most often.",
+
+  "gallery_alt_1": "Concrete staircase project, sample 1",
+  "gallery_alt_2": "Concrete staircase project, sample 2",
+  "gallery_alt_3": "Concrete staircase project, sample 3",
+
+  "catalog_title": "Type Catalog",
+  "catalog_note": "For complex and non-standard tasks, we select the type after engineering review.",
+  "card_tag": "Stair type",
+  "funnel_classic": "Classic",
+  "funnel_signature": "Signature",
+  "price_label": "Estimate",
+  "card_cta": "View type",
+  "type_1_desc": "Minimal straight flight for direct openings and clean layouts.",
+  "type_2_desc": "Turn with landing for safer movement and comfortable step rhythm.",
+  "type_3_desc": "Two flights with a landing for comfortable vertical movement.",
+  "type_4_desc": "Winder turn when you need to save space in the opening.",
+  "type_5_desc": "Compact winder turn for narrow openings and tight plans.",
+  "type_6_desc": "Soft radius and expressive geometry for accent interiors.",
+  "type_7_desc": "Spiral layout for constrained zones and unusual floor plans.",
+  "type_8_desc": "Monolithic option for entry groups, terraces, and outdoor steps.",
+
+  "bottom_note": "Not sure which type fits your case? Send a plan/photo and we will suggest a practical option.",
+  "bottom_cta": "Send request",
+
+  "schema_name": "Concrete Stair Type Catalog",
+  "schema_description": "Collection of typical concrete staircase solutions with engineering-first selection logic."
+}

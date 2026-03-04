@@ -23,14 +23,16 @@ type NavItem = {
 };
 
 function getPrimaryNav(locale: "ru" | "en"): NavItem[] {
+  const portfolioBase = locale === "en" ? "/en/portfolio" : "/portfolio";
+
   return [
     {
       label: th("nav_portfolio", locale),
-      href: "/portfolio",
+      href: portfolioBase,
       children: [
-        { href: "/portfolio/types", label: th("nav_portfolio_types", locale) },
-        { href: "/portfolio/projects", label: th("nav_portfolio_projects", locale) },
-        { href: "/portfolio/master", label: th("nav_portfolio_master", locale) }
+        { href: `${portfolioBase}/types`, label: th("nav_portfolio_types", locale) },
+        { href: `${portfolioBase}/projects`, label: th("nav_portfolio_projects", locale) },
+        { href: `${portfolioBase}/master`, label: th("nav_portfolio_master", locale) }
       ]
     },
     {

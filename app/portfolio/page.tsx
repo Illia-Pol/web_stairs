@@ -1,72 +1,128 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getSiteConfig } from "@/lib/content/loaders";
-import { t } from "@/lib/i18n";
-import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
+import type { Locale } from "@/lib/i18n";
+import { thph } from "@/lib/i18n-portfolio-hub";
+import { assetPath } from "@/lib/paths";
+import { absoluteUrl, breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
+const LOCALE: Locale = "ru";
+const tr = (key: Parameters<typeof thph>[0]) => thph(key, LOCALE);
 
 export const metadata = createPageMetadata({
   baseUrl: site.baseUrl,
   pathname: "/portfolio",
-  title: `${t("Портфолио")} | ${site.brand.name}`,
-  description: t("Хаб портфолио: каталог типов лестниц, примеры проектов и страница мастера.")
+  title: `${tr("meta_title")} | ${site.brand.name}`,
+  description: tr("meta_description"),
+  image: "/assets/portfolio/portfolio-1.jpg"
 });
 
 export default function PortfolioHubPage() {
   const breadcrumbs = [
-    { name: t("Главная"), href: "/" },
-    { name: t("Портфолио"), href: "/portfolio" }
+    { name: tr("breadcrumb_home"), href: "/" },
+    { name: tr("breadcrumb_current"), href: "/portfolio" }
   ];
+  const gallery = [
+    { image: "/assets/portfolio/portfolio-1.jpg", alt: tr("gallery_alt_1") },
+    { image: "/assets/portfolio/portfolio-2.jpg", alt: tr("gallery_alt_2") },
+    { image: "/assets/portfolio/portfolio-3.jpg", alt: tr("gallery_alt_3") },
+    { image: "/assets/portfolio/portfolio-4.jpg", alt: tr("gallery_alt_4") }
+  ];
+  const navCards = [
+    {
+      href: "/portfolio/types",
+      title: tr("card_types_title"),
+      text: tr("card_types_text"),
+      cta: tr("card_types_cta")
+    },
+    {
+      href: "/portfolio/projects",
+      title: tr("card_projects_title"),
+      text: tr("card_projects_text"),
+      cta: tr("card_projects_cta")
+    },
+    {
+      href: "/portfolio/master",
+      title: tr("card_master_title"),
+      text: tr("card_master_text"),
+      cta: tr("card_master_cta")
+    }
+  ];
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: tr("schema_name"),
+    description: tr("schema_description"),
+    url: absoluteUrl(site.baseUrl, "/portfolio"),
+    hasPart: gallery.map((item, index) => ({
+      "@type": "CreativeWork",
+      name: `${tr("schema_name")} ${index + 1}`,
+      image: absoluteUrl(site.baseUrl, item.image),
+      url: absoluteUrl(site.baseUrl, "/portfolio/projects")
+    }))
+  };
 
   return (
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
+      <JsonLd data={collectionSchema} />
 
-      <PageHeader
-        kicker={t("Портфолио")}
-        title={t("Работы, типы и мастер")}
-        description={t("Отсюда можно перейти в каталог типов лестниц, посмотреть реализованные проекты и познакомиться с мастером.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Портфолио"), href: "/portfolio" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {tr("breadcrumb_home")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{tr("breadcrumb_current")}</li>
+            </ol>
+          </nav>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Типы лестниц")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Каталог конфигураций: монолитные, парящие, консольные и другие решения.")}</p>
-              <Link href="/portfolio/types" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Открыть каталог")}
-              </Link>
-            </Card>
+          <div className="portfolio-page-head">
+            <p className="kicker">{tr("hero_kicker")}</p>
+            <h1>{tr("hero_title")}</h1>
+            <p>{tr("hero_description")}</p>
+          </div>
 
-            <Card className="bg-[#fffaf1]">
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Проекты")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Подборка реализованных объектов с фото, краткими итогами и фильтрами.")}</p>
-              <Link href="/portfolio/projects" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Смотреть проекты")}
-              </Link>
-            </Card>
+          <div className="portfolio-story">
+            <p>{tr("story_p_1")}</p>
+            <p>{tr("story_p_2")}</p>
+            <p>{tr("story_p_3")}</p>
+          </div>
 
-            <Card>
-              <h2 className="font-heading text-3xl uppercase text-coal">{t("Мастер")}</h2>
-              <p className="mt-2 text-sm text-slate-700">{t("Кто ведет проекты, как устроен контроль качества и подход к сложным объектам.")}</p>
-              <Link href="/portfolio/master" className="mt-4 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                {t("Перейти к мастеру")}
+          <div className="portfolio-photo-grid">
+            {gallery.map((item, index) => (
+              <Link key={item.image} href="/portfolio/projects" className={`project-card project-card-link ${index % 2 === 1 ? "delay-1" : ""}`.trim()}>
+                <div className="project-image">
+                  <img src={assetPath(item.image)} alt={item.alt} loading="lazy" />
+                </div>
               </Link>
-            </Card>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="section-accent master-projects-section">
+        <Container>
+          <div className="section-head">
+            <h2>{tr("next_title")}</h2>
+          </div>
+
+          <div className="master-side-grid md:grid-cols-3">
+            {navCards.map((card) => (
+              <Link key={card.href} href={card.href} className="master-link-card">
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+                <span>{card.cta}</span>
+              </Link>
+            ))}
           </div>
         </Container>
       </Section>

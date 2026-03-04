@@ -1,0 +1,38 @@
+{
+  "meta_title": "Concrete Staircase Projects",
+  "meta_description": "Completed concrete staircase projects with real photos, concise case summaries, and links to detailed materials.",
+
+  "hero_kicker": "Portfolio",
+  "hero_title": "Completed Projects",
+  "hero_description": "A selection of real objects: from practical Classic solutions to engineering-intensive Signature cases.",
+
+  "breadcrumb_home": "Home",
+  "breadcrumb_portfolio": "Portfolio",
+  "breadcrumb_current": "Projects",
+
+  "story_p_1": "This page shows real objects where decisions are tested in real context: narrow openings, double-height spaces, and projects with strong interior architecture requirements.",
+  "story_p_2": "We show not only the final look, but also engineering logic: why this geometry was selected, which nodes were critical, and what it delivered in reliability and daily use.",
+
+  "gallery_alt_1": "Concrete staircase project photo 1",
+  "gallery_alt_2": "Concrete staircase project photo 2",
+  "gallery_alt_3": "Concrete staircase project photo 3",
+  "gallery_alt_4": "Concrete staircase project photo 4",
+
+  "cards_title": "Project Cases",
+  "cards_note": "Concise overview for each project. Extended materials are published as they become available.",
+  "funnel_classic": "Classic",
+  "funnel_signature": "Signature",
+  "type_label": "Type",
+  "budget_label": "Budget estimate",
+  "year_label": "Year",
+  "card_cta": "Open case",
+
+  "details_title": "Technical Notes by Project",
+  "details_note": "What the task was, what decisions were applied, and what result was achieved on site.",
+
+  "final_note": "Need an estimate for your object? Send a plan or photos and we will match a similar case with a realistic implementation scenario.",
+  "final_cta": "Discuss project",
+
+  "schema_name": "Concrete Staircase Projects",
+  "schema_description": "Collection of completed concrete staircase projects with task, solution, and result summaries."
+}
