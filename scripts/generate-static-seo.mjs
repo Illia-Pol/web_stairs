@@ -145,6 +145,7 @@ function writeSeoFiles(targetDir) {
   }
   fs.writeFileSync(path.join(targetDir, "sitemap.xml"), sitemapIndexXml, "utf8");
   fs.writeFileSync(path.join(targetDir, "robots.txt"), robotsTxt, "utf8");
+  fs.writeFileSync(path.join(targetDir, ".nojekyll"), "", "utf8");
 }
 
 writeSeoFiles(PUBLIC_DIR);
