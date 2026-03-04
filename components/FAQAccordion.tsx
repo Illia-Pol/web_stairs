@@ -9,23 +9,31 @@ export function FAQAccordion({ items }: { items: FaqItem[] }) {
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   return (
-    <div className="space-y-3">
+    <div className="faq-accordion">
       {items.map((item) => {
         const isOpen = openId === item.id;
 
         return (
-          <div key={item.id} className="overflow-hidden rounded-[12px] border border-slate-300/80 bg-white/95">
+          <article key={item.id} className={`faq-row ${isOpen ? "is-open" : ""}`.trim()}>
             <button
               type="button"
               onClick={() => setOpenId(isOpen ? null : item.id)}
-              className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left"
+              className="faq-trigger"
+              aria-expanded={isOpen}
+              aria-controls={`faq-panel-${item.id}`}
             >
-              <span className="font-semibold text-graphite">{t(item.question)}</span>
-              <span className="text-xl text-bronze">{isOpen ? "−" : "+"}</span>
+              <span className="faq-question">{t(item.question)}</span>
+              <span className="faq-icon" aria-hidden="true">
+                {isOpen ? "−" : "+"}
+              </span>
             </button>
 
-            {isOpen ? <p className="border-t border-slate-200/80 px-4 py-4 text-sm text-slate-600">{t(item.answer)}</p> : null}
-          </div>
+            <div id={`faq-panel-${item.id}`} className="faq-panel" aria-hidden={!isOpen}>
+              <div className="faq-panel-inner">
+                <p>{t(item.answer)}</p>
+              </div>
+            </div>
+          </article>
         );
       })}
     </div>

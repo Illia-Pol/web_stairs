@@ -3,10 +3,7 @@ import Link from "next/link";
 
 import { assetPath } from "@/lib/paths";
 
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { Card } from "@/components/ui/Card";
 import { Container, Section } from "@/components/ui/Section";
 import { getKnowledgeArticles, getSiteConfig } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
@@ -33,38 +30,65 @@ export default function VlogArticlesPage() {
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
-      <PageHeader
-        kicker={t("Влог")}
-        title={t("Статьи")}
-        description={t("Публикуем практические материалы, которые помогают подготовить объект и избежать ошибок до начала работ.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Влог"), href: "/vlog" },
-              { label: t("Статьи"), href: "/vlog/articles" }
-            ]}
-          />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/vlog" className="hover:text-ink">
+                  {t("Влог")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{t("Статьи")}</li>
+            </ol>
+          </nav>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="portfolio-page-head">
+            <p className="kicker">{t("Влог / Статьи")}</p>
+            <h1>{t("Практические материалы по выбору и подготовке")}</h1>
+            <p>{t("Разбираем реальные вопросы: стоимость, подготовка проема, выбор формата работ и другие темы, которые важны до старта проекта.")}</p>
+          </div>
+
+          <div className="portfolio-story">
+            <p>{t("Материалы написаны простым языком и ориентированы на практику. Если тема совпадает с вашей задачей, можно сразу перейти к заявке и обсудить объект.")}</p>
+          </div>
+
+          <div className="portfolio-projects-grid">
             {articles.map((article) => (
-              <Card key={article.slug} className="overflow-hidden p-0">
-                <div className="relative aspect-[16/10]">
+              <article key={article.slug} className="portfolio-project-card">
+                <Link href={`/vlog/articles/${article.slug}`} className="portfolio-project-media relative">
                   <Image src={assetPath(article.coverImage)} alt={t(article.title)} fill className="object-cover" />
+                </Link>
+                <div className="portfolio-project-body">
+                  <div className="portfolio-project-meta">
+                    <span>{article.publishedAt}</span>
+                    <span>•</span>
+                    <span>{t("Статья")}</span>
+                  </div>
+                  <h3>{t(article.title)}</h3>
+                  <p>{t(article.excerpt)}</p>
+                  <strong>{t("Читать статью")}</strong>
                 </div>
-                <div className="p-4">
-                  <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{article.publishedAt}</p>
-                  <h2 className="mt-2 font-heading text-2xl uppercase text-coal">{t(article.title)}</h2>
-                  <p className="mt-2 text-sm text-slate-700">{t(article.excerpt)}</p>
-                  <Link href={`/vlog/articles/${article.slug}`} className="mt-3 inline-block text-sm font-semibold text-coal underline-offset-4 hover:underline">
-                    {t("Читать статью")}
-                  </Link>
-                </div>
-              </Card>
+              </article>
             ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="section-accent master-projects-section">
+        <Container>
+          <div className="portfolio-bottom-cta">
+            <p>{t("Если хотите применить рекомендации к вашему объекту, отправьте фото или план проема и получите комментарий по делу.")}</p>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Перейти к заявке")}
+            </Link>
           </div>
         </Container>
       </Section>

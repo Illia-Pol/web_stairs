@@ -1,10 +1,11 @@
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+
 import { JsonLd } from "@/components/JsonLd";
-import { PageHeader } from "@/components/PageHeader";
-import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { Container, Section } from "@/components/ui/Section";
-import { getCases, getSiteConfig } from "@/lib/content/loaders";
+import { getCases, getSiteConfig, getTypes } from "@/lib/content/loaders";
 import { t } from "@/lib/i18n";
+import { assetPath } from "@/lib/paths";
 import { breadcrumbsJsonLd, createPageMetadata } from "@/lib/seo";
 
 const site = getSiteConfig();
@@ -18,6 +19,8 @@ export const metadata = createPageMetadata({
 
 export default function VlogProjectsPage() {
   const items = getCases();
+  const types = getTypes();
+  const typeTitleMap = new Map(types.map((item) => [item.slug, t(item.title)]));
   const breadcrumbs = [
     { name: t("Главная"), href: "/" },
     { name: t("Влог"), href: "/vlog" },
@@ -28,22 +31,72 @@ export default function VlogProjectsPage() {
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
 
-      <PageHeader
-        kicker={t("Влог")}
-        title={t("Проекты")}
-        description={t("Реализованные лестницы: кейсы по сценариям Classic и Signature, с акцентом на задачу и результат.")}
-      />
-
-      <Section>
+      <Section className="section-dark">
         <Container>
-          <Breadcrumbs
-            items={[
-              { label: t("Главная"), href: "/" },
-              { label: t("Влог"), href: "/vlog" },
-              { label: t("Проекты"), href: "/vlog/projects" }
-            ]}
-          />
-          <PortfolioGrid items={items} heading={t("Проекты")} />
+          <nav aria-label="Breadcrumbs" className="portfolio-breadcrumbs text-sm text-ink-soft">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-ink">
+                  {t("Главная")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li>
+                <Link href="/vlog" className="hover:text-ink">
+                  {t("Влог")}
+                </Link>
+              </li>
+              <li>/</li>
+              <li className="text-ink">{t("Проекты")}</li>
+            </ol>
+          </nav>
+
+          <div className="portfolio-page-head">
+            <p className="kicker">{t("Влог / Проекты")}</p>
+            <h1>{t("Реализованные объекты")}</h1>
+            <p>{t("Подборка проектов с кратким пояснением исходной задачи, выбранного решения и результата по объекту.")}</p>
+          </div>
+
+          <div className="portfolio-story">
+            <p>{t("Каждый кейс показывает не только визуал, но и практический контекст: где был основной риск, какое решение приняли и почему именно оно оказалось рабочим.")}</p>
+          </div>
+
+          <div className="portfolio-projects-grid">
+            {items.map((item) => (
+              <article key={item.slug} className="portfolio-project-card">
+                <Link href={`/portfolio/projects#${item.slug}`} className="portfolio-project-media">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={assetPath(item.coverImage)} alt={t(item.title)} loading="lazy" />
+                </Link>
+                <div className="portfolio-project-body">
+                  <div className="portfolio-project-meta">
+                    <span>{t(item.city)}</span>
+                    <span>•</span>
+                    <span>{item.funnel === "signature" ? "Signature" : "Classic"}</span>
+                  </div>
+                  <h3>{t(item.title)}</h3>
+                  <p>{t(item.summary)}</p>
+                  <ul>
+                    <li>{t("Тип")}: {typeTitleMap.get(item.type) ?? item.type}</li>
+                    <li>{t("Год")}: {item.year}</li>
+                    <li>{t("Ориентир")}: {item.priceBand}</li>
+                  </ul>
+                  <strong>{t("Открыть подробный кейс")}</strong>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="section-accent master-projects-section">
+        <Container>
+          <div className="portfolio-bottom-cta">
+            <p>{t("Если хотите разобрать ваш объект в похожей логике, отправьте план или фото проема через форму заявки.")}</p>
+            <Link href="/contacts" className="btn btn-small">
+              {t("Оставить заявку")}
+            </Link>
+          </div>
         </Container>
       </Section>
     </>
