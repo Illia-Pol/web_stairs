@@ -6,7 +6,14 @@ import { cn } from "@/lib/cn";
 import { th } from "@/lib/i18n-header";
 import { withBasePath } from "@/lib/paths";
 import type { SiteConfig } from "@/lib/content/schemas";
-import { CURRENCY_CODES, type CurrencyCode, DEFAULT_CURRENCY, isCurrencyCode } from "@/lib/constants/currency";
+import {
+  CURRENCY_CHANGE_EVENT,
+  CURRENCY_CODES,
+  CURRENCY_STORAGE_KEY,
+  type CurrencyCode,
+  DEFAULT_CURRENCY,
+  isCurrencyCode
+} from "@/lib/constants/currency";
 
 type Locale = "ru" | "en";
 
@@ -16,8 +23,6 @@ type LocaleSwitcherProps = {
   className?: string;
   compact?: boolean;
 };
-
-const CURRENCY_STORAGE_KEY = "site-preferred-currency";
 
 function isExternal(url: string): boolean {
   return /^https?:\/\//.test(url);
@@ -83,6 +88,7 @@ export function LocaleSwitcher({ site, currentLocale, className, compact = false
     setCurrency(nextCurrency);
     try {
       window.localStorage.setItem(CURRENCY_STORAGE_KEY, nextCurrency);
+      window.dispatchEvent(new CustomEvent(CURRENCY_CHANGE_EVENT, { detail: { currency: nextCurrency } }));
     } catch {
       // no-op
     }

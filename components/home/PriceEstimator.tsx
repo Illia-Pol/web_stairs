@@ -3,7 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-import { formatCurrency } from "@/lib/constants/currency";
+import {
+  convertFromByn,
+  CURRENCY_CHANGE_EVENT,
+  CURRENCY_STORAGE_KEY,
+  formatCurrency,
+  type CurrencyCode,
+  DEFAULT_CURRENCY,
+  isCurrencyCode
+} from "@/lib/constants/currency";
 import type { Locale } from "@/lib/i18n";
 import type { HomePricesLocaleKey } from "@/lib/i18n-home-prices";
 import { thpr } from "@/lib/i18n-home-prices";
@@ -136,7 +144,7 @@ export function PriceEstimator({ locale, reveal = true }: { locale: Locale; reve
   const [bottomType, setBottomType] = useState<BottomType | null>(null);
   const [heightCm, setHeightCm] = useState("");
   const [result, setResult] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [currency, setCurrency] = useState<CurrencyCode>(DEFAULT_CURRENCY);
   const [isStairMenuOpen, setIsStairMenuOpen] = useState(false);
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false);
 
@@ -146,6 +154,47 @@ export function PriceEstimator({ locale, reveal = true }: { locale: Locale; reve
 
   const selectedStair = stairType ? STAIR_OPTIONS.find((option) => option.value === stairType) ?? null : null;
   const selectedBottom = bottomType ? BOTTOM_OPTIONS.find((option) => option.value === bottomType) ?? null : null;
+
+  useEffect(() => {
+    const readCurrency = () => {
+      try {
+        const saved = window.localStorage.getItem(CURRENCY_STORAGE_KEY);
+        if (saved && isCurrencyCode(saved)) {
+          setCurrency(saved);
+          return;
+        }
+      } catch {
+        // no-op
+      }
+      setCurrency(DEFAULT_CURRENCY);
+    };
+
+    const onCurrencyChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ currency?: string }>).detail;
+      if (detail?.currency && isCurrencyCode(detail.currency)) {
+        setCurrency(detail.currency);
+        return;
+      }
+      readCurrency();
+    };
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== CURRENCY_STORAGE_KEY) return;
+      if (event.newValue && isCurrencyCode(event.newValue)) {
+        setCurrency(event.newValue);
+        return;
+      }
+      setCurrency(DEFAULT_CURRENCY);
+    };
+
+    readCurrency();
+    window.addEventListener(CURRENCY_CHANGE_EVENT, onCurrencyChange);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(CURRENCY_CHANGE_EVENT, onCurrencyChange);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
 
   useEffect(() => {
     const onClickOutside = (event: MouseEvent) => {
@@ -164,41 +213,31 @@ export function PriceEstimator({ locale, reveal = true }: { locale: Locale; reve
 
   useEffect(() => {
     if (!selectedStair || !selectedBottom) {
-      setIsLoading(false);
       setResult(null);
       return;
     }
 
     const height = parseHeightCm(heightCm);
     if (!height) {
-      setIsLoading(false);
       setResult(null);
       return;
     }
 
     if (height <= MIN_HEIGHT_CM) {
-      setIsLoading(false);
       setResult(thpr("calc_result_too_low", undefined, locale));
       return;
     }
 
     if (height > EASTER_EGG_HEIGHT_CM) {
-      setIsLoading(false);
       setResult(thpr("calc_result_too_high", undefined, locale));
       return;
     }
 
-    setIsLoading(true);
-
-    const timer = window.setTimeout(() => {
-      const rawTotal = height * selectedBottom.ratePerCm * selectedStair.multiplier;
-      const total = Math.max(MIN_PRICE_BYN, Math.round(rawTotal));
-      setResult(formatCurrency(total, "BYN"));
-      setIsLoading(false);
-    }, 760);
-
-    return () => window.clearTimeout(timer);
-  }, [heightCm, locale, selectedBottom, selectedStair]);
+    const rawTotal = height * selectedBottom.ratePerCm * selectedStair.multiplier;
+    const totalByn = Math.max(MIN_PRICE_BYN, Math.round(rawTotal));
+    const total = convertFromByn(totalByn, currency);
+    setResult(formatCurrency(total, currency));
+  }, [currency, heightCm, locale, selectedBottom, selectedStair]);
 
   return (
     <article className={`calculator-card${reveal ? " reveal-up" : ""}`}>
@@ -323,11 +362,9 @@ export function PriceEstimator({ locale, reveal = true }: { locale: Locale; reve
         </label>
       </div>
 
-      <div className={`calc-result calc-result-live ${isLoading ? "is-loading" : ""}`}>
+      <div className="calc-result calc-result-live">
         <p className="calc-result-title">{tp("calc_result_title")}</p>
-        {isLoading ? (
-          <div className="calc-result-skeleton" aria-hidden="true" />
-        ) : result ? (
+        {result ? (
           result === tp("calc_result_too_high") || result === tp("calc_result_too_low") ? (
             <p className="calc-result-error">{result}</p>
           ) : (
