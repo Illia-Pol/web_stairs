@@ -40,6 +40,9 @@ function initLeadForm() {
 
   const MAX_PHOTO_COUNT = 8;
   const MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024;
+  const MAX_TOTAL_PHOTO_BYTES = 4 * 1024 * 1024;
+  const MAX_PHOTO_DIMENSION = 1600;
+  const PHOTO_QUALITY = 0.82;
   let selectedPhotos = [];
   let previewUrls = [];
 
@@ -49,6 +52,7 @@ function initLeadForm() {
     photoInvalidType: form.dataset.msgPhotoInvalidType || "Файл \"{{NAME}}\" пропущен: нужен формат изображения.",
     photoTooLarge: form.dataset.msgPhotoTooLarge || "Файл \"{{NAME}}\" пропущен: размер больше 10 МБ.",
     photoMaxCount: form.dataset.msgPhotoMaxCount || "Можно добавить не более {{MAX}} фото.",
+    photoTotalTooLarge: form.dataset.msgPhotoTotalTooLarge || "Суммарный размер фото слишком большой. Удалите часть фото или выберите изображения меньшего размера.",
     nameRequired: form.dataset.msgNameRequired || "Введите имя",
     phoneRequired: form.dataset.msgPhoneRequired || "Введите телефон",
     phoneInvalid: form.dataset.msgPhoneInvalid || "Введите корректный номер",
@@ -224,34 +228,101 @@ function initLeadForm() {
     });
   };
 
-  const addPhotos = (incomingFiles) => {
+  const getTotalPhotoSize = () => selectedPhotos.reduce((acc, file) => acc + (file?.size || 0), 0);
+
+  const readFileAsDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("FILE_READ_ERROR"));
+      reader.readAsDataURL(file);
+    });
+
+  const loadImage = (dataUrl) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error("IMAGE_LOAD_ERROR"));
+      img.src = dataUrl;
+    });
+
+  const compressPhoto = async (file) => {
+    if (!file?.type?.startsWith("image/")) return file;
+
+    const dataUrl = await readFileAsDataUrl(file);
+    const img = await loadImage(dataUrl);
+
+    const width = img.naturalWidth || img.width;
+    const height = img.naturalHeight || img.height;
+    if (!width || !height) return file;
+
+    const ratio = Math.min(1, MAX_PHOTO_DIMENSION / Math.max(width, height));
+    const targetWidth = Math.max(1, Math.round(width * ratio));
+    const targetHeight = Math.max(1, Math.round(height * ratio));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+    const blob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", PHOTO_QUALITY);
+    });
+
+    if (!blob) return file;
+
+    // Если сжатие не дало выгоды, оставляем исходник.
+    if (blob.size >= file.size * 0.98) return file;
+
+    const safeName = file.name.replace(/\.[^.]+$/, "") || "photo";
+    return new File([blob], `${safeName}.jpg`, {
+      type: "image/jpeg",
+      lastModified: Date.now()
+    });
+  };
+
+  const addPhotos = async (incomingFiles) => {
     if (!incomingFiles || !incomingFiles.length) return;
 
     const issues = [];
 
-    Array.from(incomingFiles).forEach((file) => {
+    for (const file of Array.from(incomingFiles)) {
       if (!file.type || !file.type.startsWith("image/")) {
         issues.push(applyTokens(msg.photoInvalidType, { NAME: file.name }));
-        return;
+        continue;
       }
 
       if (file.size > MAX_PHOTO_SIZE_BYTES) {
         issues.push(applyTokens(msg.photoTooLarge, { NAME: file.name }));
-        return;
+        continue;
       }
 
       if (selectedPhotos.length >= MAX_PHOTO_COUNT) {
         issues.push(applyTokens(msg.photoMaxCount, { MAX: MAX_PHOTO_COUNT }));
-        return;
+        continue;
+      }
+
+      let prepared = file;
+      try {
+        prepared = await compressPhoto(file);
+      } catch {
+        prepared = file;
       }
 
       const duplicate = selectedPhotos.some(
-        (item) => item.name === file.name && item.size === file.size && item.lastModified === file.lastModified
+        (item) => item.name === prepared.name && item.size === prepared.size && item.lastModified === prepared.lastModified
       );
-      if (duplicate) return;
+      if (duplicate) continue;
 
-      selectedPhotos.push(file);
-    });
+      if (getTotalPhotoSize() + prepared.size > MAX_TOTAL_PHOTO_BYTES) {
+        issues.push(msg.photoTotalTooLarge);
+        continue;
+      }
+
+      selectedPhotos.push(prepared);
+    }
 
     renderPhotoPreviews();
 
@@ -273,8 +344,8 @@ function initLeadForm() {
     photoAddBtn.addEventListener("click", () => photoInput.click());
   }
   if (photoInput) {
-    photoInput.addEventListener("change", (event) => {
-      addPhotos(event.target.files);
+    photoInput.addEventListener("change", async (event) => {
+      await addPhotos(event.target.files);
       photoInput.value = "";
     });
   }

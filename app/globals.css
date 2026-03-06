@@ -1986,6 +1986,9 @@ select:focus {
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .photo-input {
@@ -2023,8 +2026,14 @@ select:focus {
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 0.1rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
 
 .photo-preview-tile {
@@ -2032,6 +2041,7 @@ select:focus {
   border: 1px solid var(--stroke);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.03);
+  scroll-snap-align: start;
 }
 
 .photo-preview-tile img {
