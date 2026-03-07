@@ -1987,8 +1987,7 @@ select:focus {
   align-items: flex-start;
   gap: 0.55rem;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
 }
 
 .photo-input {
@@ -2013,11 +2012,12 @@ select:focus {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex: 0 0 auto;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .photo-add-tile:hover {
-  transform: translateY(-1px);
+  transform: scale(1.02);
   border-color: var(--accent);
   background: rgba(199, 164, 106, 0.08);
 }
@@ -2026,18 +2026,22 @@ select:focus {
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  width: 0;
   min-width: 0;
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 0.1rem;
+  padding: 0.08rem 0 0.18rem;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
 }
 
 .photo-preview-tile {
   position: relative;
+  flex: 0 0 auto;
   border: 1px solid var(--stroke);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.03);
