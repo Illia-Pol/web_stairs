@@ -170,7 +170,7 @@ export function Header({ site, currentLocale }: { site: SiteConfig; currentLocal
                   <span className="text-[10px] text-ink-soft/80">▾</span>
                 </div>
 
-                <div className="pointer-events-none absolute left-0 top-full z-20 min-w-[220px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                <div className="pointer-events-none absolute left-0 top-full z-20 min-w-[220px] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
                   <div className="rounded-xl border border-white/10 bg-panel/95 p-2 shadow-card">
                     <div role="menu" aria-label={item.label}>
                     {item.children.map((child) => (

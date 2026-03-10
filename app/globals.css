@@ -2097,7 +2097,7 @@ select:focus {
 
 .lead-submit-status {
   margin-top: 0.55rem;
-  min-height: 1.25rem;
+  min-height: 1.5rem;
   font-size: 0.82rem;
   color: rgba(244, 242, 238, 0.84);
   display: grid;
@@ -2116,6 +2116,49 @@ select:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.lead-alert {
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.8rem 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.lead-alert-success {
+  border-color: rgba(125, 211, 159, 0.38);
+  background: linear-gradient(135deg, rgba(125, 211, 159, 0.16), rgba(125, 211, 159, 0.08));
+}
+
+.lead-alert-error {
+  border-color: rgba(240, 193, 139, 0.42);
+  background: linear-gradient(135deg, rgba(240, 193, 139, 0.16), rgba(240, 193, 139, 0.07));
+}
+
+.lead-alert-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.lead-alert-text {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.lead-alert-countdown {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(244, 242, 238, 0.86);
+}
+
+.lead-alert-countdown.is-cancelled {
+  color: #7dd39f;
 }
 
 .form-note {

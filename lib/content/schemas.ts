@@ -11,7 +11,7 @@ export const SiteConfigSchema = z.object({
   }),
   contacts: z.object({
     phoneMain: z.string().default("+375296512022"),
-    email: z.string().default("hello@betostep.by"),
+    email: z.string().default("monolithic.stair@gmail.com"),
     address: z.string().default("Минск, Беларусь"),
     workingHours: z.string().default("Пн-Сб 09:00-20:00")
   }),

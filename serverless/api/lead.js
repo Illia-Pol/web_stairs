@@ -5,6 +5,7 @@ const { z } = require("zod");
 const RATE_WINDOW_MS = 60_000;
 const RATE_LIMIT = 10;
 const TELEGRAM_TIMEOUT_MS = 7_000;
+const TELEGRAM_CAPTION_LIMIT = 1024;
 const MAX_FILES = 8;
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 
@@ -198,6 +199,13 @@ function buildMessage(data) {
   ].join("\n");
 }
 
+function toTelegramCaption(text) {
+  const normalized = normalizeText(text);
+  if (!normalized) return "";
+  if (normalized.length <= TELEGRAM_CAPTION_LIMIT) return normalized;
+  return `${normalized.slice(0, TELEGRAM_CAPTION_LIMIT - 1)}…`;
+}
+
 async function sendTelegramMessage({ botToken, chatId, text }) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), TELEGRAM_TIMEOUT_MS);
@@ -242,7 +250,7 @@ async function sendTelegramMessage({ botToken, chatId, text }) {
   }
 }
 
-async function sendTelegramPhotos({ botToken, chatId, files }) {
+async function sendTelegramPhotos({ botToken, chatId, files, caption = "" }) {
   if (!Array.isArray(files) || files.length === 0) {
     return { ok: true };
   }
@@ -260,6 +268,9 @@ async function sendTelegramPhotos({ botToken, chatId, files }) {
     const formData = new FormData();
     formData.append("chat_id", chatId);
     formData.append("photo", new Blob([content], { type: mimeType }), filename);
+    if (caption) {
+      formData.append("caption", toTelegramCaption(caption));
+    }
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TELEGRAM_TIMEOUT_MS);
@@ -321,6 +332,10 @@ async function sendTelegramPhotos({ botToken, chatId, files }) {
 
   if (media.length === 0) {
     return { ok: true };
+  }
+
+  if (caption && media.length > 0) {
+    media[0].caption = toTelegramCaption(caption);
   }
 
   formData.append("chat_id", chatId);
@@ -420,24 +435,30 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ ok: false, error: "TELEGRAM_ENV_MISSING" });
   }
 
-  const telegramResult = await sendTelegramMessage({
-    botToken,
-    chatId,
-    text: buildMessage(payload)
-  });
+  const leadText = buildMessage(payload);
+  const hasFiles = Array.isArray(uploadedFiles) && uploadedFiles.length > 0;
 
-  if (!telegramResult.ok) {
-    return res.status(502).json({ ok: false, error: telegramResult.error });
-  }
+  if (hasFiles) {
+    const mediaResult = await sendTelegramPhotos({
+      botToken,
+      chatId,
+      files: uploadedFiles,
+      caption: leadText
+    });
 
-  const mediaResult = await sendTelegramPhotos({
-    botToken,
-    chatId,
-    files: uploadedFiles
-  });
+    if (!mediaResult.ok) {
+      return res.status(502).json({ ok: false, error: mediaResult.error });
+    }
+  } else {
+    const telegramResult = await sendTelegramMessage({
+      botToken,
+      chatId,
+      text: leadText
+    });
 
-  if (!mediaResult.ok) {
-    return res.status(502).json({ ok: false, error: mediaResult.error });
+    if (!telegramResult.ok) {
+      return res.status(502).json({ ok: false, error: telegramResult.error });
+    }
   }
 
   return res.status(200).json({ ok: true });

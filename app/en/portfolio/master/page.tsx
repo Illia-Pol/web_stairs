@@ -140,6 +140,74 @@ export default function PortfolioMasterPageEn() {
               </div>
             </aside>
           </div>
+
+          <div className="info-grid mt-6">
+            <article className="guarantee-card">
+              <h2>How direct project supervision works</h2>
+              <p>
+                Every staircase project has critical points where small mistakes create expensive rework. That is why supervision is structured by
+                milestones, node checks, and clear acceptance criteria from day one.
+              </p>
+              <ul className="guarantee-list">
+                <li>Input data and opening geometry verification before start</li>
+                <li>Control of reinforcement, formwork, and critical structural nodes</li>
+                <li>Transparent stage-by-stage communication with the client</li>
+                <li>Handover of concrete structure ready for finishing</li>
+              </ul>
+            </article>
+            <article className="guarantee-card">
+              <h2>When direct master involvement matters most</h2>
+              <p>
+                The more complex the object, the more important early engineering decisions become. This is especially true for floating and cantilever
+                staircases, non-standard openings, and high-end architectural requirements.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link href="/prices/tariffs/signature" className="btn btn-small">
+                  Signature for complex scope
+                </Link>
+                <Link href="/questions/problems/slozhnye-uzly" className="btn btn-ghost btn-small">
+                  Complex node breakdown
+                </Link>
+              </div>
+            </article>
+          </div>
+
+          <article className="guarantee-card mt-6">
+            <h2>FAQ about the master and project supervision</h2>
+            <div className="grid gap-4 md:grid-cols-2 mt-4">
+              {[
+                {
+                  q: "Who is responsible for final staircase geometry?",
+                  a: "The project master is responsible from first technical review to final handover of the concrete structure."
+                },
+                {
+                  q: "Can you join if construction is already in progress?",
+                  a: "Yes, but earlier involvement is always better to avoid costly redesign and timeline shifts."
+                },
+                {
+                  q: "What if project inputs change during execution?",
+                  a: "Changes are documented, evaluated for budget and timeline impact, and then approved as controlled updates."
+                },
+                {
+                  q: "Is direct supervision only for Signature projects?",
+                  a: "No. Both Classic and Signature require supervision, but the depth of engineering control differs."
+                },
+                {
+                  q: "Can we discuss the project remotely first?",
+                  a: "Yes. Initial analysis is done from plans/photos, then key decisions are confirmed on verified object data."
+                },
+                {
+                  q: "Where can I see built examples?",
+                  a: "Open Projects and Stair Types pages to compare real object constraints and execution quality."
+                }
+              ].map((faq) => (
+                <article key={faq.q} className="info-card">
+                  <h3>{faq.q}</h3>
+                  <p>{faq.a}</p>
+                </article>
+              ))}
+            </div>
+          </article>
         </Container>
       </Section>
     </>

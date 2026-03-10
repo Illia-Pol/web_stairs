@@ -34,9 +34,11 @@ function initLeadForm() {
   const honeypotField = document.getElementById("honeypot");
 
   const REQUEST_TIMEOUT_MS = 7000;
-  const REDIRECT_DELAY_MS = 1000;
+  const AUTO_REDIRECT_SECONDS = 7;
+  const AUTO_REDIRECT_MS = AUTO_REDIRECT_SECONDS * 1000;
   const defaultSubmitLabel = form.dataset.msgSubmitDefault || (submitButton ? submitButton.textContent.trim() : "Отправить заявку");
   const sendingSubmitLabel = form.dataset.msgSubmitSending || "Отправка...";
+  const isEn = document.documentElement.lang === "en";
 
   const MAX_PHOTO_COUNT = 8;
   const MAX_PHOTO_SIZE_BYTES = 10 * 1024 * 1024;
@@ -68,7 +70,13 @@ function initLeadForm() {
     submitError: form.dataset.msgSubmitError || "Не удалось отправить автоматически. Сейчас откроется Telegram, чтобы отправить заявку вручную.",
     submitFallbackBtn: form.dataset.msgSubmitFallbackBtn || "Отправить в Telegram сейчас",
     submitCopyBtn: form.dataset.msgSubmitCopyBtn || "Скопировать текст заявки",
-    submitCopySuccess: form.dataset.msgSubmitCopySuccess || "Текст заявки скопирован"
+    submitCopySuccess: form.dataset.msgSubmitCopySuccess || "Текст заявки скопирован",
+    submitSuccessTitle: form.dataset.msgSubmitSuccessTitle || (isEn ? "Request sent" : "Заявка отправлена"),
+    submitErrorTitle: form.dataset.msgSubmitErrorTitle || (isEn ? "Auto-send failed" : "Автоотправка не удалась"),
+    submitStayBtn: form.dataset.msgSubmitStayBtn || (isEn ? "Stay on site" : "Остаться на сайте"),
+    submitCountdownPrefix: form.dataset.msgSubmitCountdownPrefix || (isEn ? "Redirect to Telegram in" : "Переход в Telegram через"),
+    submitCountdownSuffix: form.dataset.msgSubmitCountdownSuffix || (isEn ? "sec" : "сек."),
+    submitCountdownCancelled: form.dataset.msgSubmitCountdownCancelled || (isEn ? "Auto-redirect cancelled." : "Автопереход отменен.")
   };
 
   const endpoint = form.dataset.leadEndpoint || "";
@@ -76,6 +84,8 @@ function initLeadForm() {
   const fallbackMode = form.dataset.telegramFallbackMode || "auto_redirect";
   const fallbackUsername = form.dataset.telegramFallbackUsername || "";
   const fallbackUrl = form.dataset.telegramFallbackUrl || "https://t.me";
+  let redirectTimerId = null;
+  let countdownTimerId = null;
 
   const applyTokens = (template, tokens) => {
     if (!tokens) return template;
@@ -107,22 +117,70 @@ function initLeadForm() {
     return `${base}${joinSymbol}text=${encodedText}`;
   };
 
+  const clearRedirectTimers = () => {
+    if (redirectTimerId) {
+      window.clearTimeout(redirectTimerId);
+      redirectTimerId = null;
+    }
+    if (countdownTimerId) {
+      window.clearInterval(countdownTimerId);
+      countdownTimerId = null;
+    }
+  };
+
   const setSubmitState = ({ type = "idle", message = "", fallbackLink = "", fallbackText = "" } = {}) => {
     if (!submitStatus) return;
+    clearRedirectTimers();
     submitStatus.textContent = "";
     submitStatus.classList.remove("is-error", "is-success");
     submitStatus.innerHTML = "";
     if (!message) return;
 
     submitStatus.classList.add(type === "error" ? "is-error" : type === "success" ? "is-success" : "");
-    const textNode = document.createElement("p");
-    textNode.textContent = message;
-    submitStatus.appendChild(textNode);
+    const alert = document.createElement("div");
+    alert.className = `lead-alert lead-alert-${type === "error" ? "error" : type === "success" ? "success" : "info"}`;
+    const title = document.createElement("p");
+    title.className = "lead-alert-title";
+    title.textContent = type === "error" ? msg.submitErrorTitle : msg.submitSuccessTitle;
+    alert.appendChild(title);
 
-    if (type !== "error" || !fallbackLink) return;
+    const textNode = document.createElement("p");
+    textNode.className = "lead-alert-text";
+    textNode.textContent = message;
+    alert.appendChild(textNode);
+
+    if (type !== "error" || !fallbackLink) {
+      submitStatus.appendChild(alert);
+      return;
+    }
 
     const actions = document.createElement("div");
     actions.className = "lead-fallback-actions";
+    let countdownEl = null;
+
+    if (fallbackMode === "auto_redirect") {
+      let secondsLeft = AUTO_REDIRECT_SECONDS;
+      countdownEl = document.createElement("p");
+      countdownEl.className = "lead-alert-countdown";
+      countdownEl.textContent = `${msg.submitCountdownPrefix} ${secondsLeft} ${msg.submitCountdownSuffix}`;
+      alert.appendChild(countdownEl);
+
+      countdownTimerId = window.setInterval(() => {
+        secondsLeft -= 1;
+        if (secondsLeft <= 0) {
+          window.clearInterval(countdownTimerId);
+          countdownTimerId = null;
+          return;
+        }
+        if (countdownEl) {
+          countdownEl.textContent = `${msg.submitCountdownPrefix} ${secondsLeft} ${msg.submitCountdownSuffix}`;
+        }
+      }, 1000);
+
+      redirectTimerId = window.setTimeout(() => {
+        window.location.href = fallbackLink;
+      }, AUTO_REDIRECT_MS);
+    }
 
     const tgBtn = document.createElement("a");
     tgBtn.href = fallbackLink;
@@ -146,7 +204,24 @@ function initLeadForm() {
       }
     });
     actions.appendChild(copyBtn);
-    submitStatus.appendChild(actions);
+
+    if (fallbackMode === "auto_redirect") {
+      const stayBtn = document.createElement("button");
+      stayBtn.type = "button";
+      stayBtn.className = "btn btn-ghost btn-small";
+      stayBtn.textContent = msg.submitStayBtn;
+      stayBtn.addEventListener("click", () => {
+        clearRedirectTimers();
+        if (countdownEl) {
+          countdownEl.textContent = msg.submitCountdownCancelled;
+          countdownEl.classList.add("is-cancelled");
+        }
+      });
+      actions.appendChild(stayBtn);
+    }
+
+    alert.appendChild(actions);
+    submitStatus.appendChild(alert);
   };
 
   const setSubmitting = (loading) => {
@@ -434,18 +509,13 @@ function initLeadForm() {
     const messenger = messengerField ? messengerField.value : "-";
     const message = document.getElementById("message").value.trim();
     const honeypot = honeypotField ? honeypotField.value.trim() : "";
-    const photoSummary = selectedPhotos.length
-      ? selectedPhotos.map((file) => file.name).join(", ")
-      : "-";
-
     const text = [
       msg.leadTitle,
       `${msg.leadName}: ${name}`,
       `${msg.leadPhone}: ${phone}`,
       `${msg.leadRegion}: ${region}`,
       `${msg.leadMessenger}: ${messenger}`,
-      `${msg.leadComment}: ${message || "-"}`,
-      `${msg.leadFiles}: ${photoSummary}`
+      `${msg.leadComment}: ${message || "-"}`
     ].join("\n");
 
     const telegramLink = buildTelegramFallbackLink(text);
@@ -455,8 +525,7 @@ function initLeadForm() {
       city: region,
       message: [
         message || "-",
-        `${msg.leadMessenger}: ${messenger}`,
-        `${msg.leadFiles}: ${photoSummary}`
+        `${msg.leadMessenger}: ${messenger}`
       ].join("\n"),
       pageUrl: window.location.href,
       source: formSource,
@@ -513,11 +582,6 @@ function initLeadForm() {
         fallbackText: text
       });
 
-      if (fallbackMode === "auto_redirect") {
-        window.setTimeout(() => {
-          window.location.href = telegramLink;
-        }, REDIRECT_DELAY_MS);
-      }
     } finally {
       clearTimeout(timeoutId);
       setSubmitting(false);

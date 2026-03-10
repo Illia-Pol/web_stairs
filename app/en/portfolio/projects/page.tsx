@@ -32,7 +32,6 @@ export default function PortfolioProjectsPageEn() {
     { name: tr("breadcrumb_portfolio"), href: "/en/portfolio" },
     { name: tr("breadcrumb_current"), href: "/en/portfolio/projects" }
   ];
-  const featured = cases.slice(0, 4);
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -86,32 +85,10 @@ export default function PortfolioProjectsPageEn() {
             <p>{tr("story_p_2")}</p>
           </div>
 
-          <div className="portfolio-photo-grid">
-            {featured.map((item, index) => (
-              <a key={item.slug} href={`#${item.slug}`} className={`project-card project-card-link ${index % 2 === 1 ? "delay-1" : ""}`.trim()}>
-                <div className="project-image">
-                  <img
-                    src={assetPath(item.coverImage)}
-                    alt={tr(`gallery_alt_${index + 1}` as Parameters<typeof thpp>[0])}
-                    width={1536}
-                    height={1024}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-
-          <div className="section-head mt-8">
-            <h2>{tr("cards_title")}</h2>
-            <p className="section-note">{tr("cards_note")}</p>
-          </div>
-
           <div className="portfolio-projects-grid">
             {cases.map((item) => (
               <article key={item.slug} id={item.slug} className="portfolio-project-card scroll-mt-28">
-                <a href={`#${item.slug}`} className="portfolio-project-media">
+                <div className="portfolio-project-media">
                   <img
                     src={assetPath(item.coverImage)}
                     alt={t(item.title, undefined, LOCALE)}
@@ -120,7 +97,7 @@ export default function PortfolioProjectsPageEn() {
                     loading="lazy"
                     decoding="async"
                   />
-                </a>
+                </div>
                 <div className="portfolio-project-body">
                   <div className="portfolio-project-meta">
                     <span>{t(item.city, undefined, LOCALE)}</span>
@@ -131,10 +108,8 @@ export default function PortfolioProjectsPageEn() {
                   <p>{t(item.summary, undefined, LOCALE)}</p>
                   <ul>
                     <li>{tr("type_label")}: {typeTitleMap.get(item.type) ?? item.type}</li>
-                    <li>{tr("budget_label")}: {item.priceBand}</li>
                     <li>{tr("year_label")}: {item.year}</li>
                   </ul>
-                  <strong>{tr("card_cta")}</strong>
                 </div>
               </article>
             ))}

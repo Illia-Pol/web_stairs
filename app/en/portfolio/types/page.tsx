@@ -184,6 +184,74 @@ export default function TypesPageEn() {
               </Link>
             ))}
           </div>
+
+          <div className="info-grid mt-6">
+            <article className="guarantee-card">
+              <h2>How to choose the right stair type</h2>
+              <p>
+                The correct choice starts with real opening geometry and daily usage scenario, not with a visual reference alone. A type that looks great
+                in a render can become inconvenient or risky on a real object if constraints are ignored.
+              </p>
+              <ul className="guarantee-list">
+                <li>Verify real opening dimensions and floor-to-floor height</li>
+                <li>Select type by comfort and everyday usability</li>
+                <li>Check budget corridor and execution format</li>
+                <li>Finalize structural nodes and implementation plan</li>
+              </ul>
+            </article>
+            <article className="guarantee-card">
+              <h2>Classic vs Signature by stair type</h2>
+              <p>
+                Stair type and service format are connected. Standard monolithic and U-shaped solutions are usually efficient in Classic, while floating
+                and cantilever concepts often require Signature due to engineering depth and precision requirements.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link href="/prices/calculator" className="btn btn-small">
+                  Open Classic calculator
+                </Link>
+                <Link href="/prices/tariffs" className="btn btn-ghost btn-small">
+                  Compare tariffs
+                </Link>
+              </div>
+            </article>
+          </div>
+
+          <article className="guarantee-card mt-6">
+            <h2>FAQ on stair type selection</h2>
+            <div className="grid gap-4 md:grid-cols-2 mt-4">
+              {[
+                {
+                  q: "How do I know which type fits my house?",
+                  a: "We evaluate actual opening geometry, floor height, target ergonomics, and interior priorities before selecting the final type."
+                },
+                {
+                  q: "Can I choose by reference images only?",
+                  a: "References are useful for direction, but final selection must be validated against real object constraints."
+                },
+                {
+                  q: "What usually forces type changes later?",
+                  a: "Unverified dimensions, finishing constraints, and structural nodes discovered too late."
+                },
+                {
+                  q: "Can I estimate budget range before full design?",
+                  a: "Yes. Use type pages and Classic calculator for orientation, then request a detailed estimate."
+                },
+                {
+                  q: "Where should I go for complex non-standard objects?",
+                  a: "Open Problems & Solutions, review Signature format, and send opening photos/plan for a technical review."
+                },
+                {
+                  q: "Do you provide final finishing?",
+                  a: "No. We deliver the concrete structure and proper preparation for finishing contractors."
+                }
+              ].map((faq) => (
+                <article key={faq.q} className="info-card">
+                  <h3>{faq.q}</h3>
+                  <p>{faq.a}</p>
+                </article>
+              ))}
+            </div>
+          </article>
         </Container>
       </section>
 

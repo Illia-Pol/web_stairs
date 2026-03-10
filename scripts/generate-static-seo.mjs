@@ -148,9 +148,44 @@ function writeSeoFiles(targetDir) {
   fs.writeFileSync(path.join(targetDir, ".nojekyll"), "", "utf8");
 }
 
+function listHtmlFiles(dir) {
+  const out = [];
+  if (!fs.existsSync(dir)) return out;
+  const stack = [dir];
+  while (stack.length) {
+    const current = stack.pop();
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(fullPath);
+        continue;
+      }
+      if (entry.isFile() && entry.name.endsWith(".html")) {
+        out.push(fullPath);
+      }
+    }
+  }
+  return out;
+}
+
+function patchEnglishLang(targetDir) {
+  const enDir = path.join(targetDir, "en");
+  const htmlFiles = listHtmlFiles(enDir);
+  for (const filePath of htmlFiles) {
+    const html = fs.readFileSync(filePath, "utf8");
+    if (html.includes("<html lang=\"en\"")) continue;
+    const updated = html.replace("<html lang=\"ru\"", "<html lang=\"en\"");
+    if (updated !== html) {
+      fs.writeFileSync(filePath, updated, "utf8");
+    }
+  }
+}
+
 writeSeoFiles(PUBLIC_DIR);
+patchEnglishLang(PUBLIC_DIR);
 if (fs.existsSync(OUT_DIR)) {
   writeSeoFiles(OUT_DIR);
+  patchEnglishLang(OUT_DIR);
 }
 
 console.log(`[seo] Generated sitemap.xml and robots.txt (basePath: ${basePath || "/"})`);
