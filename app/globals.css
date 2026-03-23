@@ -1950,6 +1950,19 @@ select:focus {
   flex-direction: column;
 }
 
+.lead-capture-form-card {
+  position: relative;
+}
+
+.lead-capture-form-card.is-loading {
+  opacity: 0.58;
+  filter: saturate(0.72);
+}
+
+.lead-capture-form-card.is-loading .lead-form {
+  pointer-events: none;
+}
+
 .lead-capture-form-card .lead-form {
   margin-top: 0.75rem;
 }
@@ -1972,6 +1985,38 @@ select:focus {
 
 .lead-form-actions .btn {
   white-space: nowrap;
+}
+
+.lead-form-actions .btn.is-loading {
+  position: relative;
+  cursor: progress;
+  transform: none;
+  box-shadow: 0 10px 25px rgba(199, 164, 106, 0.18);
+  color: transparent;
+}
+
+.lead-form-actions .btn.is-loading::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 0.45rem);
+  top: calc(50% - 0.45rem);
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 19, 23, 0.18);
+  border-top-color: #101317;
+  animation: button-spin 0.8s linear infinite;
+}
+
+.lead-form-actions .btn.is-loading:hover {
+  transform: none;
+  box-shadow: 0 10px 25px rgba(199, 164, 106, 0.18);
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .honeypot-field {
@@ -2153,12 +2198,134 @@ select:focus {
 
 .lead-alert-countdown {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
   color: rgba(244, 242, 238, 0.86);
 }
 
 .lead-alert-countdown.is-cancelled {
   color: #7dd39f;
+}
+
+.lead-success-page {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+}
+
+.lead-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 420;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lead-success-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 7, 9, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.lead-success-overlay__close {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lead-success-overlay__close:hover {
+  border-color: rgba(199, 164, 106, 0.6);
+  color: var(--accent);
+}
+
+.lead-success-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.lead-success-card {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.lead-success-card-modal {
+  position: relative;
+  z-index: 1;
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.42);
+}
+
+.lead-success-badge {
+  width: 4.8rem;
+  height: 4.8rem;
+  margin: 0 auto 0.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 159, 0.4);
+  background: radial-gradient(circle at 30% 30%, rgba(125, 211, 159, 0.36), rgba(125, 211, 159, 0.12));
+  color: #d8f6e3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 18px 40px rgba(125, 211, 159, 0.14);
+}
+
+.lead-success-badge-error {
+  border-color: rgba(240, 193, 139, 0.4);
+  background: radial-gradient(circle at 30% 30%, rgba(240, 193, 139, 0.34), rgba(240, 193, 139, 0.12));
+  color: #f7e1c5;
+  box-shadow: 0 18px 40px rgba(240, 193, 139, 0.12);
+}
+
+.lead-success-text {
+  max-width: 58ch;
+  margin: 0 auto;
+  color: var(--ink-soft);
+}
+
+.lead-success-kicker {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.lead-success-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  text-align: left;
+}
+
+.lead-status-countdown {
+  text-align: center;
+}
+
+.lead-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
 }
 
 .form-note {
@@ -2358,6 +2525,10 @@ select:focus {
 @media (max-width: 620px) {
   .hero {
     padding-top: 5.2rem;
+  }
+
+  .lead-success-points {
+    grid-template-columns: 1fr;
   }
 
   .trust-strip,

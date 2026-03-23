@@ -63,5 +63,24 @@
   "form_msg_submit_copy_btn": "Copy request text",
   "form_msg_submit_copy_success": "Request text copied",
   "form_msg_submit_sending": "Sending...",
-  "form_msg_submit_default": "Submit request"
+  "form_msg_submit_default": "Submit request",
+
+  "success_modal_title": "Request sent",
+  "success_modal_close": "Close",
+  "success_modal_next_title": "What happens next",
+  "success_modal_next_text": "We will review your input, assess a realistic budget and timeline scenario, and come back with a specific comment on your project.",
+  "success_modal_speed_title": "How to speed up the reply",
+  "success_modal_speed_text": "If you have more photos, videos, or an opening plan, send them in messenger. This helps us give a more accurate reply faster.",
+  "success_modal_telegram_btn": "Write in Telegram",
+  "success_modal_call_btn": "Call",
+
+  "error_modal_title": "Automatic sending failed",
+  "error_modal_help_title": "What happened",
+  "error_modal_help_text": "The request could not be sent automatically. We prepared a manual Telegram fallback so your entered data is not lost.",
+  "error_modal_timer_title": "What happens next",
+  "error_modal_timer_text": "In a few seconds Telegram will open with a prefilled request text. You can cancel the redirect and stay on the site if needed.",
+  "error_modal_telegram_btn": "Send in Telegram",
+  "error_modal_copy_btn": "Copy request text",
+  "error_modal_stay_btn": "Stay on site",
+  "error_modal_copy_success": "Request text copied"
 }

@@ -63,5 +63,24 @@
   "form_msg_submit_copy_btn": "Скопировать текст заявки",
   "form_msg_submit_copy_success": "Текст заявки скопирован",
   "form_msg_submit_sending": "Отправка...",
-  "form_msg_submit_default": "Оставить заявку"
+  "form_msg_submit_default": "Оставить заявку",
+
+  "success_modal_title": "Заявка отправлена",
+  "success_modal_close": "Закрыть",
+  "success_modal_next_title": "Что дальше",
+  "success_modal_next_text": "Проверим вводные, оценим реалистичный сценарий по бюджету и срокам и вернемся с предметным комментарием по вашему объекту.",
+  "success_modal_speed_title": "Как ускорить ответ",
+  "success_modal_speed_text": "Если есть еще фото, видео или план проема, отправьте их в мессенджер. Так мы быстрее дадим точный комментарий.",
+  "success_modal_telegram_btn": "Написать в Telegram",
+  "success_modal_call_btn": "Позвонить",
+
+  "error_modal_title": "Автоотправка не удалась",
+  "error_modal_help_title": "Что произошло",
+  "error_modal_help_text": "Автоматически отправить заявку не удалось. Мы подготовили ручной сценарий через Telegram, чтобы вы не потеряли введенные данные.",
+  "error_modal_timer_title": "Что будет дальше",
+  "error_modal_timer_text": "Через несколько секунд откроется Telegram с уже подготовленным текстом заявки. При желании вы можете отменить переход и остаться на сайте.",
+  "error_modal_telegram_btn": "Отправить в Telegram",
+  "error_modal_copy_btn": "Скопировать текст заявки",
+  "error_modal_stay_btn": "Остаться на сайте",
+  "error_modal_copy_success": "Текст заявки скопирован"
 }

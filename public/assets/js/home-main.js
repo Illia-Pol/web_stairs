@@ -26,6 +26,7 @@ function initLeadForm() {
   const phoneField = document.getElementById("phone");
   const messengerField = document.getElementById("messenger");
   const submitButton = form.querySelector('button[type="submit"]');
+  const formCard = form.closest(".lead-capture-form-card");
   const photoInput = document.getElementById("photo-files");
   const photoAddBtn = document.getElementById("photo-add-btn");
   const photoPreviewStrip = document.getElementById("photo-preview-strip");
@@ -76,16 +77,59 @@ function initLeadForm() {
     submitStayBtn: form.dataset.msgSubmitStayBtn || (isEn ? "Stay on site" : "Остаться на сайте"),
     submitCountdownPrefix: form.dataset.msgSubmitCountdownPrefix || (isEn ? "Redirect to Telegram in" : "Переход в Telegram через"),
     submitCountdownSuffix: form.dataset.msgSubmitCountdownSuffix || (isEn ? "sec" : "сек."),
-    submitCountdownCancelled: form.dataset.msgSubmitCountdownCancelled || (isEn ? "Auto-redirect cancelled." : "Автопереход отменен.")
+    submitCountdownCancelled: form.dataset.msgSubmitCountdownCancelled || (isEn ? "Auto-redirect cancelled." : "Автопереход отменен."),
+    successModalTitle: form.dataset.msgSuccessModalTitle || (isEn ? "Request sent" : "Заявка отправлена"),
+    successModalClose: form.dataset.msgSuccessModalClose || (isEn ? "Close" : "Закрыть"),
+    successModalNextTitle: form.dataset.msgSuccessModalNextTitle || (isEn ? "What happens next" : "Что дальше"),
+    successModalNextText:
+      form.dataset.msgSuccessModalNextText ||
+      (isEn
+        ? "We will review your input, assess a realistic budget and timeline scenario, and come back with a specific comment on your project."
+        : "Проверим вводные, оценим реалистичный сценарий по бюджету и срокам и вернемся с предметным комментарием по вашему объекту."),
+    successModalSpeedTitle: form.dataset.msgSuccessModalSpeedTitle || (isEn ? "How to speed up the reply" : "Как ускорить ответ"),
+    successModalSpeedText:
+      form.dataset.msgSuccessModalSpeedText ||
+      (isEn
+        ? "If you have more photos, videos, or an opening plan, send them in messenger. This helps us give a more accurate reply faster."
+        : "Если есть еще фото, видео или план проема, отправьте их в мессенджер. Так мы быстрее дадим точный комментарий."),
+    successModalTelegramBtn: form.dataset.msgSuccessModalTelegramBtn || (isEn ? "Write in Telegram" : "Написать в Telegram"),
+    successModalCallBtn: form.dataset.msgSuccessModalCallBtn || (isEn ? "Call" : "Позвонить"),
+    errorModalTitle: form.dataset.msgErrorModalTitle || (isEn ? "Automatic sending failed" : "Автоотправка не удалась"),
+    errorModalHelpTitle: form.dataset.msgErrorModalHelpTitle || (isEn ? "What happened" : "Что произошло"),
+    errorModalHelpText:
+      form.dataset.msgErrorModalHelpText ||
+      (isEn
+        ? "The request could not be sent automatically. We prepared a manual Telegram fallback so your entered data is not lost."
+        : "Автоматически отправить заявку не удалось. Мы подготовили ручной сценарий через Telegram, чтобы вы не потеряли введенные данные."),
+    errorModalTimerTitle: form.dataset.msgErrorModalTimerTitle || (isEn ? "What happens next" : "Что будет дальше"),
+    errorModalTimerText:
+      form.dataset.msgErrorModalTimerText ||
+      (isEn
+        ? "In a few seconds Telegram will open with a prefilled request text. You can cancel the redirect and stay on the site if needed."
+        : "Через несколько секунд откроется Telegram с уже подготовленным текстом заявки. При желании вы можете отменить переход и остаться на сайте."),
+    errorModalTelegramBtn: form.dataset.msgErrorModalTelegramBtn || (isEn ? "Send in Telegram" : "Отправить в Telegram"),
+    errorModalCopyBtn: form.dataset.msgErrorModalCopyBtn || (isEn ? "Copy request text" : "Скопировать текст заявки"),
+    errorModalStayBtn: form.dataset.msgErrorModalStayBtn || (isEn ? "Stay on site" : "Остаться на сайте"),
+    errorModalCopySuccess: form.dataset.msgErrorModalCopySuccess || (isEn ? "Request text copied" : "Текст заявки скопирован")
   };
 
   const endpoint = form.dataset.leadEndpoint || "";
   const formSource = form.dataset.leadSource || "lead_form";
+  const successUrl = form.dataset.leadSuccessUrl || "/lead/success";
   const fallbackMode = form.dataset.telegramFallbackMode || "auto_redirect";
   const fallbackUsername = form.dataset.telegramFallbackUsername || "";
   const fallbackUrl = form.dataset.telegramFallbackUrl || "https://t.me";
+  const successTelegramUrl = form.dataset.successModalTelegramUrl || fallbackUrl;
+  const successCallUrl = form.dataset.successModalCallUrl || "";
+  const MOCK_SUCCESS_ENDPOINT = "__mock_success__";
+  const MOCK_ERROR_ENDPOINT = "__mock_error__";
+  const MIN_SUBMIT_PENDING_MS = 700;
   let redirectTimerId = null;
   let countdownTimerId = null;
+  let successRedirectTimerId = null;
+  let successModalCleanup = null;
+  let successModalRestoreOverflow = "";
+  let successModalRestoreUrl = "";
 
   const applyTokens = (template, tokens) => {
     if (!tokens) return template;
@@ -95,6 +139,14 @@ function initLeadForm() {
   };
 
   const isPlaceholder = (value) => typeof value === "string" && value.includes("{{") && value.includes("}}");
+  const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+  const waitForMinimumPending = async (startedAt) => {
+    const elapsed = Date.now() - startedAt;
+    const waitMs = Math.max(0, MIN_SUBMIT_PENDING_MS - elapsed);
+    if (waitMs > 0) {
+      await sleep(waitMs);
+    }
+  };
 
   const extractTelegramUsername = (value) => {
     if (!value || isPlaceholder(value)) return "";
@@ -126,6 +178,304 @@ function initLeadForm() {
       window.clearInterval(countdownTimerId);
       countdownTimerId = null;
     }
+    if (successRedirectTimerId) {
+      window.clearTimeout(successRedirectTimerId);
+      successRedirectTimerId = null;
+    }
+  };
+
+  const dispatchLeadSuccessTracking = (targetUrl) => {
+    if (typeof window === "undefined") return;
+
+    let resolvedUrl = window.location.href;
+    try {
+      resolvedUrl = new URL(targetUrl, window.location.origin).href;
+    } catch {
+      resolvedUrl = targetUrl || window.location.href;
+    }
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", {
+        event_category: "lead",
+        event_label: "lead_success_modal"
+      });
+      window.gtag("event", "page_view", {
+        page_title: msg.successModalTitle,
+        page_location: resolvedUrl,
+        page_path: new URL(resolvedUrl).pathname + new URL(resolvedUrl).search
+      });
+    }
+
+    if (typeof window.ym === "function") {
+      window.ym(107147477, "reachGoal", "lead_success");
+    }
+  };
+
+  const closeLeadSuccessModal = ({ restoreHistory = true } = {}) => {
+    clearRedirectTimers();
+    const modal = document.getElementById("lead-status-modal");
+    if (modal) {
+      modal.remove();
+    }
+    document.body.style.overflow = successModalRestoreOverflow;
+
+    if (typeof successModalCleanup === "function") {
+      successModalCleanup();
+      successModalCleanup = null;
+    }
+
+    if (restoreHistory && window.history.state && window.history.state.__leadStatusModal) {
+      window.history.back();
+      return;
+    }
+
+    if (restoreHistory && successModalRestoreUrl && window.location.href !== successModalRestoreUrl) {
+      window.history.replaceState(window.history.state, "", successModalRestoreUrl);
+    }
+  };
+
+  const openLeadSuccessModal = (targetUrl) => {
+    if (typeof document === "undefined") return;
+
+    closeLeadSuccessModal({ restoreHistory: false });
+
+    const resolvedUrl = new URL(targetUrl, window.location.origin);
+    successModalRestoreUrl = window.location.href;
+    successModalRestoreOverflow = document.body.style.overflow || "";
+    window.history.pushState({ ...(window.history.state || {}), __leadStatusModal: true }, "", resolvedUrl.href);
+    document.body.style.overflow = "hidden";
+
+    const overlay = document.createElement("div");
+    overlay.className = "lead-success-overlay lead-success-overlay--success";
+    overlay.id = "lead-status-modal";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "lead-success-modal-title");
+
+    const backdrop = document.createElement("div");
+    backdrop.className = "lead-success-overlay__backdrop";
+    backdrop.dataset.close = "true";
+
+    const dialog = document.createElement("article");
+    dialog.className = "guarantee-card lead-success-card lead-success-card-modal";
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "lead-success-overlay__close";
+    closeBtn.setAttribute("aria-label", msg.successModalClose);
+    closeBtn.textContent = "×";
+
+    const badge = document.createElement("div");
+    badge.className = "lead-success-badge";
+    badge.setAttribute("aria-hidden", "true");
+    badge.innerHTML = "<span>✓</span>";
+
+    const title = document.createElement("h2");
+    title.className = "kicker lead-success-kicker";
+    title.id = "lead-success-modal-title";
+    title.textContent = msg.successModalTitle;
+
+    const points = document.createElement("div");
+    points.className = "lead-success-points";
+    points.innerHTML = `
+      <div class="info-card">
+        <h3>${msg.successModalNextTitle}</h3>
+        <p>${msg.successModalNextText}</p>
+      </div>
+      <div class="info-card">
+        <h3>${msg.successModalSpeedTitle}</h3>
+        <p>${msg.successModalSpeedText}</p>
+      </div>
+    `;
+
+    const actions = document.createElement("div");
+    actions.className = "lead-success-actions";
+    actions.innerHTML = `
+      <a href="${successTelegramUrl}" target="_blank" rel="noreferrer" class="btn btn-small">${msg.successModalTelegramBtn}</a>
+      <a href="${successCallUrl}" class="btn btn-ghost btn-small">${msg.successModalCallBtn}</a>
+    `;
+
+    dialog.appendChild(closeBtn);
+    dialog.appendChild(badge);
+    dialog.appendChild(title);
+    dialog.appendChild(points);
+    dialog.appendChild(actions);
+    overlay.appendChild(backdrop);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    const onClick = (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.dataset.close === "true" || target === closeBtn) {
+        closeLeadSuccessModal();
+      }
+    };
+
+    const onKeydown = (event) => {
+      if (event.key === "Escape") {
+        closeLeadSuccessModal();
+      }
+    };
+
+    const onPopstate = () => {
+      if (!(window.history.state && window.history.state.__leadStatusModal)) {
+        closeLeadSuccessModal({ restoreHistory: false });
+      }
+    };
+
+    overlay.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKeydown);
+    window.addEventListener("popstate", onPopstate);
+    successModalCleanup = () => {
+      overlay.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeydown);
+      window.removeEventListener("popstate", onPopstate);
+    };
+
+    closeBtn.focus();
+    dispatchLeadSuccessTracking(resolvedUrl.href);
+  };
+
+  const openLeadErrorModal = (fallbackLink, fallbackText) => {
+    if (typeof document === "undefined") return;
+
+    closeLeadSuccessModal({ restoreHistory: false });
+    successModalRestoreUrl = window.location.href;
+    successModalRestoreOverflow = document.body.style.overflow || "";
+    document.body.style.overflow = "hidden";
+
+    const overlay = document.createElement("div");
+    overlay.className = "lead-success-overlay lead-success-overlay--error";
+    overlay.id = "lead-status-modal";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "lead-error-modal-title");
+
+    const backdrop = document.createElement("div");
+    backdrop.className = "lead-success-overlay__backdrop";
+    backdrop.dataset.close = "true";
+
+    const dialog = document.createElement("article");
+    dialog.className = "guarantee-card lead-success-card lead-success-card-modal lead-status-card-error";
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "lead-success-overlay__close";
+    closeBtn.setAttribute("aria-label", msg.successModalClose);
+    closeBtn.textContent = "×";
+
+    const badge = document.createElement("div");
+    badge.className = "lead-success-badge lead-success-badge-error";
+    badge.setAttribute("aria-hidden", "true");
+    badge.innerHTML = "<span>!</span>";
+
+    const title = document.createElement("h2");
+    title.className = "kicker lead-success-kicker";
+    title.id = "lead-error-modal-title";
+    title.textContent = msg.errorModalTitle;
+
+    const points = document.createElement("div");
+    points.className = "lead-success-points";
+    points.innerHTML = `
+      <div class="info-card">
+        <h3>${msg.errorModalHelpTitle}</h3>
+        <p>${msg.errorModalHelpText}</p>
+      </div>
+      <div class="info-card">
+        <h3>${msg.errorModalTimerTitle}</h3>
+        <p>${msg.errorModalTimerText}</p>
+      </div>
+    `;
+
+    const countdown = document.createElement("p");
+    countdown.className = "lead-alert-countdown lead-status-countdown";
+    countdown.textContent = `${msg.submitCountdownPrefix} ${AUTO_REDIRECT_SECONDS} ${msg.submitCountdownSuffix}`;
+
+    const actions = document.createElement("div");
+    actions.className = "lead-success-actions";
+
+    const tgBtn = document.createElement("a");
+    tgBtn.href = fallbackLink;
+    tgBtn.target = "_blank";
+    tgBtn.rel = "noreferrer";
+    tgBtn.className = "btn btn-small";
+    tgBtn.textContent = msg.errorModalTelegramBtn;
+    actions.appendChild(tgBtn);
+
+    const copyBtn = document.createElement("button");
+    copyBtn.type = "button";
+    copyBtn.className = "btn btn-ghost btn-small";
+    copyBtn.textContent = msg.errorModalCopyBtn;
+    copyBtn.addEventListener("click", async () => {
+      try {
+        if (!navigator?.clipboard) return;
+        await navigator.clipboard.writeText(fallbackText);
+        copyBtn.textContent = msg.errorModalCopySuccess;
+      } catch {
+        // ignore clipboard errors
+      }
+    });
+    actions.appendChild(copyBtn);
+
+    const stayBtn = document.createElement("button");
+    stayBtn.type = "button";
+    stayBtn.className = "btn btn-ghost btn-small";
+    stayBtn.textContent = msg.errorModalStayBtn;
+    stayBtn.addEventListener("click", () => {
+      clearRedirectTimers();
+      countdown.textContent = msg.submitCountdownCancelled;
+      countdown.classList.add("is-cancelled");
+    });
+    actions.appendChild(stayBtn);
+
+    dialog.appendChild(closeBtn);
+    dialog.appendChild(badge);
+    dialog.appendChild(title);
+    dialog.appendChild(points);
+    dialog.appendChild(countdown);
+    dialog.appendChild(actions);
+    overlay.appendChild(backdrop);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    const onClick = (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.dataset.close === "true" || target === closeBtn) {
+        closeLeadSuccessModal({ restoreHistory: false });
+      }
+    };
+
+    const onKeydown = (event) => {
+      if (event.key === "Escape") {
+        closeLeadSuccessModal({ restoreHistory: false });
+      }
+    };
+
+    overlay.addEventListener("click", onClick);
+    document.addEventListener("keydown", onKeydown);
+    successModalCleanup = () => {
+      overlay.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", onKeydown);
+    };
+
+    let secondsLeft = AUTO_REDIRECT_SECONDS;
+    countdownTimerId = window.setInterval(() => {
+      secondsLeft -= 1;
+      if (secondsLeft <= 0) {
+        window.clearInterval(countdownTimerId);
+        countdownTimerId = null;
+        return;
+      }
+      countdown.textContent = `${msg.submitCountdownPrefix} ${secondsLeft} ${msg.submitCountdownSuffix}`;
+    }, 1000);
+
+    redirectTimerId = window.setTimeout(() => {
+      window.location.href = fallbackLink;
+    }, AUTO_REDIRECT_MS);
+
+    closeBtn.focus();
   };
 
   const setSubmitState = ({ type = "idle", message = "", fallbackLink = "", fallbackText = "" } = {}) => {
@@ -228,6 +578,12 @@ function initLeadForm() {
     if (!submitButton) return;
     submitButton.disabled = Boolean(loading);
     submitButton.textContent = loading ? sendingSubmitLabel : defaultSubmitLabel;
+    submitButton.classList.toggle("is-loading", Boolean(loading));
+    submitButton.setAttribute("aria-busy", loading ? "true" : "false");
+    if (formCard) {
+      formCard.classList.toggle("is-loading", Boolean(loading));
+      formCard.setAttribute("aria-busy", loading ? "true" : "false");
+    }
   };
 
   const phoneFormats = {
@@ -301,6 +657,14 @@ function initLeadForm() {
       tile.appendChild(removeBtn);
       photoPreviewStrip.appendChild(tile);
     });
+  };
+
+  const resetLeadForm = () => {
+    form.reset();
+    updatePhoneFormat();
+    selectedPhotos = [];
+    renderPhotoPreviews();
+    setPhotoStatus("");
   };
 
   const getTotalPhotoSize = () => selectedPhotos.reduce((acc, file) => acc + (file?.size || 0), 0);
@@ -546,11 +910,25 @@ function initLeadForm() {
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    const submitStartedAt = Date.now();
 
     try {
       setSubmitting(true);
       if (!endpoint || isPlaceholder(endpoint)) {
         throw new Error("LEAD_ENDPOINT_NOT_CONFIGURED");
+      }
+
+      if (endpoint === MOCK_SUCCESS_ENDPOINT) {
+        await waitForMinimumPending(submitStartedAt);
+        setSubmitState();
+        resetLeadForm();
+        const joinSymbol = successUrl.includes("?") ? "&" : "?";
+        openLeadSuccessModal(`${successUrl}${joinSymbol}source=${encodeURIComponent(formSource)}`);
+        return;
+      }
+
+      if (endpoint === MOCK_ERROR_ENDPOINT) {
+        throw new Error("MOCK_ERROR");
       }
 
       const response = await fetch(endpoint, {
@@ -568,19 +946,15 @@ function initLeadForm() {
         throw new Error("ENDPOINT_RESPONSE_NOT_OK");
       }
 
-      setSubmitState({ type: "success", message: msg.submitSuccess });
-      form.reset();
-      updatePhoneFormat();
-      selectedPhotos = [];
-      renderPhotoPreviews();
-      setPhotoStatus("");
+      await waitForMinimumPending(submitStartedAt);
+      setSubmitState();
+      resetLeadForm();
+      const joinSymbol = successUrl.includes("?") ? "&" : "?";
+      openLeadSuccessModal(`${successUrl}${joinSymbol}source=${encodeURIComponent(formSource)}`);
     } catch {
-      setSubmitState({
-        type: "error",
-        message: msg.submitError,
-        fallbackLink: telegramLink,
-        fallbackText: text
-      });
+      await waitForMinimumPending(submitStartedAt);
+      setSubmitState();
+      openLeadErrorModal(telegramLink, text);
 
     } finally {
       clearTimeout(timeoutId);

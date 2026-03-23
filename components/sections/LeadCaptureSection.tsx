@@ -4,6 +4,7 @@ import { thls } from "@/lib/i18n-lead-section";
 import type { Locale } from "@/lib/i18n";
 import type { SiteConfig } from "@/lib/content/schemas";
 import { cn } from "@/lib/cn";
+import { withBasePath } from "@/lib/paths";
 
 type LeadCaptureSectionProps = {
   site: SiteConfig;
@@ -77,6 +78,7 @@ export function LeadCaptureSection({ site, locale, id = "contact", className, so
             noValidate
             data-lead-endpoint={site.leadEndpoint}
             data-lead-source={source}
+            data-lead-success-url={withBasePath("/lead/success")}
             data-telegram-fallback-username={site.telegramFallback.username}
             data-telegram-fallback-url={site.telegramFallback.url}
             data-telegram-fallback-mode={site.telegramFallbackMode}
@@ -103,6 +105,25 @@ export function LeadCaptureSection({ site, locale, id = "contact", className, so
             data-msg-submit-copy-success={tr("form_msg_submit_copy_success")}
             data-msg-submit-sending={tr("form_msg_submit_sending")}
             data-msg-submit-default={tr("form_msg_submit_default")}
+            data-msg-success-modal-title={tr("success_modal_title")}
+            data-msg-success-modal-close={tr("success_modal_close")}
+            data-msg-success-modal-next-title={tr("success_modal_next_title")}
+            data-msg-success-modal-next-text={tr("success_modal_next_text")}
+            data-msg-success-modal-speed-title={tr("success_modal_speed_title")}
+            data-msg-success-modal-speed-text={tr("success_modal_speed_text")}
+            data-msg-success-modal-telegram-btn={tr("success_modal_telegram_btn")}
+            data-msg-success-modal-call-btn={tr("success_modal_call_btn")}
+            data-msg-error-modal-title={tr("error_modal_title")}
+            data-msg-error-modal-help-title={tr("error_modal_help_title")}
+            data-msg-error-modal-help-text={tr("error_modal_help_text")}
+            data-msg-error-modal-timer-title={tr("error_modal_timer_title")}
+            data-msg-error-modal-timer-text={tr("error_modal_timer_text")}
+            data-msg-error-modal-telegram-btn={tr("error_modal_telegram_btn")}
+            data-msg-error-modal-copy-btn={tr("error_modal_copy_btn")}
+            data-msg-error-modal-stay-btn={tr("error_modal_stay_btn")}
+            data-msg-error-modal-copy-success={tr("error_modal_copy_success")}
+            data-success-modal-telegram-url={site.messengers.telegram}
+            data-success-modal-call-url={`tel:${site.contacts.phoneMain}`}
           >
             <div className="lead-form-grid">
               <label className="field">
