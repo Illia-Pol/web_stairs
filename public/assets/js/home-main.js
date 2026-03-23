@@ -865,6 +865,12 @@ function initLeadForm() {
       return;
     }
 
+    if (typeof window.gtagSendEvent === "function") {
+      window.gtagSendEvent();
+    } else if (typeof window.gtag === "function") {
+      window.gtag("event", "conversion_event_contact");
+    }
+
     const name = document.getElementById("name").value.trim();
     const localPhone = document.getElementById("phone").value.trim();
     const phoneCode = phoneCodeField ? phoneCodeField.value : "";

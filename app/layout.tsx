@@ -128,6 +128,26 @@ export default function RootLayout({
             gtag('config', 'G-PQL2WVYLV2');
           `}
         </Script>
+        <Script id="gtag-conversion-helper" strategy="afterInteractive">
+          {`
+            window.gtagSendEvent = function(url) {
+              var callback = function () {
+                if (typeof url === 'string') {
+                  window.location = url;
+                }
+              };
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'conversion_event_contact', {
+                  event_callback: callback,
+                  event_timeout: 2000
+                });
+              } else {
+                callback();
+              }
+              return false;
+            };
+          `}
+        </Script>
         <Script src={assetPath("/assets/js/home-main.js")} strategy="afterInteractive" />
         <ClientEnhancements />
         <JsonLd data={websiteSchema} />
