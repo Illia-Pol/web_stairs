@@ -29,41 +29,24 @@ export default function TariffsPage() {
     serviceType: t("Тарифы и форматы работ"),
     areaServed: site.coverageRegions
   });
-  const tariffProductsSchema = {
+  const tariffCatalogSchema = {
     "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: [
+    "@type": "CollectionPage",
+    name: t("Тарифы на бетонные лестницы"),
+    description: t("Сравнение форматов Classic и Signature для бетонных лестниц с переходом на детальные страницы тарифов."),
+    url: absoluteUrl(site.baseUrl, "/prices/tariffs"),
+    hasPart: [
       {
-        "@type": "Product",
-        position: 1,
+        "@type": "WebPage",
         name: "Classic",
         description: t("Оптимальный формат для большинства частных объектов без потери качества."),
-        brand: {
-          "@type": "Brand",
-          name: site.brand.name
-        },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "BYN",
-          availability: "https://schema.org/InStock",
-          url: absoluteUrl(site.baseUrl, "/prices/tariffs/classic")
-        }
+        url: absoluteUrl(site.baseUrl, "/prices/tariffs/classic")
       },
       {
-        "@type": "Product",
-        position: 2,
+        "@type": "WebPage",
         name: "Signature",
         description: t("Формат для сложных и премиальных проектов с расширенной инженерной частью."),
-        brand: {
-          "@type": "Brand",
-          name: site.brand.name
-        },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "BYN",
-          availability: "https://schema.org/InStock",
-          url: absoluteUrl(site.baseUrl, "/prices/tariffs/signature")
-        }
+        url: absoluteUrl(site.baseUrl, "/prices/tariffs/signature")
       }
     ]
   };
@@ -72,7 +55,7 @@ export default function TariffsPage() {
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
-      <JsonLd data={tariffProductsSchema} />
+      <JsonLd data={tariffCatalogSchema} />
 
       <Section className="section-dark">
         <Container>

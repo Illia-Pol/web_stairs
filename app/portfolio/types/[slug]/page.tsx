@@ -163,23 +163,17 @@ export default function TypeDetailPage({ params }: PageProps) {
     areaServed: site.coverageRegions,
     offers: type.priceHint
   });
-  const productSchema = {
+  const typePageSchema = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "WebPage",
     name: t(type.title),
-    description: t(type.shortDescription),
-    category: t("Бетонные лестницы"),
-    image: absoluteUrl(site.baseUrl, type.heroImage),
-    brand: {
-      "@type": "Brand",
-      name: site.brand.name
-    },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "BYN",
-      availability: "https://schema.org/InStock",
-      url: absoluteUrl(site.baseUrl, `/portfolio/types/${type.slug}`),
-      description: type.priceHint
+    description: t(type.fullDescription),
+    url: absoluteUrl(site.baseUrl, `/portfolio/types/${type.slug}`),
+    primaryImageOfPage: absoluteUrl(site.baseUrl, type.heroImage),
+    isPartOf: {
+      "@type": "CollectionPage",
+      name: t("Типы бетонных лестниц"),
+      url: absoluteUrl(site.baseUrl, "/portfolio/types")
     }
   };
 
@@ -187,7 +181,7 @@ export default function TypeDetailPage({ params }: PageProps) {
     <>
       <JsonLd data={breadcrumbsJsonLd(site.baseUrl, breadcrumbs)} />
       <JsonLd data={serviceSchema} />
-      <JsonLd data={productSchema} />
+      <JsonLd data={typePageSchema} />
 
       <Section className="section-dark">
         <Container>

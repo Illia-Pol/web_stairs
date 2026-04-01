@@ -133,6 +133,20 @@ function normalizeMetaDescription(value: string, isEnglish: boolean): string {
   return trimToLength(enriched, 160);
 }
 
+function extractSchemaPrice(value?: string): string | undefined {
+  if (!value) return undefined;
+
+  const normalized = value.replace(/\s+/g, " ").trim();
+  const match = normalized.match(/(\d[\d\s.,]*)/);
+  if (!match) return undefined;
+
+  const numeric = match[1].replace(/[^\d.,]/g, "").replace(",", ".");
+  const parsed = Number.parseFloat(numeric);
+  if (!Number.isFinite(parsed) || parsed <= 0) return undefined;
+
+  return String(parsed);
+}
+
 export function absoluteUrl(baseUrl: string, pathname: string): string {
   if (isWebUrl(pathname)) return pathname;
   return new URL(normalizePathname(pathname), normalizeBaseUrl(baseUrl)).toString();
@@ -317,6 +331,8 @@ export function serviceJsonLd(params: {
   areaServed: string;
   offers?: string;
 }) {
+  const parsedPrice = extractSchemaPrice(params.offers);
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -327,9 +343,10 @@ export function serviceJsonLd(params: {
     provider: {
       "@id": `${normalizeBaseUrl(params.baseUrl)}#local-business`
     },
-    offers: params.offers
+    offers: params.offers && parsedPrice
       ? {
           "@type": "Offer",
+          price: parsedPrice,
           priceCurrency: "BYN",
           description: params.offers
         }
