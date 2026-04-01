@@ -1027,6 +1027,7 @@ function initCatalogGallery() {
   const allSlides = [];
   const cardEntries = [];
   let currentIndex = 0;
+  let wheelLock = false;
 
   const renderModal = () => {
     const slide = allSlides[currentIndex];
@@ -1056,8 +1057,25 @@ function initCatalogGallery() {
     renderModal();
   };
 
+  const handleWheelStep = (event) => {
+    if (!modal.classList.contains("is-open")) return;
+
+    const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (Math.abs(dominantDelta) < 14) return;
+
+    event.preventDefault();
+    if (wheelLock) return;
+
+    wheelLock = true;
+    step(dominantDelta > 0 ? 1 : -1);
+    window.setTimeout(() => {
+      wheelLock = false;
+    }, 180);
+  };
+
   prevBtn.addEventListener("click", () => step(-1));
   nextBtn.addEventListener("click", () => step(1));
+  modal.addEventListener("wheel", handleWheelStep, { passive: false });
   modal.addEventListener("click", (event) => {
     const target = event.target;
     if (target instanceof HTMLElement && target.dataset.close === "true") {
